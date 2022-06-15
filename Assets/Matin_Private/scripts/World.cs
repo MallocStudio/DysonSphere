@@ -1,6 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.XR;
+
+[System.Serializable]
+public class PrimaryButtonEvent : UnityEvent<bool> {}
 
 public class World : MonoBehaviour {
     const int MOUSE_BUTTON_LEFT   = 0;
