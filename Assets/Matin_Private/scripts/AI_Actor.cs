@@ -19,6 +19,7 @@ public class AI_Actor : MonoBehaviour {
     Vector3 nav_start_pos = Vector3.zero;
         // How much along our destination are we from start pos
     float nav_completion = 0;
+    public bool is_selected = false;
 
     /// <summary>
     /// Initialise a new ai actor. Each AI actor must share the same blackboard as others.
@@ -55,10 +56,14 @@ public class AI_Actor : MonoBehaviour {
             //-- Follow the lead using BOIDS
         } else {
             //-- Move towards the given point
-            if (nav_completion < 0.1f) {
+            if (nav_completion < 0.9f) {
                 nav_completion += Time.deltaTime;
                 transform.position = Vector3.Lerp(nav_start_pos, nav_target_pos, nav_completion);
             }
+        }
+
+        if (is_selected) {
+            Destroy(this.gameObject);
         }
     }
 

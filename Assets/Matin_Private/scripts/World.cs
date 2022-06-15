@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR;
+using UnityEngine.InputSystem;
 
 [System.Serializable]
 public class PrimaryButtonEvent : UnityEvent<bool> {}
@@ -16,6 +17,9 @@ public class World : MonoBehaviour {
     [SerializeField] List<AI_Actor> entities = new List<AI_Actor>();
     [SerializeField] Camera main_camera;
 
+    //// INPUT
+
+
     void Start() {
         // Debug.Assert(blackboard != null);
         Debug.Assert(main_camera != null);
@@ -28,11 +32,22 @@ public class World : MonoBehaviour {
         foreach (AI_Actor entity in entities) {
             entity.update();
         }
-        if (Input.GetMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-            Ray ray = main_camera.ScreenPointToRay(Input.mousePosition);
+
+        Mouse mouse = Mouse.current;
+        Debug.Assert(mouse != null);
+
+        if (mouse.leftButton.wasPressedThisFrame) {
+            Ray ray = main_camera.ScreenPointToRay(mouse.position.ReadValue());
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)){
-                Debug.Log("pressed on something");
+                AI_Actor actor = hit.transform.GetComponent<AI_Actor>();
+                if (actor) {
+                        // unselect other actors
+                    foreach (AI_Actor entity in entities) {
+                        entity.is_selected = false;
+                    }
+                    actor.is_selected = true;
+                }
             }
         }
     }

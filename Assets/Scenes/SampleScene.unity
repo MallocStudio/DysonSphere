@@ -2258,6 +2258,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Locomotion System
       objectReference: {fileID: 0}
+    - target: {fileID: 673830611590505403, guid: d43dca5893ecdd14781cc0bc84bba083, type: 3}
+      propertyPath: m_LeftHandSnapTurnAction.m_Reference
+      value: 
+      objectReference: {fileID: 1010738217276881514, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+    - target: {fileID: 673830611590505403, guid: d43dca5893ecdd14781cc0bc84bba083, type: 3}
+      propertyPath: m_RightHandSnapTurnAction.m_Reference
+      value: 
+      objectReference: {fileID: -6493913391331992944, guid: c348712bda248c246b8c49b3db54643f, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d43dca5893ecdd14781cc0bc84bba083, type: 3}
 --- !u!1001 &6063554145615859082
@@ -2348,6 +2356,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: XR Interaction Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 8088475920121535353, guid: 1aadb469965868b459090db842c493ca, type: 3}
+      propertyPath: m_ActionAssets.Array.data[0]
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
     - target: {fileID: 8088475920121535354, guid: 1aadb469965868b459090db842c493ca, type: 3}
       propertyPath: m_RootOrder
       value: 6
