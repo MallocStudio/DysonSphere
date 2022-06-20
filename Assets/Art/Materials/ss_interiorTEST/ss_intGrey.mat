@@ -8,8 +8,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ss_intGrey
-  m_Shader: {fileID: 4800000, guid: 71a6a00cad6005044944afdfa341b08a, type: 3}
-  m_ShaderKeywords: 
+  m_Shader: {fileID: 4800000, guid: d95d5f4cf26dc0b41b8f96c2aaf9be38, type: 3}
+  m_ShaderKeywords: _TOGGLESWITCH0_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -94,6 +94,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _Distance: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
@@ -101,6 +102,7 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 1
     - _OcclusionStrength: 1
+    - _OutlineActive: 0
     - _OutlineWidth: 0.1
     - _Parallax: 0.005
     - _QueueOffset: 0
@@ -111,6 +113,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _ToggleSwitch0: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
