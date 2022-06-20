@@ -11,5 +11,6 @@ public class Hologram : MonoBehaviour
     {
         GameObject theHolograph = Instantiate(holographPrefab);
         theHolograph.GetComponent<HolographicObject>().attachedObject = transform;
+        theHolograph.GetComponent<HolographicObject>().panel = this.transform;
     }
 }

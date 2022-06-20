@@ -5,10 +5,11 @@ using UnityEngine;
 public class HolographicObject : MonoBehaviour
 {
     public Transform attachedObject;
+    public Transform panel;
 
     Vector3 scaleChange;
     Vector3 offSet;
-    float differnceInScale = 0.05f;
+    float differnceInScale = 0.01f;
 
     private void Start()
     {
@@ -20,10 +21,7 @@ public class HolographicObject : MonoBehaviour
     void Update()
     {
         //Update my position to match the ship's position
-        //transform.SetPositionAndRotation(attachedObject.position, attachedObject.rotation);
-        transform.position = attachedObject.position * differnceInScale + offSet;
         transform.localScale = scaleChange;
-
-        //Hologram.position = Enitty.Position * differenceInScale ;
+        transform.position = attachedObject.position * differnceInScale + (offSet + panel.position);
     }
 }

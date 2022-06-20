@@ -22,6 +22,6 @@ public class SpaceShip : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += new Vector3(0.01f, 0.0f, 0.0f);
+        //transform.position += new Vector3(0.01f, 0.0f, 0.0f);
     }
 }
