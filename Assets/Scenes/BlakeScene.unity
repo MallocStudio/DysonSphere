@@ -307,7 +307,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1536775477}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -3.99}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -453,6 +453,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: enem_capShip_mesh_1
       objectReference: {fileID: 0}
+    - target: {fileID: 1482858514076201584, guid: 867caae74012e3145a0af164b34bdb95, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2296830702657513674, guid: 867caae74012e3145a0af164b34bdb95, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -471,15 +475,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2296830702657513674, guid: 867caae74012e3145a0af164b34bdb95, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -38.7
+      value: -35
       objectReference: {fileID: 0}
     - target: {fileID: 2296830702657513674, guid: 867caae74012e3145a0af164b34bdb95, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.85
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2296830702657513674, guid: 867caae74012e3145a0af164b34bdb95, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2296830702657513674, guid: 867caae74012e3145a0af164b34bdb95, type: 3}
       propertyPath: m_LocalRotation.w
