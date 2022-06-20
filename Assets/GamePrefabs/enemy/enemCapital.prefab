@@ -90,6 +90,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2007735134341243480}
+  - component: {fileID: 9021797398034145480}
+  - component: {fileID: 5907709688163982516}
   m_Layer: 0
   m_Name: enemCapital
   m_TagString: Untagged
@@ -112,3 +114,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9021797398034145480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3942207151965568247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790985a4f5df0344f8827f81637408a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lead: {fileID: 0}
+  is_selected: 0
+  boid:
+    separation_radius: 3
+    separation: 5
+    cohesion: 1
+    target_radius: 3
+    transform: {fileID: 0}
+  speed: 1
+--- !u!114 &5907709688163982516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3942207151965568247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f22195ad2183e3a4086eeab4caf65caf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hologram: {fileID: 7547947273822654003, guid: 553426bfd7a28834f91b4f11d201697b, type: 3}

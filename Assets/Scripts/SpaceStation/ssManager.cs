@@ -6,23 +6,35 @@ using UnityEngine.InputSystem;
 
 public class ssManager : MonoBehaviour
 {
-    InputActionReference trigActRef;
+    [Header("Inputs")]
+    [SerializeField] private Transform rightHandCon;
+    [SerializeField] private InputActionReference trigActRef;
 
     [Header ("Plugins")]
     [SerializeField] private Transform combatRing;
+    [SerializeField] private Transform aimRet;
+    [SerializeField] private List<Transform> weaponList = new List<Transform>();
+
     [SerializeField] private int curBay;
     [SerializeField] private float rotateSpd;
 
-    [SerializeField] public UnityEvent onTeleportActivate;
+    [Header("Station Status")]
+    [SerializeField] private bool gunneryMode;
+
+    [SerializeField] public UnityEvent trigEv;
 
 
     private void Awake()
     {
+        /* CACHE SHIT */
+
+        /* Default */
         curBay = 0;
+        gunneryMode = false;
+
+        /* Input Action SetUp */
         trigActRef.action.performed += TrigAction;
-
     }
-
 
     private void RotateBay()
     {
@@ -32,12 +44,22 @@ public class ssManager : MonoBehaviour
 
     private void TrigAction(InputAction.CallbackContext obj)
     {
-        onTeleportActivate.Invoke();
+        trigEv.Invoke();
     }
 
+    private void Aim()
+    {
+        if (gunneryMode)
+        {
+            //Vector3 aimDir = aimRet.position - rightHandCon.position;
+            //RAYCAST DIRECTION
+            //Ray ray = Physics.Raycast(rightHandCon.position, )
+        }
+        else return;
+    }
 
     private void Fire()
     {
-        
+        //for loop to fire through current list of weapons
     }
 }
