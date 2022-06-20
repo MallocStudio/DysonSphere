@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AI_Actor : MonoBehaviour {
     //// AI BOIDS
@@ -56,19 +57,10 @@ public class AI_Actor : MonoBehaviour {
             //-- Follow the lead using BOIDS
         } else {
             //-- Move towards the given point
-            if (nav_completion < 0.9f) {
+            if (nav_completion < 0.9999f) {
                 nav_completion += Time.deltaTime;
                 transform.position = Vector3.Lerp(nav_start_pos, nav_target_pos, nav_completion);
             }
         }
-
-        if (is_selected) {
-            Destroy(this.gameObject);
-        }
     }
-
-    // /// Select this actor by user (a unity special magic function)
-    // void OnMouseDown() {
-    //     Destroy(this.gameObject);
-    // }
 }
