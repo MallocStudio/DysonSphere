@@ -9,12 +9,13 @@ public class HolographicObject : MonoBehaviour
 
     Vector3 scaleChange;
     Vector3 offSet;
-    float differnceInScale = 0.01f;
+    float differnceInScale = 0.005f;
 
     private void Start()
     {
+        transform.SetParent(panel);
         scaleChange = new Vector3(0.01f, 0.01f, 0.01f);
-        offSet = new Vector3(0.0f, 0.5f, 0.0f);
+        offSet = new Vector3(0.0f, 0.3f, 0.0f);
     }
 
     // Update is called once per frame
