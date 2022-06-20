@@ -13,6 +13,7 @@ public class Wave
         if (currentFrame >= duration)
         {
             currentFrame = 0.0f;
+            duration += 10.0f;
         }
 
         return currentFrame;

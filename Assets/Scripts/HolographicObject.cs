@@ -7,10 +7,12 @@ public class HolographicObject : MonoBehaviour
     public Transform attachedObject;
     public Transform panel;
 
-    Vector3 scaleChange;
     Vector3 offSet;
+    Vector3 scaleChange;
+
     float differnceInScale = 0.005f;
 
+    // Start is called before the first frame update
     private void Start()
     {
         transform.SetParent(panel);
