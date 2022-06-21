@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Author: Blake
+ * 
+ * 
+ */
+
 /// THE GRID
 public class Hologram : MonoBehaviour
 {
