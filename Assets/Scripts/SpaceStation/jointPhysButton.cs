@@ -14,6 +14,7 @@ public class jointPhysButton : MonoBehaviour
 
     public UnityEvent onPressed;
     public UnityEvent onReleased;
+    public Transform DebugVisualCube = null; // @debug
 
     private void Awake()
     {
@@ -44,6 +45,9 @@ public class jointPhysButton : MonoBehaviour
     private void Pressed()
     {
         isPressed = true;
+        
+        DebugVisualCube.gameObject.SetActive(!DebugVisualCube.gameObject.activeSelf);
+
         onPressed.Invoke();
     }
 
