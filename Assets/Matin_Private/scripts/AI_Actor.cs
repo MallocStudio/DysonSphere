@@ -6,16 +6,32 @@ using UnityEngine.InputSystem;
 [System.Serializable]
 public class Boid {
     public float separation_radius = 3;
-    public float separation = 5;
-    public float cohesion = 5;
-    public float target_radius = 3;
+    public float separation = 0.5f;
+    public float cohesion = 1;
+    public float target_radius = 10; // the radius around the target
+    public float alignment_radius = 2;
+    public float alignment = 0.01f;
     public Transform transform; // the parent transform
+
+    protected Vector3 final_velocity = Vector3.zero;
 
     public Vector3 get_velocity(Vector3 target_pos, List<Boid> boids) {
         Vector3 separation_v = get_separation_velocity(boids);
         Vector3 cohesion_v = get_cohesion_velocity(target_pos);
+        Vector3 alignment_v = get_alignment_velocity(boids);
 
-        return separation_v + cohesion_v;
+        this.final_velocity = separation_v + alignment_v + cohesion_v; // store for internal use
+        return this.final_velocity;
+    }
+
+    private Vector3 get_alignment_velocity(List<Boid> boids) {
+        Vector3 velocity = Vector3.zero;
+        foreach (Boid boid in boids) {
+            if ((boid.transform.position - this.transform.position).sqrMagnitude < (alignment_radius * alignment_radius)) {
+                velocity += boid.final_velocity * alignment;
+            }
+        }
+        return velocity;
     }
 
     private Vector3 get_separation_velocity(List<Boid> boids) {
@@ -23,17 +39,9 @@ public class Boid {
         foreach (Boid boid in boids) {
             if (boid.Equals(this)) continue;
 
-            // float separation_force = 100;
-            // float distance = (transform.position - boid.transform.position).magnitude;
-            // if (distance != 0) {
-            //     separation_force = separation_radius / distance;
-            //     if (separation_force > 1) separation_force = 1;
-            // }
-            // velocity += (transform.position - boid.transform.position) * separation * separation_force;
-
             float separation_force = 0;
-            float distance = (transform.position - boid.transform.position).magnitude;
-            if (distance < separation_radius) {
+            float distance_sqr = (transform.position - boid.transform.position).sqrMagnitude;
+            if (distance_sqr < (separation_radius * separation_radius)) {
                 separation_force = separation;
             }
             velocity += (transform.position - boid.transform.position) * separation_force;
@@ -43,7 +51,7 @@ public class Boid {
 
     private Vector3 get_cohesion_velocity(Vector3 target_pos) {
         Vector3 velocity = Vector3.zero;
-        if ((target_pos - transform.position).magnitude > target_radius) {
+        if (Vector3.Distance(target_pos, transform.position) > target_radius) {
             velocity = (target_pos - transform.position).normalized * cohesion;
         }
         return velocity;
@@ -79,7 +87,7 @@ public class AI_Actor : MonoBehaviour {
         this.blackboard = blackboard;
         this.lead = lead;
         this.starting_y_pos = starting_y_pos;
-        this.floatiness_offset = Random.Range(0.0f, 1.0f);
+        this.floatiness_offset = Random.Range(-1.0f, 1.0f);
         nav_target_pos = transform.position;
 
             //- Add this AI_Actor's boid to blackboard
@@ -103,32 +111,55 @@ public class AI_Actor : MonoBehaviour {
     /// Any movement calculated by the ai gets updated after this procedure is called.
     /// </summary>
     public void update() {
-        float acceptable_destination_radius = 0.1f;
+        {   //- Sync settings with the lead
+            if (lead) {
+                speed                  = lead.speed;
+                boid.separation_radius = lead.boid.separation_radius;
+                boid.separation        = lead.boid.separation;
+                boid.cohesion          = lead.boid.cohesion;
+                boid.target_radius     = lead.boid.target_radius;
+                boid.alignment_radius  = lead.boid.alignment_radius;
+                boid.alignment         = lead.boid.alignment;
+            }
+        }
 
+        //- Go towards nav_target_pos
         if (lead) {
-                //- Follow the lead using BOIDS
-            speed = lead.speed;
             nav_target_pos = lead.transform.position;
-            acceptable_destination_radius = boid.separation_radius;
-
-                // Mix velocity with the velocity of previous frame to make it smoother
             velocity = boid.get_velocity(nav_target_pos, blackboard.boids);
-            nav_target_pos = transform.position + velocity;
-            // if (Vector3.Distance(transform.position, nav_target_pos) > acceptable_destination_radius) {
-                // transform.position += velocity * speed * Time.deltaTime;
-            // }
-
         } else {
-                // We don't use boids. Go towards nav_target_pos
+            velocity = (nav_target_pos - transform.position).normalized;
         }
 
-        velocity = (nav_target_pos - transform.position).normalized;
-        if (Vector3.Distance(transform.position, nav_target_pos) > acceptable_destination_radius) {
-            transform.position += velocity * speed * Time.deltaTime;
-        }
+        Vector3 final_velocity = velocity;
 
-        Vector3 final_position = transform.position;
-        final_position.y = Mathf.Sin(Time.fixedTime + floatiness_offset) + starting_y_pos;
-        transform.position = final_position;
+        transform.position += final_velocity * speed * Time.deltaTime;
+
+        Vector3 final_pos = transform.position;
+        final_pos.y = Mathf.Sin(Time.fixedTime + floatiness_offset) + starting_y_pos;
+        transform.position = final_pos;
+
+        {   //- Look At Where You're Going
+            if (lead) {
+                if (Vector3.Distance(transform.position, lead.transform.position) < boid.target_radius) {
+                    // transform.rotation = lead.transform.rotation;
+                    // look_at(lead.transform.position + lead.transform.forward);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lead.transform.rotation, Time.deltaTime);
+                }
+            }
+            Vector3 lookat_pos = final_velocity + transform.position;
+            lookat_pos.y = transform.position.y;
+            look_at(lookat_pos);
+        }
+    }
+
+    private void look_at(Vector3 pos) {
+        // Quaternion rot = transform.rotation;
+        // Quaternion lookat_rot = Quaternion.LookRotation((pos - transform.position).normalized, Vector3.up);
+
+        // rot = Quaternion.Slerp(rot, lookat_rot, Time.deltaTime * 10);
+
+        // transform.rotation = rot;
+        transform.LookAt(pos, Vector3.up);
     }
 }
