@@ -11,12 +11,12 @@ public class ssManager : MonoBehaviour
     [SerializeField] private Transform rightHandCon;
     [SerializeField] private InputActionReference trigActRef;
 
-    [Header ("Plugins")]
+    [Header("Plugins")]
     [SerializeField] private Transform combatRing;
-    [SerializeField] private Transform cannonAimRet;
-    [SerializeField] private Transform mgunAimRet;
-    [SerializeField] private Transform missileAimRet;
-    [SerializeField] private List<Transform> weaponList = new List<Transform>();
+    [SerializeField] public Transform cannonAimRet;
+    [SerializeField] public Transform mgunAimRet;
+    [SerializeField] public Transform missileAimRet;
+    [SerializeField] private List<ssWeaponBay> weaponBays = new List<ssWeaponBay>();
 
     [Header("Combat Stats")]
     [SerializeField] private float rotateSpd;
@@ -29,10 +29,11 @@ public class ssManager : MonoBehaviour
     [Header("Station Status")]
     [SerializeField] private weaponBay curBay;
     [SerializeField] public bool gunneryMode;
+
     [SerializeField] private float cannonTimer;
     [SerializeField] private float mgunTimer;
     [SerializeField] private float missileTimer;
-    
+
     [Header("Station Status GUI")]
     [SerializeField] private GameObject cannonRet;
     [SerializeField] private GameObject mgunRet;
@@ -41,9 +42,13 @@ public class ssManager : MonoBehaviour
     [SerializeField] private TMP_Text TMPmgunTimer;
     [SerializeField] private TMP_Text TMPmissileTimer;
 
+    [Header("Station Console Inserts")]
+    [SerializeField] public GameObject gModeLight;
+
 
     [Header("Input Events")]
-    [SerializeField] public UnityEvent trigEv;
+    [SerializeField] public UnityEvent trigStartEv;
+    [SerializeField] public UnityEvent trigEndEv;
 
     private void Awake()
     {
@@ -51,23 +56,26 @@ public class ssManager : MonoBehaviour
 
         /* Set Default */
         curBay = weaponBay.cannon;
-        gunneryMode = false;
+        combatRing.Rotate(0, 0, 0);
         cannonTimer = 0f;
         mgunTimer = 0f;
         missileTimer = 0f;
+
+        gunneryMode = false;
+        gModeLight.SetActive(false);
         cannonRet.SetActive(false);
         mgunRet.SetActive(false);
         missileRet.SetActive(false);
 
         /* Input Action SetUp */
-        trigActRef.action.performed += TrigAction;
+        trigActRef.action.performed += TrigStartAction;
+        trigActRef.action.canceled += TrigEndAction;
     }
-
 
     private void LateUpdate()
     {
         /* Update Console UI elements */
-        if(cannonTimer >= 0)
+        if (cannonTimer >= 0)
             TMPcannonTimer.SetText("Cannon: READY FIRE");
         else
             TMPcannonTimer.SetText("Cannon: RELOADING: " + cannonTimer);
@@ -82,17 +90,34 @@ public class ssManager : MonoBehaviour
         else
             TMPmissileTimer.SetText("Missile: RELOADING " + missileTimer);
     }
-    private void TrigAction(InputAction.CallbackContext obj)
+    private void TrigStartAction(InputAction.CallbackContext obj)
     {
-        trigEv.Invoke();
+        trigStartEv.Invoke();
+    }
+    private void TrigEndAction(InputAction.CallbackContext obj)
+    {
+        trigEndEv.Invoke();
     }
 
-    private void RotateBay(int bayNo)
+    public void GunneryToggle()
     {
-        combatRing.Rotate(0, 5 * rotateSpd, 0);
-    }
+        gunneryMode = !gunneryMode;
+        Debug.Log("TOGGLE MOD G");
+        if (gunneryMode)
+        {
+            GunnaryActive();
+            gModeLight.SetActive(true);
+        }
 
-    public void GunnaryActive()
+        if (!gunneryMode)
+        {
+            cannonRet.SetActive(false);
+            mgunRet.SetActive(false);
+            missileRet.SetActive(false);
+            gModeLight.SetActive(false);
+        }
+    }
+    private void GunnaryActive()
     {
         if (curBay == weaponBay.cannon)
         {
@@ -115,37 +140,53 @@ public class ssManager : MonoBehaviour
         else return;
     }
 
-    private void Aim()
+    public void RotateBayUp()
     {
-        if (gunneryMode)
+        //Rotate 120* for each weapon bay
+        combatRing.Rotate(0, 120, 0);
+        curBay = (weaponBay)((int)curBay + 1);
+        if(curBay == weaponBay.COUNT)
         {
-            if (curBay == weaponBay.cannon)
-            {
-
-            }
-            else if (curBay == weaponBay.mgun)
-            {
-
-            }
-            else if (curBay == weaponBay.cannon)
-            {
-
-            }
-            else return;
+            curBay = weaponBay.cannon;
         }
-        else return;
+        RotateBay(curBay);
+
+        /*
+        for (int i = 0; i < (int)weaponBay.COUNT; i++)
+        {
+            weaponBay bay = (weaponBay)i;
+
+        }
+        */
     }
 
-    private void Fire()
+    public void RotateBayDown()
     {
-        //for loop to fire through current list of weapons
+        //Rotate 120* for each weapon bay
+        combatRing.Rotate(0, -120, 0);
+        curBay = (weaponBay)((int)curBay - 1);
+        if (curBay == weaponBay.cannon)
+        {
+            curBay = weaponBay.missile;
+        }
+        RotateBay(curBay);
+    }
+    private void RotateBay(weaponBay bayNo)
+    {
+        if(bayNo == weaponBay.cannon)
+        {
 
+        }
     }
 }
 
 public enum weaponBay
 {
-    cannon,
-    mgun,
-    missile
+    cannon, // 0
+    mgun,   // 1
+    missile, // 2
+
+
+
+    COUNT, // 3 the maximum number of stuff above
 }

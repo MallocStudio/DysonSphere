@@ -50,7 +50,7 @@ public class jointPhysButton : MonoBehaviour
     private void Released()
     {
         isPressed = false;
-        onPressed.Invoke();
+        onReleased.Invoke();
     }
 
 }
