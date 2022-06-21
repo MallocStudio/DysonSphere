@@ -9,11 +9,11 @@ using UnityEngine;
 
 public class SpaceShip : MonoBehaviour
 {
-    public Hologram hologram;
+
+    //private GameObject attachedHolograph;
 
     // Start is called before the first frame update
     void Start()
     {
-        hologram.LinkNewEntity(transform);
     }
 }

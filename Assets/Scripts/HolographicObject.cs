@@ -11,18 +11,18 @@ using UnityEngine;
 public class HolographicObject : MonoBehaviour
 {
     public Transform attachedObject;
-    public Transform panel;
 
     public float differnceInScale = 0.001f;
 
     Vector3 offSet;
     Vector3 scaleChange;
 
-
-    // Start is called before the first frame update
-    private void Start()
+    public void init(Transform _attachedObject)
     {
-        transform.SetParent(panel);
+        this.attachedObject = _attachedObject;
+
+        Debug.Assert(attachedObject != null);
+
         scaleChange = new Vector3(0.01f, 0.01f, 0.01f);
         offSet = new Vector3(0.0f, 0.3f, 0.0f);
     }
@@ -33,6 +33,6 @@ public class HolographicObject : MonoBehaviour
         //Update my position to match the ship's position
         transform.localScale = scaleChange;
         transform.rotation = attachedObject.rotation; 
-        transform.position = attachedObject.position * differnceInScale + (offSet + panel.position);
+        transform.localPosition = attachedObject.position * differnceInScale + (offSet);
     }
 }
