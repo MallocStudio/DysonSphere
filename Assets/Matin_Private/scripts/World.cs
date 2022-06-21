@@ -47,6 +47,7 @@ public class World : MonoBehaviour {
     const int ENTITY_MAX = 6;
     [SerializeField] GameObject spaceship_prefab;
     [SerializeField] Camera main_camera;
+    [SerializeField] Vector2 world_size;
 
         //- Floor
     Plane floor = new Plane();
@@ -59,12 +60,13 @@ public class World : MonoBehaviour {
             //- Generate the Entities
         entities = new List<AI_Actor>(ENTITY_MAX);
         for (int i = 0; i < ENTITY_MAX; i++) {
-            GameObject gameobject = Instantiate(spaceship_prefab, get_random_position_in_worldspace(), Quaternion.identity);
+            Vector3 pos = get_random_position_in_worldspace();
+            GameObject gameobject = Instantiate(spaceship_prefab, pos, Quaternion.identity);
             AI_Actor entity = gameobject.GetComponent<AI_Actor>();
 
             AI_Actor lead = null;
             if (i > 0) lead = entities[0];
-            entity.init(blackboard, lead);
+            entity.init(blackboard, lead, pos.y);
 
             entities.Add(entity);
         }
@@ -112,9 +114,9 @@ public class World : MonoBehaviour {
 
     Vector3 get_random_position_in_worldspace() {
         Vector3 result;
-        result.y = (floor.offset * floor.normal).y;
-        result.x = Random.Range(-10, 10);
-        result.z = Random.Range(-10, 10);
+        result.y = (floor.offset * floor.normal).y + Random.Range(-2.0f, 2.0f);
+        result.x = Random.Range(-world_size.x, world_size.y);
+        result.z = Random.Range(-world_size.x, world_size.y);
         return result;
     }
 }
