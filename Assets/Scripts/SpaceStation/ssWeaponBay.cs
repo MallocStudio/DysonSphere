@@ -7,8 +7,8 @@ public class ssWeaponBay : MonoBehaviour
     [Header("Plugins")]
     [SerializeField] private bool curBay;
     [SerializeField] private bool triggerDown;
-    [SerializeField] private Transform projk;
     [SerializeField] private weaponBay weapon;
+    [SerializeField] private objPooler projkPool;
     [SerializeField] private ssManager ss;
     [SerializeField] private List<Transform> weaponList = new List<Transform>();
 
@@ -94,7 +94,9 @@ public class ssWeaponBay : MonoBehaviour
         {
             for (int i = 0; i < weaponList.Count; i++)
             {
-                Instantiate(projk, weaponList[i].position, weaponList[i].rotation);
+                GameObject g = projkPool.GetObject();
+                g.transform.position = weaponList[i].position;
+                g.transform.rotation = weaponList[i].rotation;
             }
         }
         else return;

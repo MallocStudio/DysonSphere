@@ -30,6 +30,8 @@ public class jointPhysButton : MonoBehaviour
             Pressed();
         if (isPressed && GetValue() - threshold <= 0)
             Released();
+
+        Debug.Log(Vector3.Distance(startPos, transform.localPosition / cJoint.linearLimit.limit));
     }
 
     private float GetValue()
