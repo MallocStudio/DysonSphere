@@ -47,7 +47,7 @@ public class World : MonoBehaviour {
     const int ENTITY_MAX = 6;
     [SerializeField] GameObject spaceship_prefab;
     [SerializeField] Camera main_camera;
-    [SerializeField] Vector2 world_size;
+    float world_radius = 30.0f;
 
         //- Floor
     Plane floor = new Plane();
@@ -75,6 +75,14 @@ public class World : MonoBehaviour {
     void Update() {
         foreach (AI_Actor entity in entities) {
             entity.update();
+            Vector3 clamped_pos = entity.transform.position;
+            if (clamped_pos.x > +world_radius) clamped_pos.x = +world_radius;
+            if (clamped_pos.x < -world_radius) clamped_pos.x = -world_radius;
+            if (clamped_pos.y > +world_radius) clamped_pos.y = +world_radius;
+            if (clamped_pos.y < -world_radius) clamped_pos.y = -world_radius;
+            if (clamped_pos.z > +world_radius) clamped_pos.z = +world_radius;
+            if (clamped_pos.z < -world_radius) clamped_pos.z = -world_radius;
+            entity.transform.position = clamped_pos;
         }
 
         Mouse mouse = Mouse.current;
@@ -115,8 +123,8 @@ public class World : MonoBehaviour {
     Vector3 get_random_position_in_worldspace() {
         Vector3 result;
         result.y = (floor.offset * floor.normal).y + Random.Range(-2.0f, 2.0f);
-        result.x = Random.Range(-world_size.x, world_size.y);
-        result.z = Random.Range(-world_size.x, world_size.y);
+        result.x = Random.Range(-world_radius, world_radius);
+        result.z = Random.Range(-world_radius, world_radius);
         return result;
     }
 }
