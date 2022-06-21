@@ -2,15 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Author: Blake
+ * 
+ * manages the Hologram ship scale, position and roation to match the ship on the grid
+ */
+
+
 public class HolographicObject : MonoBehaviour
 {
     public Transform attachedObject;
     public Transform panel;
 
+    public float differnceInScale = 0.001f;
+
     Vector3 offSet;
     Vector3 scaleChange;
 
-    float differnceInScale = 0.005f;
 
     // Start is called before the first frame update
     private void Start()
@@ -25,6 +32,7 @@ public class HolographicObject : MonoBehaviour
     {
         //Update my position to match the ship's position
         transform.localScale = scaleChange;
+        transform.rotation = attachedObject.rotation; 
         transform.position = attachedObject.position * differnceInScale + (offSet + panel.position);
     }
 }

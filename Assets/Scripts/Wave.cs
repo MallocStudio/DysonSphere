@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Author: Blake
+ * 
+ * 
+ */
+
 public class Wave
 {
     float duration = 60.0f;
