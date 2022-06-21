@@ -7,11 +7,9 @@ public class SpaceShip : MonoBehaviour
 
     //private GameObject attachedHolograph;
 
-    public Hologram hologram;
     // Start is called before the first frame update
     void Start()
     {
-        hologram.LinkNewEntity(transform);
     }
 
     //private void OnDestroy()

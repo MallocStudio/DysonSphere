@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 545050846183731738}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.24, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 2007735134341243480}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &7733404589838181266
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -128,12 +128,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lead: {fileID: 0}
   is_selected: 0
-  boid:
-    separation_radius: 3
-    separation: 5
-    cohesion: 1
-    target_radius: 3
-    transform: {fileID: 0}
   speed: 1
 --- !u!114 &5907709688163982516
 MonoBehaviour:
@@ -147,4 +141,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f22195ad2183e3a4086eeab4caf65caf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hologram: {fileID: 7547947273822654003, guid: 553426bfd7a28834f91b4f11d201697b, type: 3}
+  hologram: {fileID: 0}

@@ -47,7 +47,9 @@ public class World : MonoBehaviour {
     const int ENTITY_MAX = 6;
     [SerializeField] GameObject spaceship_prefab;
     [SerializeField] Camera main_camera;
-    float world_radius = 30.0f;
+    [SerializeField] float world_radius = 30.0f;
+    [SerializeField] Transform spawn_point;
+    [SerializeField] Hologram hologram_panel;
 
         //- Floor
     Plane floor = new Plane();
@@ -56,12 +58,18 @@ public class World : MonoBehaviour {
         Debug.Assert(blackboard != null);
         Debug.Assert(main_camera != null);
         Debug.Assert(spaceship_prefab != null);
+        Debug.Assert(spawn_point != null);
+        Debug.Assert(hologram_panel != null);
 
             //- Generate the Entities
         entities = new List<AI_Actor>(ENTITY_MAX);
         for (int i = 0; i < ENTITY_MAX; i++) {
             Vector3 pos = get_random_position_in_worldspace();
             GameObject gameobject = Instantiate(spaceship_prefab, pos, Quaternion.identity);
+            
+                //- Link the created entity to the hologram tabel
+            hologram_panel.LinkNewEntity(gameobject.transform);
+
             AI_Actor entity = gameobject.GetComponent<AI_Actor>();
 
             AI_Actor lead = null;
@@ -82,7 +90,7 @@ public class World : MonoBehaviour {
             if (clamped_pos.y < -world_radius) clamped_pos.y = -world_radius;
             if (clamped_pos.z > +world_radius) clamped_pos.z = +world_radius;
             if (clamped_pos.z < -world_radius) clamped_pos.z = -world_radius;
-            entity.transform.position = clamped_pos;
+            entity.transform.position = clamped_pos + spawn_point.position;
         }
 
         Mouse mouse = Mouse.current;
@@ -123,8 +131,9 @@ public class World : MonoBehaviour {
     Vector3 get_random_position_in_worldspace() {
         Vector3 result;
         result.y = (floor.offset * floor.normal).y + Random.Range(-2.0f, 2.0f);
-        result.x = Random.Range(-world_radius, world_radius);
-        result.z = Random.Range(-world_radius, world_radius);
+        result.x = spawn_point.position.x + Random.Range(-world_radius, world_radius);
+        result.z = spawn_point.position.z + Random.Range(-world_radius, world_radius);
+
         return result;
     }
 }
