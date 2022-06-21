@@ -110,3 +110,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lead: {fileID: 0}
   is_selected: 0
+  boid:
+    separation_radius: 3
+    separation: 5
+    cohesion: 1
+    target_radius: 3
+    transform: {fileID: 0}
+  speed: 10
