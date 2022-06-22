@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 5179557830341778994}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 4919119699511966547}
   m_RootOrder: 0
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 4919119699511966547}
   - component: {fileID: -8497119772498840711}
   m_Layer: 0
-  m_Name: missile
+  m_Name: mGunRound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80bda42165ffd774a8a00e4761e953ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spd: 10
+  spd: 20
   lifeTime: 5
   timer: 0
   pool: {fileID: 0}

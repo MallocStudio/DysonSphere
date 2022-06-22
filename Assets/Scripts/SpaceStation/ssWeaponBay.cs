@@ -8,22 +8,46 @@ public class ssWeaponBay : MonoBehaviour
     [SerializeField] private bool curBay;
     [SerializeField] private bool triggerDown;
     [SerializeField] private weaponBay weapon;
-    [SerializeField] private objPooler projkPool;
     [SerializeField] private ssManager ss;
     [SerializeField] private List<Transform> weaponList = new List<Transform>();
+    [SerializeField] private List<ParticleSystem> particleList;
 
     [Header("Combat Stats")]
     [SerializeField] private float projkDmg;
     [SerializeField] private float projkSpd;
     [SerializeField] private float shootTimer;
     [SerializeField] private float shootTimerMax;
+    [SerializeField] private int weaponIndex;
+
+    [Header("Projk Pool")]
+    [SerializeField] private GameObject prefab;
+    [SerializeField] private int poolSize;
+    [SerializeField] private bool expandable;
+
+    [SerializeField] private List<GameObject> freeList;
+    [SerializeField] private List<GameObject> usedList;
+
 
     private void Awake()
     {
+        /* OBJECT POOL */
+        freeList = new List<GameObject>();
+        usedList = new List<GameObject>();
+
+        for (int i = 0; i < poolSize; i++)
+        {
+            GenerateNewObject();
+        }
+
+        /* DEFAULTS */
         curBay = false;
         triggerDown = false;
+        weaponIndex = 0;
         ss = GetComponentInParent<ssManager>();
-
+        foreach (Transform weapon in weaponList)
+        {
+            particleList.Add(weapon.GetComponent<ParticleSystem>());
+        }
     }
 
     private void Update()
@@ -37,8 +61,8 @@ public class ssWeaponBay : MonoBehaviour
         {
             if (shootTimer <= 0)
             {
-                Fire();
                 shootTimer = shootTimerMax;
+                Fire();
             }
             else
             {
@@ -90,16 +114,54 @@ public class ssWeaponBay : MonoBehaviour
 
     public void Fire()
     {
-        if (curBay == true)
+        if (curBay)
         {
-            for (int i = 0; i < weaponList.Count; i++)
-            {
-                GameObject g = projkPool.GetObject();
-                g.transform.position = weaponList[i].position;
-                g.transform.rotation = weaponList[i].rotation;
-            }
+            particleList[weaponIndex].Play();
+            weaponIndex++;
+            if (weaponIndex >= weaponList.Count)
+                weaponIndex = 0;
+            /* INSTANTIATE PROJK */
+            GameObject g = GetObject();
+            g.transform.position = weaponList[weaponIndex].position;
+            g.transform.rotation = weaponList[weaponIndex].rotation;
+            g.SetActive(true);
+            /* END INSTANTIATE */
+
         }
         else return;
+    }
+
+    /* OBJECT POOLING */
+    public GameObject GetObject()
+    {
+        int totalFree = freeList.Count;
+
+        if (totalFree == 0 && !expandable)
+            return null;
+        else if (totalFree == 0)
+            GenerateNewObject();
+
+        //Grabs bottom object in list
+        GameObject g = freeList[totalFree - 1];
+        freeList.RemoveAt(totalFree - 1);
+        usedList.Add(g);
+        return g;
+    }
+
+    public void ReturnObject(GameObject obj)
+    {
+        Debug.Assert(usedList.Contains(obj));
+        obj.SetActive(false);
+        usedList.Remove(obj);
+        freeList.Add(obj);
+    }
+
+    private void GenerateNewObject()
+    {
+        GameObject g = Instantiate(prefab);
+        g.transform.parent = transform;
+        g.SetActive(false);
+        freeList.Add(g);
     }
 
 }

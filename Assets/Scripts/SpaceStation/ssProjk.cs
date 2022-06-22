@@ -7,11 +7,11 @@ public class ssProjk : MonoBehaviour
     [SerializeField] private float spd;
     [SerializeField] private float lifeTime;
     [SerializeField] private float timer;
-    [SerializeField] private objPooler pool;
+    [SerializeField] private ssWeaponBay pool;
 
     private void Start()
     {
-        pool = transform.parent.GetComponent<objPooler>();
+        pool = transform.parent.GetComponent<ssWeaponBay>();
     }
 
     private void Update()
@@ -21,6 +21,7 @@ public class ssProjk : MonoBehaviour
         if(timer >= lifeTime)
         {
             pool.ReturnObject(gameObject);
+            timer = 0;
         }
     }
 
