@@ -4,20 +4,17 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 [System.Serializable]
 public class PrimaryButtonEvent : UnityEvent<bool> {}
 
 public class Plane {
     public Vector3 normal;
-    public Vector3 tangent;
-    public Vector3 bitangent;
     public float offset;
 
     public Plane() {
         normal = Vector3.up;
-        tangent = Vector3.left;
-        bitangent = Vector3.forward;
         offset = 0;
     }
 
@@ -44,6 +41,7 @@ public class World : MonoBehaviour {
 
     AI_Blackboard blackboard = new AI_Blackboard();
     List<AI_Actor> entities;
+    List<HolographicObject> holographic_objects;
     const int ENTITY_MAX = 6;
     [SerializeField] GameObject spaceship_prefab;
     [SerializeField] Camera main_camera;
@@ -59,16 +57,21 @@ public class World : MonoBehaviour {
         Debug.Assert(main_camera != null);
         Debug.Assert(spaceship_prefab != null);
         Debug.Assert(spawn_point != null);
-        Debug.Assert(hologram_panel != null);
 
             //- Generate the Entities
         entities = new List<AI_Actor>(ENTITY_MAX);
+        holographic_objects = new List<HolographicObject>(ENTITY_MAX);
+
         for (int i = 0; i < ENTITY_MAX; i++) {
             Vector3 pos = get_random_position_in_worldspace();
             GameObject gameobject = Instantiate(spaceship_prefab, pos, Quaternion.identity);
-            
+
                 //- Link the created entity to the hologram tabel
-            hologram_panel.LinkNewEntity(gameobject.transform);
+            if (hologram_panel != null) {
+                holographic_objects.Add(hologram_panel.LinkNewEntity(gameobject.transform));
+            } else {
+                Debug.LogWarning("hologram_panel on world component is null");
+            }
 
             AI_Actor entity = gameobject.GetComponent<AI_Actor>();
 
@@ -84,13 +87,17 @@ public class World : MonoBehaviour {
         foreach (AI_Actor entity in entities) {
             entity.update();
             Vector3 clamped_pos = entity.transform.position;
-            if (clamped_pos.x > +world_radius) clamped_pos.x = +world_radius;
-            if (clamped_pos.x < -world_radius) clamped_pos.x = -world_radius;
-            if (clamped_pos.y > +world_radius) clamped_pos.y = +world_radius;
-            if (clamped_pos.y < -world_radius) clamped_pos.y = -world_radius;
-            if (clamped_pos.z > +world_radius) clamped_pos.z = +world_radius;
-            if (clamped_pos.z < -world_radius) clamped_pos.z = -world_radius;
-            entity.transform.position = clamped_pos + spawn_point.position;
+            if (clamped_pos.x > spawn_point.position.x + world_radius) clamped_pos.x = spawn_point.position.x + world_radius;
+            if (clamped_pos.x < spawn_point.position.x - world_radius) clamped_pos.x = spawn_point.position.x - world_radius;
+            if (clamped_pos.y > spawn_point.position.y + world_radius) clamped_pos.y = spawn_point.position.y + world_radius;
+            if (clamped_pos.y < spawn_point.position.y - world_radius) clamped_pos.y = spawn_point.position.y - world_radius;
+            if (clamped_pos.z > spawn_point.position.z + world_radius) clamped_pos.z = spawn_point.position.z + world_radius;
+            if (clamped_pos.z < spawn_point.position.z - world_radius) clamped_pos.z = spawn_point.position.z - world_radius;
+            entity.transform.position = clamped_pos;
+        }
+
+        foreach (HolographicObject holographic_object in holographic_objects) {
+            holographic_object.update(spawn_point.position, world_radius);
         }
 
         Mouse mouse = Mouse.current;
