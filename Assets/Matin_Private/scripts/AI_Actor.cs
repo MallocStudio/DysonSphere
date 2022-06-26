@@ -74,7 +74,8 @@ public class AI_Actor : MonoBehaviour {
 
     Boid boid = new Boid();
 
-    [SerializeField] protected float speed = 3;
+    protected float speed = 10;
+    [SerializeField] float attack_radius = 15;
     Vector3 velocity = Vector3.zero;
     float starting_y_pos = 0;
     float floatiness_offset = 0;
@@ -150,6 +151,14 @@ public class AI_Actor : MonoBehaviour {
             Vector3 lookat_pos = final_velocity + transform.position;
             lookat_pos.y = transform.position.y;
             look_at(lookat_pos);
+        }
+
+        {   //- Attack enemies
+            foreach (Transform enemy in blackboard.enemies) {
+                if (Vector3.Distance(transform.position, enemy.position) < attack_radius) {
+                    look_at(enemy.position); //@incomplete instead shoot at the enemy. Transform should be replaced with SpaceShip
+                }
+            }
         }
     }
 

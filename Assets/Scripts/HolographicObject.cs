@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/* Author: Blake
+/* Author: Blake, Matin
  *
  * manages the Hologram ship scale, position and roation to match the ship on the grid
  */
@@ -12,7 +12,8 @@ public class HolographicObject : MonoBehaviour
 {
     public Transform attachedObject;
 
-    float differnceInScale = 0.005f;
+    float differnceInScale = 0.02f;
+    float differenceInVisualScale = 0.003f;
 
     Vector3 offSet;
 
@@ -22,9 +23,7 @@ public class HolographicObject : MonoBehaviour
 
         Debug.Assert(attachedObject != null);
 
-        // float changeInScale = 0.005f;
-        float changeInScale = differnceInScale;
-        transform.localScale = new Vector3(changeInScale, changeInScale, changeInScale);
+        transform.localScale = new Vector3(differenceInVisualScale, differenceInVisualScale, differenceInVisualScale);
         offSet = new Vector3(0.0f, 0.3f, 0.0f);
     }
 

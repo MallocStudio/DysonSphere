@@ -39,8 +39,8 @@ public class World : MonoBehaviour {
     const int MOUSE_BUTTON_RIGHT  = 1;
     const int MOUSE_BUTTON_MIDDLE = 2;
 
-    AI_Blackboard blackboard = new AI_Blackboard();
-    List<AI_Actor> entities;
+    AI_Blackboard enemy_blackboard = new AI_Blackboard();
+    List<AI_Actor> enemy_entities;
     List<HolographicObject> holographic_objects;
     const int ENTITY_MAX = 6;
     [SerializeField] GameObject spaceship_prefab;
@@ -53,13 +53,13 @@ public class World : MonoBehaviour {
     Plane floor = new Plane();
 
     void Start() {
-        Debug.Assert(blackboard != null);
+        Debug.Assert(enemy_blackboard != null);
         Debug.Assert(main_camera != null);
         Debug.Assert(spaceship_prefab != null);
         Debug.Assert(spawn_point != null);
 
             //- Generate the Entities
-        entities = new List<AI_Actor>(ENTITY_MAX);
+        enemy_entities = new List<AI_Actor>(ENTITY_MAX);
         holographic_objects = new List<HolographicObject>(ENTITY_MAX);
 
         for (int i = 0; i < ENTITY_MAX; i++) {
@@ -76,15 +76,21 @@ public class World : MonoBehaviour {
             AI_Actor entity = gameobject.GetComponent<AI_Actor>();
 
             AI_Actor lead = null;
-            if (i > 0) lead = entities[0];
-            entity.init(blackboard, lead, pos.y);
+            if (i > 0) lead = enemy_entities[0];
+            entity.init(enemy_blackboard, lead, pos.y);
 
-            entities.Add(entity);
+            enemy_entities.Add(entity);
         }
+
+            //- Add player's spaceships as enemy entities' enemies
+            // @debug
+        enemy_blackboard.enemies.Add(transform);    //@incomplete: put the spaceship script on the mother ship and add that to this list,
+                                                    // Then each time we spawn a player spaceship add that to this list as well, and
+                                                    // remove the dead ones.
     }
 
     void Update() {
-        foreach (AI_Actor entity in entities) {
+        foreach (AI_Actor entity in enemy_entities) {
             entity.update();
             Vector3 clamped_pos = entity.transform.position;
             if (clamped_pos.x > spawn_point.position.x + world_radius) clamped_pos.x = spawn_point.position.x + world_radius;
@@ -111,7 +117,7 @@ public class World : MonoBehaviour {
                 AI_Actor actor = hit.transform.GetComponent<AI_Actor>();
                 if (actor) {
                         // unselect other actors
-                    foreach (AI_Actor entity in entities) {
+                    foreach (AI_Actor entity in enemy_entities) {
                         entity.is_selected = false;
                     }
 
@@ -126,9 +132,9 @@ public class World : MonoBehaviour {
                     //- Move Actor
                     // The raycast did not hit any object so just move the actor there
                 Vector3 target_pos = floor.get_pos_on_plane(ray);
-                for (int i = 0; i < entities.Count; i++) {
-                    if (entities[i].is_selected) {
-                        entities[i].move(target_pos);
+                for (int i = 0; i < enemy_entities.Count; i++) {
+                    if (enemy_entities[i].is_selected) {
+                        enemy_entities[i].move(target_pos);
                     }
                 }
             }
