@@ -30,7 +30,6 @@ public class HolographicObject : MonoBehaviour
 
     public void update(Vector3 spawn_point, float world_radius)
     {
-        Debug.Log("being called");
         //Update my position to match the ship's position
         transform.rotation = attachedObject.rotation;
         transform.localPosition = (attachedObject.position - spawn_point) * differnceInScale + (offSet);
