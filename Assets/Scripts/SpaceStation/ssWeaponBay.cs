@@ -56,7 +56,6 @@ public class ssWeaponBay : MonoBehaviour
         {
             Aim();
         }
-
         if (triggerDown)
         {
             if (shootTimer <= 0)
@@ -163,5 +162,4 @@ public class ssWeaponBay : MonoBehaviour
         g.SetActive(false);
         freeList.Add(g);
     }
-
 }
