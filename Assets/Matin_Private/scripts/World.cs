@@ -4,20 +4,17 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 [System.Serializable]
 public class PrimaryButtonEvent : UnityEvent<bool> {}
 
 public class Plane {
     public Vector3 normal;
-    public Vector3 tangent;
-    public Vector3 bitangent;
     public float offset;
 
     public Plane() {
         normal = Vector3.up;
-        tangent = Vector3.left;
-        bitangent = Vector3.forward;
         offset = 0;
     }
 
@@ -42,8 +39,9 @@ public class World : MonoBehaviour {
     const int MOUSE_BUTTON_RIGHT  = 1;
     const int MOUSE_BUTTON_MIDDLE = 2;
 
-    AI_Blackboard blackboard = new AI_Blackboard();
-    List<AI_Actor> entities;
+    AI_Blackboard enemy_blackboard = new AI_Blackboard();
+    List<AI_Actor> enemy_entities;
+    List<HolographicObject> holographic_objects;
     const int ENTITY_MAX = 6;
     [SerializeField] GameObject spaceship_prefab;
     [SerializeField] Camera main_camera;
@@ -55,42 +53,57 @@ public class World : MonoBehaviour {
     Plane floor = new Plane();
 
     void Start() {
-        Debug.Assert(blackboard != null);
+        Debug.Assert(enemy_blackboard != null);
         Debug.Assert(main_camera != null);
         Debug.Assert(spaceship_prefab != null);
         Debug.Assert(spawn_point != null);
-        Debug.Assert(hologram_panel != null);
 
             //- Generate the Entities
-        entities = new List<AI_Actor>(ENTITY_MAX);
+        enemy_entities = new List<AI_Actor>(ENTITY_MAX);
+        holographic_objects = new List<HolographicObject>(ENTITY_MAX);
+
         for (int i = 0; i < ENTITY_MAX; i++) {
             Vector3 pos = get_random_position_in_worldspace();
             GameObject gameobject = Instantiate(spaceship_prefab, pos, Quaternion.identity);
-            
+
                 //- Link the created entity to the hologram tabel
-            hologram_panel.LinkNewEntity(gameobject.transform);
+            if (hologram_panel != null) {
+                holographic_objects.Add(hologram_panel.LinkNewEntity(gameobject.transform));
+            } else {
+                Debug.LogWarning("hologram_panel on world component is null");
+            }
 
             AI_Actor entity = gameobject.GetComponent<AI_Actor>();
 
             AI_Actor lead = null;
-            if (i > 0) lead = entities[0];
-            entity.init(blackboard, lead, pos.y);
+            if (i > 0) lead = enemy_entities[0];
+            entity.init(enemy_blackboard, lead, pos.y);
 
-            entities.Add(entity);
+            enemy_entities.Add(entity);
         }
+
+            //- Add player's spaceships as enemy entities' enemies
+            // @debug
+        enemy_blackboard.enemies.Add(transform);    //@incomplete: put the spaceship script on the mother ship and add that to this list,
+                                                    // Then each time we spawn a player spaceship add that to this list as well, and
+                                                    // remove the dead ones.
     }
 
     void Update() {
-        foreach (AI_Actor entity in entities) {
+        foreach (AI_Actor entity in enemy_entities) {
             entity.update();
             Vector3 clamped_pos = entity.transform.position;
-            if (clamped_pos.x > +world_radius) clamped_pos.x = +world_radius;
-            if (clamped_pos.x < -world_radius) clamped_pos.x = -world_radius;
-            if (clamped_pos.y > +world_radius) clamped_pos.y = +world_radius;
-            if (clamped_pos.y < -world_radius) clamped_pos.y = -world_radius;
-            if (clamped_pos.z > +world_radius) clamped_pos.z = +world_radius;
-            if (clamped_pos.z < -world_radius) clamped_pos.z = -world_radius;
-            entity.transform.position = clamped_pos + spawn_point.position;
+            if (clamped_pos.x > spawn_point.position.x + world_radius) clamped_pos.x = spawn_point.position.x + world_radius;
+            if (clamped_pos.x < spawn_point.position.x - world_radius) clamped_pos.x = spawn_point.position.x - world_radius;
+            if (clamped_pos.y > spawn_point.position.y + world_radius) clamped_pos.y = spawn_point.position.y + world_radius;
+            if (clamped_pos.y < spawn_point.position.y - world_radius) clamped_pos.y = spawn_point.position.y - world_radius;
+            if (clamped_pos.z > spawn_point.position.z + world_radius) clamped_pos.z = spawn_point.position.z + world_radius;
+            if (clamped_pos.z < spawn_point.position.z - world_radius) clamped_pos.z = spawn_point.position.z - world_radius;
+            entity.transform.position = clamped_pos;
+        }
+
+        foreach (HolographicObject holographic_object in holographic_objects) {
+            holographic_object.update(spawn_point.position, world_radius);
         }
 
         Mouse mouse = Mouse.current;
@@ -104,7 +117,7 @@ public class World : MonoBehaviour {
                 AI_Actor actor = hit.transform.GetComponent<AI_Actor>();
                 if (actor) {
                         // unselect other actors
-                    foreach (AI_Actor entity in entities) {
+                    foreach (AI_Actor entity in enemy_entities) {
                         entity.is_selected = false;
                     }
 
@@ -119,9 +132,9 @@ public class World : MonoBehaviour {
                     //- Move Actor
                     // The raycast did not hit any object so just move the actor there
                 Vector3 target_pos = floor.get_pos_on_plane(ray);
-                for (int i = 0; i < entities.Count; i++) {
-                    if (entities[i].is_selected) {
-                        entities[i].move(target_pos);
+                for (int i = 0; i < enemy_entities.Count; i++) {
+                    if (enemy_entities[i].is_selected) {
+                        enemy_entities[i].move(target_pos);
                     }
                 }
             }
