@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/GamePrefabs/test_interior/ss_pieces/ss_holoDispDropMenu.prefab.meta
-guid: cdc123a3dbe3a014bb3bca43550b5119
-========
-guid: 6c2434e2c5adca34583e850e2727474b
->>>>>>>> design:Assets/GamePrefabs/test_exterior/cannonRound.prefab.meta
+guid: f403ec66d0813624da73874d400547b0
 PrefabImporter:
   externalObjects: {}
   userData: 
