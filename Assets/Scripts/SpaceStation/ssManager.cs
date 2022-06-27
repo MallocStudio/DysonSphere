@@ -44,7 +44,7 @@ public class ssManager : MonoBehaviour
 
     [Header("Station Console Inserts")]
     [SerializeField] public GameObject gModeLight;
-
+    [SerializeField] public GameObject ringSel;
 
     [Header("Input Events")]
     [SerializeField] public UnityEvent trigStartEv;
