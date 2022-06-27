@@ -17,6 +17,7 @@ public class ssManager : MonoBehaviour
     [SerializeField] public Transform mgunAimRet;
     [SerializeField] public Transform missileAimRet;
     [SerializeField] private List<ssWeaponBay> weaponBays = new List<ssWeaponBay>();
+    [SerializeField] private List<bool> torpedoTubes = new List<bool>();
 
     [Header("Combat Stats")]
     [SerializeField] private float rotateSpd;
@@ -28,7 +29,8 @@ public class ssManager : MonoBehaviour
 
     [Header("Station Status")]
     [SerializeField] private weaponBay curBay;
-    [SerializeField] public bool gunneryMode;
+    [SerializeField] public bool gunMode;
+    [SerializeField] public bool fireSafety;
 
     [SerializeField] private float cannonTimer;
     [SerializeField] private float mgunTimer;
@@ -61,7 +63,7 @@ public class ssManager : MonoBehaviour
         mgunTimer = 0f;
         missileTimer = 0f;
 
-        gunneryMode = false;
+        gunMode = false;
         gModeLight.SetActive(false);
         cannonRet.SetActive(false);
         mgunRet.SetActive(false);
@@ -101,15 +103,15 @@ public class ssManager : MonoBehaviour
 
     public void GunneryToggle()
     {
-        gunneryMode = !gunneryMode;
+        gunMode = !gunMode;
         Debug.Log("TOGGLE MOD G");
-        if (gunneryMode)
+        if (gunMode)
         {
             GunnaryActive();
             gModeLight.SetActive(true);
         }
 
-        if (!gunneryMode)
+        if (!gunMode)
         {
             cannonRet.SetActive(false);
             mgunRet.SetActive(false);
