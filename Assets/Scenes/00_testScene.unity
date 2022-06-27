@@ -291,7 +291,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &238863465
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1320,7 +1320,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21f8d7fa0d000d4abf44fc11cac0708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spaceship_prefab: {fileID: 3942207151965568247, guid: dc87162aad148054b826582ce8551b25, type: 3}
+  enemy_spaceship_prefab: {fileID: 3942207151965568247, guid: dc87162aad148054b826582ce8551b25, type: 3}
+  friendly_spaceship_prefab: {fileID: 3942207151965568247, guid: dc87162aad148054b826582ce8551b25, type: 3}
   main_camera: {fileID: 634339386}
   world_radius: 150
   spawn_point: {fileID: 460614137}

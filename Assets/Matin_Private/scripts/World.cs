@@ -40,10 +40,14 @@ public class World : MonoBehaviour {
     const int MOUSE_BUTTON_MIDDLE = 2;
 
     AI_Blackboard enemy_blackboard = new AI_Blackboard();
+    AI_Blackboard friendly_blackboard = new AI_Blackboard();
+    const int GROUP_MAX_CAPACITY = 6;
     List<AI_Actor> enemy_entities;
+    List<AI_Actor> friendly_entities;
+
     List<HolographicObject> holographic_objects;
-    const int ENTITY_MAX = 6;
-    [SerializeField] GameObject spaceship_prefab;
+    [SerializeField] GameObject enemy_spaceship_prefab;
+    [SerializeField] GameObject friendly_spaceship_prefab;
     [SerializeField] Camera main_camera;
     [SerializeField] float world_radius = 30.0f;
     [SerializeField] Transform spawn_point;
@@ -55,16 +59,19 @@ public class World : MonoBehaviour {
     void Start() {
         Debug.Assert(enemy_blackboard != null);
         Debug.Assert(main_camera != null);
-        Debug.Assert(spaceship_prefab != null);
+        Debug.Assert(enemy_spaceship_prefab != null);
+        Debug.Assert(friendly_spaceship_prefab != null);
         Debug.Assert(spawn_point != null);
 
             //- Generate the Entities
-        enemy_entities = new List<AI_Actor>(ENTITY_MAX);
-        holographic_objects = new List<HolographicObject>(ENTITY_MAX);
+        enemy_entities = new List<AI_Actor>(GROUP_MAX_CAPACITY);
+        friendly_entities = new List<AI_Actor>(GROUP_MAX_CAPACITY);
+        holographic_objects = new List<HolographicObject>();
 
-        for (int i = 0; i < ENTITY_MAX; i++) {
+            //- Generate Enemies
+        for (int i = 0; i < GROUP_MAX_CAPACITY; i++) {
             Vector3 pos = get_random_position_in_worldspace();
-            GameObject gameobject = Instantiate(spaceship_prefab, pos, Quaternion.identity);
+            GameObject gameobject = Instantiate(enemy_spaceship_prefab, pos, Quaternion.identity);
 
                 //- Link the created entity to the hologram tabel
             if (hologram_panel != null) {
@@ -80,6 +87,27 @@ public class World : MonoBehaviour {
             entity.init(enemy_blackboard, lead, pos.y);
 
             enemy_entities.Add(entity);
+        }
+
+            //- Generate Friendly Ships
+        for (int i = 0; i < GROUP_MAX_CAPACITY; i++) {
+            Vector3 pos = get_random_position_in_worldspace();
+            GameObject gameobject = Instantiate(friendly_spaceship_prefab, pos, Quaternion.identity);
+
+                //- Link the created entity to the hologram tabel
+            if (hologram_panel != null) {
+                holographic_objects.Add(hologram_panel.LinkNewEntity(gameobject.transform));
+            } else {
+                Debug.LogWarning("hologram_panel on world component is null");
+            }
+
+            AI_Actor entity = gameobject.GetComponent<AI_Actor>();
+
+            AI_Actor lead = null;
+            if (i > 0) lead = friendly_entities[0];
+            entity.init(friendly_blackboard, lead, pos.y);
+
+            friendly_entities.Add(entity);
         }
 
             //- Add player's spaceships as enemy entities' enemies
