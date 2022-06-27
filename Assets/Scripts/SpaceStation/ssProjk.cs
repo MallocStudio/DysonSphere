@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ssProjk : MonoBehaviour
 {
+    [SerializeField] private bool detonate = false;
+    [SerializeField] private float damage;
     [SerializeField] private float spd;
     [SerializeField] private float lifeTime;
     [SerializeField] private float timer;
@@ -12,21 +14,44 @@ public class ssProjk : MonoBehaviour
     private void Start()
     {
         pool = transform.parent.GetComponent<ssWeaponBay>();
+
+        damage = transform.gameObject.GetComponentInParent<ssWeaponBay>().projkDmg;
     }
 
     private void Update()
     {
+        if (detonate == true)
+        {
+            Explosion();
+        }
+
         transform.Translate(Vector3.forward * spd * Time.deltaTime);
         timer += Time.deltaTime;
         if(timer >= lifeTime)
         {
-            pool.ReturnObject(gameObject);
+            detonate = true;
             timer = 0;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.tag == "Enemy")
+        {
+            detonate = true;
+            Debug.Log("object collid");
+        }
+    }
+
+    public void Explosion()
+    {
+        transform.GetChild(0).gameObject.SetActive(false);
+        Debug.Log("explosion");
+        Debug.Log(damage);
+
+        ShipHealth shipHealth = gameObject.GetComponent<ShipHealth>();
+        shipHealth.Health(damage);
+
         pool.ReturnObject(gameObject);
     }
 }
