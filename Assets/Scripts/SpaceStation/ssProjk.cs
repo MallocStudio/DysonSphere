@@ -46,12 +46,11 @@ public class ssProjk : MonoBehaviour
     public void Explosion()
     {
         transform.GetChild(0).gameObject.SetActive(false);
-        Debug.Log("explosion");
+        pool.ReturnObject(gameObject);
+
         Debug.Log(damage);
 
         ShipHealth shipHealth = gameObject.GetComponent<ShipHealth>();
         shipHealth.Health(damage);
-
-        pool.ReturnObject(gameObject);
     }
 }
