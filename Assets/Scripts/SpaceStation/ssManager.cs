@@ -104,7 +104,7 @@ public class ssManager : MonoBehaviour
     public void GunneryToggle()
     {
         gunMode = !gunMode;
-        Debug.Log("TOGGLE MOD G");
+
         if (gunMode)
         {
             GunnaryActive();
