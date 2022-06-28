@@ -184,6 +184,14 @@ public class AI_Actor : MonoBehaviour {
         }
     }
 
+    Vector3 get_random_pos(float amount) {
+        Vector3 result;
+        result.x = Random.Range(-amount, amount);
+        result.y = Random.Range(-amount, amount);
+        result.z = Random.Range(-amount, amount);
+        return result;
+    }
+
     public void shoot_at(AI_Actor entity) {
             //- Take Damage
         entity.health -= damage;
@@ -191,7 +199,7 @@ public class AI_Actor : MonoBehaviour {
 
             //- Setup Visuals
         line_renderer.SetPosition(0, transform.position);
-        line_renderer.SetPosition(1, entity.transform.position);
+        line_renderer.SetPosition(1, entity.transform.position + get_random_pos(1));
         line_renderer_visibility_material_amount = line_renderer_visibility_material_max;
         line_renderer.material.SetFloat(line_renderer_visibility_material_name, line_renderer_visibility_material_amount);
     }

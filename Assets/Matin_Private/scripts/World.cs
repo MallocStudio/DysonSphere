@@ -165,7 +165,6 @@ public class World : MonoBehaviour {
 
         Mouse mouse = Mouse.current;
         Keyboard keyboard = Keyboard.current;
-        // XRController controller = XRController.current;
 
         Debug.Assert(mouse != null);
 
