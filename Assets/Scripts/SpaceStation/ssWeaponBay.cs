@@ -13,7 +13,7 @@ public class ssWeaponBay : MonoBehaviour
     [SerializeField] private List<ParticleSystem> particleList;
 
     [Header("Combat Stats")]
-    [SerializeField] public float projkDmg;
+    [SerializeField] private float projkDmg;
     [SerializeField] private float projkSpd;
     [SerializeField] private float shootTimer;
     [SerializeField] private float shootTimerMax;
@@ -26,7 +26,6 @@ public class ssWeaponBay : MonoBehaviour
 
     [SerializeField] private List<GameObject> freeList;
     [SerializeField] private List<GameObject> usedList;
-
 
     private void Awake()
     {
