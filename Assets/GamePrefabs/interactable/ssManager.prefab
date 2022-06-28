@@ -61,9 +61,8 @@ MonoBehaviour:
   projkSpd: 0
   shootTimer: 0
   shootTimerMax: 0
-  incrementReady: 0
-  incrementTimer: 0
-  incrementTimerMax: 0
+  reloadTime: 0
+  reloadTimeMax: 0
   weaponIndex: 0
   prefab: {fileID: 0}
   poolSize: 0
@@ -294,6 +293,7 @@ MonoBehaviour:
   mgunAimRet: {fileID: 0}
   missileAimRet: {fileID: 0}
   weaponBays: []
+  weaponBayReloads: []
   rotateSpd: 30
   cannonFireRate: 1
   mgunFireRate: 1
@@ -301,7 +301,8 @@ MonoBehaviour:
   mgunReload: 1
   missileReload: 1
   curBay: 0
-  gunneryMode: 0
+  gunMode: 0
+  fireSafety: 0
   cannonTimer: 0
   mgunTimer: 0
   missileTimer: 0
@@ -312,6 +313,7 @@ MonoBehaviour:
   TMPmgunTimer: {fileID: 0}
   TMPmissileTimer: {fileID: 0}
   gModeLight: {fileID: 0}
+  ringSel: {fileID: 0}
   trigStartEv:
     m_PersistentCalls:
       m_Calls:
@@ -447,17 +449,16 @@ MonoBehaviour:
   - {fileID: 7528517599472111324}
   - {fileID: 7528517597866608148}
   particleList: []
-  projkDmg: 0
-  projkSpd: 0
+  projkDmg: 2
+  projkSpd: 2
   shootTimer: 0
-  shootTimerMax: 0
-  incrementReady: 0
-  incrementTimer: 0
-  incrementTimerMax: 0
+  shootTimerMax: 0.2
+  reloadTime: 0
+  reloadTimeMax: 0
   weaponIndex: 0
   prefab: {fileID: 7534929845368310905, guid: 58fc4da61895d1d419aa774644b5ef48, type: 3}
-  poolSize: 0
-  expandable: 0
+  poolSize: 30
+  expandable: 1
   freeList: []
   usedList: []
 --- !u!1 &5541843905287826968
@@ -521,12 +522,11 @@ MonoBehaviour:
   projkSpd: 10
   shootTimer: 0
   shootTimerMax: 1
-  incrementReady: 0
-  incrementTimer: 0
-  incrementTimerMax: 0.3
+  reloadTime: 0
+  reloadTimeMax: 0
   weaponIndex: 0
-  prefab: {fileID: 7534929845368310905, guid: 6c2434e2c5adca34583e850e2727474b, type: 3}
-  poolSize: 10
+  prefab: {fileID: 7534929845368310905, guid: f403ec66d0813624da73874d400547b0, type: 3}
+  poolSize: 20
   expandable: 1
   freeList: []
   usedList: []

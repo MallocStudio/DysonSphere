@@ -17,7 +17,7 @@ public class ssManager : MonoBehaviour
     [SerializeField] public Transform mgunAimRet;
     [SerializeField] public Transform missileAimRet;
     [SerializeField] private List<ssWeaponBay> weaponBays = new List<ssWeaponBay>();
-    [SerializeField] private List<bool> torpedoTubes = new List<bool>();
+    [SerializeField] private List<float> weaponBayReloads = new List<float>();
 
     [Header("Combat Stats")]
     [SerializeField] private float rotateSpd;
@@ -104,7 +104,7 @@ public class ssManager : MonoBehaviour
     public void GunneryToggle()
     {
         gunMode = !gunMode;
-        Debug.Log("TOGGLE MOD G");
+
         if (gunMode)
         {
             GunnaryActive();
@@ -141,7 +141,6 @@ public class ssManager : MonoBehaviour
         }
         else return;
     }
-
     public void RotateBayUp()
     {
         //Rotate 120* for each weapon bay
@@ -151,33 +150,19 @@ public class ssManager : MonoBehaviour
         {
             curBay = weaponBay.cannon;
         }
-        RotateBay(curBay);
-
         /*
         for (int i = 0; i < (int)weaponBay.COUNT; i++)
         {
             weaponBay bay = (weaponBay)i;
-
         }
         */
     }
-
     public void RotateBayDown()
     {
-        //Rotate 120* for each weapon bay
-        combatRing.Rotate(0, -120, 0);
         curBay = (weaponBay)((int)curBay - 1);
         if (curBay == weaponBay.cannon)
         {
             curBay = weaponBay.missile;
-        }
-        RotateBay(curBay);
-    }
-    private void RotateBay(weaponBay bayNo)
-    {
-        if(bayNo == weaponBay.cannon)
-        {
-
         }
     }
 }
@@ -192,3 +177,5 @@ public enum weaponBay
 
     COUNT, // 3 the maximum number of stuff above
 }
+
+//Use events in buttons to call fire and detonate functions

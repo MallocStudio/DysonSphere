@@ -59,26 +59,33 @@ public class Boid {
 }
 
 public class AI_Actor : MonoBehaviour {
-    //// AI BOIDS
+    //-      AI BOIDS
         // The data shared between AI_Actors
-    AI_Blackboard blackboard;
+    public AI_Blackboard blackboard;
         // The leader of this crowd
         // ! Lead can be null. In that case this AI_Actor is the lead
     public AI_Actor lead;
-
-    //// NAVIGATION
         // The position we're asked to move towards
         // ! If we have a "lead" we don't move towards target_pos
     Vector3 nav_target_pos = Vector3.zero;
     public bool is_selected = false;
-
     Boid boid = new Boid();
-
     protected float speed = 10;
     [SerializeField] float attack_radius = 15;
     Vector3 velocity = Vector3.zero;
     float starting_y_pos = 0;
     float floatiness_offset = 0;
+
+    //-     COMBAT
+    float health = 1.0f; // 1 is max, 0 is min
+    float damage = 0.4f; // the amount of damage this entity applies to others
+
+        //-     LINE RENDERER
+    private LineRenderer line_renderer;
+    const string line_renderer_visibility_material_name = "Vector1_17cb148168fe458f8bcf66707d08fcfe";
+    const float line_renderer_visibility_material_max = 1;
+    const float line_renderer_visibility_material_min = 0;
+    float line_renderer_visibility_material_amount = 0;
 
     /// <summary>
     /// Initialise a new ai actor. Each AI actor must share the same blackboard as others.
@@ -94,6 +101,10 @@ public class AI_Actor : MonoBehaviour {
             //- Add this AI_Actor's boid to blackboard
         boid.transform = transform;
         blackboard.boids.Add(boid);
+
+        line_renderer = GetComponent<LineRenderer>();
+        line_renderer_visibility_material_amount = line_renderer_visibility_material_min;
+        line_renderer.material.SetFloat(line_renderer_visibility_material_name, line_renderer_visibility_material_amount);
     }
 
     /// <summary>
@@ -154,12 +165,35 @@ public class AI_Actor : MonoBehaviour {
         }
 
         {   //- Attack enemies
-            foreach (Transform enemy in blackboard.enemies) {
-                if (Vector3.Distance(transform.position, enemy.position) < attack_radius) {
-                    look_at(enemy.position); //@incomplete instead shoot at the enemy. Transform should be replaced with SpaceShip
+            foreach (AI_Actor enemy in blackboard.enemies) {
+                if (Vector3.Distance(transform.position, enemy.transform.position) < attack_radius) {
+                    // look_at(enemy.transform.position); //@incomplete instead shoot at the enemy. Transform should be replaced with SpaceShip
+                    if (line_renderer_visibility_material_amount <= line_renderer_visibility_material_min) {
+                        shoot_at(enemy);
+                    }
                 }
             }
+
+            if (line_renderer_visibility_material_amount > line_renderer_visibility_material_min) {
+                const float shoot_speed = 2;
+                line_renderer_visibility_material_amount -= Time.deltaTime * shoot_speed;
+                line_renderer.material.SetFloat(line_renderer_visibility_material_name, line_renderer_visibility_material_amount);
+            } else {
+                line_renderer_visibility_material_amount = line_renderer_visibility_material_min;
+            }
         }
+    }
+
+    public void shoot_at(AI_Actor entity) {
+            //- Take Damage
+        entity.health -= damage;
+        if (entity.health <= 0) entity.kill();
+
+            //- Setup Visuals
+        line_renderer.SetPosition(0, transform.position);
+        line_renderer.SetPosition(1, entity.transform.position);
+        line_renderer_visibility_material_amount = line_renderer_visibility_material_max;
+        line_renderer.material.SetFloat(line_renderer_visibility_material_name, line_renderer_visibility_material_amount);
     }
 
     private void look_at(Vector3 pos) {
@@ -170,5 +204,11 @@ public class AI_Actor : MonoBehaviour {
 
         // transform.rotation = rot;
         transform.LookAt(pos, Vector3.up);
+    }
+
+        /// This is called from shoot_at() when health is less than or equal to zero
+    public void kill() {
+        health = 0; // for sanity's sake for when we kill this thing outside of shoot_at()
+        // ...
     }
 }
