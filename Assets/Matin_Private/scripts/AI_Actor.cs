@@ -61,7 +61,7 @@ public class Boid {
 public class AI_Actor : MonoBehaviour {
     //-      AI BOIDS
         // The data shared between AI_Actors
-    AI_Blackboard blackboard;
+    public AI_Blackboard blackboard;
         // The leader of this crowd
         // ! Lead can be null. In that case this AI_Actor is the lead
     public AI_Actor lead;
@@ -165,9 +165,12 @@ public class AI_Actor : MonoBehaviour {
         }
 
         {   //- Attack enemies
-            foreach (Transform enemy in blackboard.enemies) {
-                if (Vector3.Distance(transform.position, enemy.position) < attack_radius) {
-                    look_at(enemy.position); //@incomplete instead shoot at the enemy. Transform should be replaced with SpaceShip
+            foreach (AI_Actor enemy in blackboard.enemies) {
+                if (Vector3.Distance(transform.position, enemy.transform.position) < attack_radius) {
+                    // look_at(enemy.transform.position); //@incomplete instead shoot at the enemy. Transform should be replaced with SpaceShip
+                    if (line_renderer_visibility_material_amount <= line_renderer_visibility_material_min) {
+                        shoot_at(enemy);
+                    }
                 }
             }
 
