@@ -135,6 +135,7 @@ public class World : MonoBehaviour {
         }
 
         Mouse mouse = Mouse.current;
+        Keyboard keyboard = Keyboard.current;
         Debug.Assert(mouse != null);
 
         if (mouse.leftButton.wasPressedThisFrame) {
@@ -166,6 +167,16 @@ public class World : MonoBehaviour {
                     }
                 }
             }
+        }
+
+            //@debug shoot
+        if (keyboard.spaceKey.wasPressedThisFrame) {
+            // foreach (AI_Actor entity in enemy_entities) {
+            //     if (entity.lead != null) {
+            //         entity.shoot_at(entity.lead);
+            //     }
+            // }
+            enemy_entities[1].shoot_at(enemy_entities[1].lead);
         }
     }
 
