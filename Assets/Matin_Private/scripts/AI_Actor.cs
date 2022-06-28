@@ -59,27 +59,28 @@ public class Boid {
 }
 
 public class AI_Actor : MonoBehaviour {
-    //// AI BOIDS
+    //-      AI BOIDS
         // The data shared between AI_Actors
     AI_Blackboard blackboard;
         // The leader of this crowd
         // ! Lead can be null. In that case this AI_Actor is the lead
     public AI_Actor lead;
-
-    //// NAVIGATION
         // The position we're asked to move towards
         // ! If we have a "lead" we don't move towards target_pos
     Vector3 nav_target_pos = Vector3.zero;
     public bool is_selected = false;
-
     Boid boid = new Boid();
-
     protected float speed = 10;
     [SerializeField] float attack_radius = 15;
     Vector3 velocity = Vector3.zero;
     float starting_y_pos = 0;
     float floatiness_offset = 0;
 
+    //-     COMBAT
+    float health = 1.0f; // 1 is max, 0 is min
+    float damage = 0.4f; // the amount of damage this entity applies to others
+
+        //-     LINE RENDERER
     private LineRenderer line_renderer;
     const string line_renderer_visibility_material_name = "Vector1_17cb148168fe458f8bcf66707d08fcfe";
     const float line_renderer_visibility_material_max = 1;
@@ -181,6 +182,11 @@ public class AI_Actor : MonoBehaviour {
     }
 
     public void shoot_at(AI_Actor entity) {
+            //- Take Damage
+        entity.health -= damage;
+        if (entity.health <= 0) entity.kill();
+
+            //- Setup Visuals
         line_renderer.SetPosition(0, transform.position);
         line_renderer.SetPosition(1, entity.transform.position);
         line_renderer_visibility_material_amount = line_renderer_visibility_material_max;
@@ -195,5 +201,11 @@ public class AI_Actor : MonoBehaviour {
 
         // transform.rotation = rot;
         transform.LookAt(pos, Vector3.up);
+    }
+
+        /// This is called from shoot_at() when health is less than or equal to zero
+    public void kill() {
+        health = 0; // for sanity's sake for when we kill this thing outside of shoot_at()
+        // ...
     }
 }
