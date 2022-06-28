@@ -4597,7 +4597,7 @@ PrefabInstance:
     - target: {fileID: 5541843905287826970, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
       propertyPath: prefab
       value: 
-      objectReference: {fileID: 7534929845368310905, guid: d928aab9d6ce35548bdd8bd4610ce3b6, type: 3}
+      objectReference: {fileID: 7534929845368310905, guid: f403ec66d0813624da73874d400547b0, type: 3}
     - target: {fileID: 5541843905287826970, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
       propertyPath: poolSize
       value: 20
