@@ -1,11 +1,6 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/GamePrefabs/test_interior/ss_pieces/MainMenu.prefab.meta
-guid: 627b26ba94b7bf64889066d3d321a87f
-PrefabImporter:
-========
-guid: 6b7d5286341715040a02fb35aff9f74c
+guid: abc5a9bcca3abc24a860f83cad2d9cd6
 DefaultImporter:
->>>>>>>> design:Assets/Scenes/testInteract.unity.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

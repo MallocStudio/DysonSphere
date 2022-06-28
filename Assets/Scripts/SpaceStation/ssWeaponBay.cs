@@ -13,7 +13,7 @@ public class ssWeaponBay : MonoBehaviour
     [SerializeField] private List<ParticleSystem> particleList;
 
     [Header("Combat Stats")]
-    [SerializeField] private float projkDmg;
+    [SerializeField] public float projkDmg;
     [SerializeField] private float projkSpd;
     [SerializeField] private float shootTimer;
     [SerializeField] private float shootTimerMax;
