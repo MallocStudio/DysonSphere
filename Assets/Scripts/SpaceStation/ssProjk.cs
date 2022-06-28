@@ -5,17 +5,20 @@ using UnityEngine;
 public class ssProjk : MonoBehaviour
 {
     [SerializeField] private bool detonate = false;
-    [SerializeField] private float damage;
+    [SerializeField] private float missileDamage;
     [SerializeField] private float spd;
     [SerializeField] private float lifeTime;
     [SerializeField] private float timer;
     [SerializeField] private ssWeaponBay pool;
 
+    private ShipHealth damageTarget;
+
     private void Start()
     {
-        pool = transform.parent.GetComponent<ssWeaponBay>();
+        pool = transform.parent.parent.GetComponent<ssWeaponBay>();
 
-        damage = transform.gameObject.GetComponentInParent<ssWeaponBay>().projkDmg;
+        //damage = transform.gameObject.GetComponentInParent<ssWeaponBay>().projkDmg;
+        missileDamage = transform.parent.transform.gameObject.GetComponentInParent<ssWeaponBay>().projkDmg;
     }
 
     private void Update()
@@ -39,18 +42,35 @@ public class ssProjk : MonoBehaviour
         if (other.gameObject.tag == "Enemy")
         {
             detonate = true;
-            Debug.Log("object collid");
+            //Debug.Log("object collid");
         }
     }
 
     public void Explosion()
     {
         transform.GetChild(0).gameObject.SetActive(false);
-        pool.ReturnObject(gameObject);
 
-        Debug.Log(damage);
+        Collider[] affectedColliders = Physics.OverlapSphere(transform.position, 3.5f);
 
-        ShipHealth shipHealth = gameObject.GetComponent<ShipHealth>();
-        shipHealth.Health(damage);
+        for(int i = 0; i < affectedColliders.Length - 1; i++)
+        {
+            ShipHealth thisShip = affectedColliders[i].gameObject.GetComponent<ShipHealth>();
+            thisShip.TakeDamage(missileDamage);
+            Debug.Log(missileDamage);
+
+            if (i == affectedColliders.Length - 1)
+            {
+                break;
+            }
+        }
+
+        //Debug.Log("break");
+
+        //Debug.Log(missileDamage);
+        //
+        //ShipHealth shipHealth = this.gameObject.GetComponent<ShipHealth>();
+        //shipHealth.TakeDamage(missileDamage);
+
+        //pool.ReturnObject(gameObject);
     }
 }
