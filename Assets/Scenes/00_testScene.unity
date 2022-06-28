@@ -4243,6 +4243,10 @@ PrefabInstance:
       propertyPath: TMPmissileTimer
       value: 
       objectReference: {fileID: 1643667982}
+    - target: {fileID: 5541843904681070399, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
+      propertyPath: missileFire.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5541843904983562175, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
       propertyPath: poolSize
       value: 30

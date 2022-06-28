@@ -17,6 +17,8 @@ public class ssWeaponBay : MonoBehaviour
     [SerializeField] private float projkSpd;
     [SerializeField] private float shootTimer;
     [SerializeField] private float shootTimerMax;
+    [SerializeField] private float reloadTime;
+    [SerializeField] private float reloadTimeMax;
     [SerializeField] private int weaponIndex;
 
     [Header("Projk Pool")]
