@@ -5,17 +5,14 @@ using UnityEngine;
 public class ShipHealth : MonoBehaviour
 {
     public float health = 1.0f;
-    public bool isDestroyed = true;
+    public bool isDestroyed = false;
 
-    public bool Health(float damage)
+    public void TakeDamage(float damage)
     {
         health -= damage;
         if (health <= 0)
         {
-            isDestroyed = false;
-            return isDestroyed;
+            isDestroyed = true;
         }
-
-        return isDestroyed;
     }
 }
