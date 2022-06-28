@@ -80,6 +80,12 @@ public class AI_Actor : MonoBehaviour {
     float starting_y_pos = 0;
     float floatiness_offset = 0;
 
+    private LineRenderer line_renderer;
+    const string line_renderer_visibility_material_name = "Vector1_17cb148168fe458f8bcf66707d08fcfe";
+    const float line_renderer_visibility_material_max = 1;
+    const float line_renderer_visibility_material_min = 0;
+    float line_renderer_visibility_material_amount = 0;
+
     /// <summary>
     /// Initialise a new ai actor. Each AI actor must share the same blackboard as others.
     /// the "lead" parameter can be null. If it is not null, this ai actor will follow the "lead" around.
@@ -94,6 +100,10 @@ public class AI_Actor : MonoBehaviour {
             //- Add this AI_Actor's boid to blackboard
         boid.transform = transform;
         blackboard.boids.Add(boid);
+
+        line_renderer = GetComponent<LineRenderer>();
+        line_renderer_visibility_material_amount = line_renderer_visibility_material_min;
+        line_renderer.material.SetFloat(line_renderer_visibility_material_name, line_renderer_visibility_material_amount);
     }
 
     /// <summary>
@@ -159,7 +169,22 @@ public class AI_Actor : MonoBehaviour {
                     look_at(enemy.position); //@incomplete instead shoot at the enemy. Transform should be replaced with SpaceShip
                 }
             }
+
+            if (line_renderer_visibility_material_amount > line_renderer_visibility_material_min) {
+                const float shoot_speed = 2;
+                line_renderer_visibility_material_amount -= Time.deltaTime * shoot_speed;
+                line_renderer.material.SetFloat(line_renderer_visibility_material_name, line_renderer_visibility_material_amount);
+            } else {
+                line_renderer_visibility_material_amount = line_renderer_visibility_material_min;
+            }
         }
+    }
+
+    public void shoot_at(AI_Actor entity) {
+        line_renderer.SetPosition(0, transform.position);
+        line_renderer.SetPosition(1, entity.transform.position);
+        line_renderer_visibility_material_amount = line_renderer_visibility_material_max;
+        line_renderer.material.SetFloat(line_renderer_visibility_material_name, line_renderer_visibility_material_amount);
     }
 
     private void look_at(Vector3 pos) {
