@@ -5,21 +5,54 @@ using UnityEngine.Events;
 
 public class physSwitch : MonoBehaviour
 {
-    [SerializeField] private bool modeOn;
-    [SerializeField] private UnityEvent turnModeOnEv;
-    [SerializeField] private UnityEvent turnModeOffEv;
+    [SerializeField] public HingeJoint joint;
+    [SerializeField] public JointSpring jSpring;
+    [SerializeField] public JointLimits jLimits;
 
-    public void InteractSwitch()
+    [SerializeField] private bool modeOn;
+    [SerializeField] private bool modeOff;
+    [SerializeField] private float actAng;
+
+    [SerializeField] public UnityEvent turnModeOnEv;
+    [SerializeField] public UnityEvent turnModeOffEv;
+
+    private void Awake()
     {
-        if(!modeOn)
+        joint = GetComponent<HingeJoint>();
+        jSpring = joint.spring;
+        jLimits = joint.limits;
+
+
+        jSpring.targetPosition = -actAng;
+        jLimits.max = actAng;
+        jLimits.min = -actAng;
+
+        modeOn = false;
+        modeOff = true;
+    }
+    private void Update()
+    {
+        if (joint.angle >= 0)
         {
-            modeOn = true;
-            turnModeOnEv.Invoke();
+            jSpring.targetPosition = actAng;
+            if (modeOn == false)
+            {
+                modeOn = true;
+                modeOff = false;
+                turnModeOnEv.Invoke();
+            }
         }
-        else
+        if (joint.angle < 0)
         {
-            modeOn = false;
-            turnModeOffEv.Invoke();
+            jSpring.targetPosition = -actAng;
+            if (modeOff == false)
+            {
+                modeOn = false;
+                modeOff = true;
+                turnModeOffEv.Invoke();
+            }
         }
+        joint.spring = jSpring;
+        joint.limits = jLimits;
     }
 }

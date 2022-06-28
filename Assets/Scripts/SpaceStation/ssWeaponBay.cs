@@ -52,7 +52,7 @@ public class ssWeaponBay : MonoBehaviour
 
     private void Update()
     {
-        if (ss.gunneryMode == true)
+        if (ss.gunMode == true)
         {
             Aim();
         }
@@ -83,7 +83,7 @@ public class ssWeaponBay : MonoBehaviour
 
     private void Aim()
     {
-        if (ss.gunneryMode)
+        if (ss.gunMode)
         {
             if (weapon == weaponBay.cannon)
             {
