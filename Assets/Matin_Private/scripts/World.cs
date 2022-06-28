@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.XR;
 using UnityEngine.InputSystem;
 using System.Linq;
+using UnityEngine.XR.Interaction.Toolkit;
 
 [System.Serializable]
 public class PrimaryButtonEvent : UnityEvent<bool> {}
@@ -52,6 +53,7 @@ public class World : MonoBehaviour {
     [SerializeField] float world_radius = 30.0f;
     [SerializeField] Transform spawn_point;
     [SerializeField] Hologram hologram_panel;
+    [SerializeField] Transform left_hand;
 
         //- Floor
     Plane floor = new Plane();
@@ -62,6 +64,7 @@ public class World : MonoBehaviour {
         Debug.Assert(enemy_spaceship_prefab != null);
         Debug.Assert(friendly_spaceship_prefab != null);
         Debug.Assert(spawn_point != null);
+        Debug.Assert(left_hand != null);
 
             //- Generate the Entities
         enemy_entities = new List<AI_Actor>(GROUP_MAX_CAPACITY);
@@ -110,11 +113,37 @@ public class World : MonoBehaviour {
             friendly_entities.Add(entity);
         }
 
-            //- Add player's spaceships as enemy entities' enemies
-            // @debug
-        enemy_blackboard.enemies.Add(transform);    //@incomplete: put the spaceship script on the mother ship and add that to this list,
-                                                    // Then each time we spawn a player spaceship add that to this list as well, and
-                                                    // remove the dead ones.
+            //- Setup Teams
+        foreach (AI_Actor entity_1 in enemy_entities) {
+            foreach(AI_Actor entity_2 in friendly_entities) {
+                entity_1.blackboard.enemies.Add(entity_2);
+                entity_2.blackboard.enemies.Add(entity_1);
+            }
+        }
+    }
+
+    public void input_select() {
+        if (Player_Raycaster.get_selection(left_hand, out RaycastHit hit)) {
+            HolographicObject selection_holographic_obj = hit.transform.GetComponent<HolographicObject>();
+            if (selection_holographic_obj != null) {
+                AI_Actor actor = selection_holographic_obj.select().GetComponent<AI_Actor>();
+                if (actor != null) {
+                    // unselect other actors
+                    foreach (AI_Actor entity in enemy_entities) {
+                        entity.is_selected = false;
+                    }
+
+                        //- Select the Leader of this flock
+                    if (actor.lead == null) {
+                        actor.is_selected = true;
+                    } else {
+                        actor.lead.is_selected = true;
+                    }
+                }
+            }
+        } else {
+
+        }
     }
 
     void Update() {
@@ -136,6 +165,8 @@ public class World : MonoBehaviour {
 
         Mouse mouse = Mouse.current;
         Keyboard keyboard = Keyboard.current;
+        // XRController controller = XRController.current;
+
         Debug.Assert(mouse != null);
 
         if (mouse.leftButton.wasPressedThisFrame) {
@@ -171,12 +202,12 @@ public class World : MonoBehaviour {
 
             //@debug shoot
         if (keyboard.spaceKey.wasPressedThisFrame) {
-            // foreach (AI_Actor entity in enemy_entities) {
-            //     if (entity.lead != null) {
-            //         entity.shoot_at(entity.lead);
-            //     }
-            // }
-            enemy_entities[1].shoot_at(enemy_entities[1].lead);
+            foreach (AI_Actor entity in enemy_entities) {
+                if (entity.lead != null) {
+                    entity.shoot_at(entity.lead);
+                }
+            }
+            // enemy_entities[1].shoot_at(enemy_entities[1].lead);
         }
     }
 

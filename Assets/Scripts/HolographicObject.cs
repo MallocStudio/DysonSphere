@@ -15,6 +15,7 @@ public class HolographicObject : MonoBehaviour
     float differnceInScale = 0.02f;
     float differenceInVisualScale = 0.003f;
 
+    MeshRenderer mesh_renderer;
     Vector3 offSet;
 
     public void init(Transform _attachedObject)
@@ -32,5 +33,10 @@ public class HolographicObject : MonoBehaviour
         //Update my position to match the ship's position
         transform.rotation = attachedObject.rotation;
         transform.localPosition = (attachedObject.position - spawn_point) * differnceInScale + (offSet);
+    }
+
+    public Transform select() {
+        mesh_renderer.material.color = Color.white; // @debug // @nocheckin
+        return attachedObject;
     }
 }
