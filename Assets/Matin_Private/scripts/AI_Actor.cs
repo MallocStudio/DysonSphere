@@ -3,61 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[System.Serializable]
-public class Boid {
-    public float separation_radius = 3;
-    public float separation = 0.5f;
-    public float cohesion = 1;
-    public float target_radius = 10; // the radius around the target
-    public float alignment_radius = 2;
-    public float alignment = 0.01f;
-    public Transform transform; // the parent transform
-
-    protected Vector3 final_velocity = Vector3.zero;
-
-    public Vector3 get_velocity(Vector3 target_pos, List<Boid> boids) {
-        Vector3 separation_v = get_separation_velocity(boids);
-        Vector3 cohesion_v = get_cohesion_velocity(target_pos);
-        Vector3 alignment_v = get_alignment_velocity(boids);
-
-        this.final_velocity = separation_v + alignment_v + cohesion_v; // store for internal use
-        return this.final_velocity;
-    }
-
-    private Vector3 get_alignment_velocity(List<Boid> boids) {
-        Vector3 velocity = Vector3.zero;
-        foreach (Boid boid in boids) {
-            if ((boid.transform.position - this.transform.position).sqrMagnitude < (alignment_radius * alignment_radius)) {
-                velocity += boid.final_velocity * alignment;
-            }
-        }
-        return velocity;
-    }
-
-    private Vector3 get_separation_velocity(List<Boid> boids) {
-        Vector3 velocity = Vector3.zero;
-        foreach (Boid boid in boids) {
-            if (boid.Equals(this)) continue;
-
-            float separation_force = 0;
-            float distance_sqr = (transform.position - boid.transform.position).sqrMagnitude;
-            if (distance_sqr < (separation_radius * separation_radius)) {
-                separation_force = separation;
-            }
-            velocity += (transform.position - boid.transform.position) * separation_force;
-        }
-        return velocity;
-    }
-
-    private Vector3 get_cohesion_velocity(Vector3 target_pos) {
-        Vector3 velocity = Vector3.zero;
-        if (Vector3.Distance(target_pos, transform.position) > target_radius) {
-            velocity = (target_pos - transform.position).normalized * cohesion;
-        }
-        return velocity;
-    }
-}
-
 public class AI_Actor : MonoBehaviour {
     //-      AI BOIDS
         // The data shared between AI_Actors
@@ -176,7 +121,7 @@ public class AI_Actor : MonoBehaviour {
             }
 
             if (line_renderer_visibility_material_amount > line_renderer_visibility_material_min) {
-                const float shoot_speed = 2;
+                float shoot_speed = Random.Range(1.0f, 3.0f);
                 line_renderer_visibility_material_amount -= Time.deltaTime * shoot_speed;
                 line_renderer.material.SetFloat(line_renderer_visibility_material_name, line_renderer_visibility_material_amount);
             } else {
@@ -219,5 +164,61 @@ public class AI_Actor : MonoBehaviour {
     public void kill() {
         health = 0; // for sanity's sake for when we kill this thing outside of shoot_at()
         // ...
+    }
+}
+
+
+[System.Serializable]
+public class Boid {
+    public float separation_radius = 3;
+    public float separation = 0.5f;
+    public float cohesion = 1;
+    public float target_radius = 10; // the radius around the target
+    public float alignment_radius = 2;
+    public float alignment = 0.01f;
+    public Transform transform; // the parent transform
+
+    protected Vector3 final_velocity = Vector3.zero;
+
+    public Vector3 get_velocity(Vector3 target_pos, List<Boid> boids) {
+        Vector3 separation_v = get_separation_velocity(boids);
+        Vector3 cohesion_v = get_cohesion_velocity(target_pos);
+        Vector3 alignment_v = get_alignment_velocity(boids);
+
+        this.final_velocity = separation_v + alignment_v + cohesion_v; // store for internal use
+        return this.final_velocity;
+    }
+
+    private Vector3 get_alignment_velocity(List<Boid> boids) {
+        Vector3 velocity = Vector3.zero;
+        foreach (Boid boid in boids) {
+            if ((boid.transform.position - this.transform.position).sqrMagnitude < (alignment_radius * alignment_radius)) {
+                velocity += boid.final_velocity * alignment;
+            }
+        }
+        return velocity;
+    }
+
+    private Vector3 get_separation_velocity(List<Boid> boids) {
+        Vector3 velocity = Vector3.zero;
+        foreach (Boid boid in boids) {
+            if (boid.Equals(this)) continue;
+
+            float separation_force = 0;
+            float distance_sqr = (transform.position - boid.transform.position).sqrMagnitude;
+            if (distance_sqr < (separation_radius * separation_radius)) {
+                separation_force = separation;
+            }
+            velocity += (transform.position - boid.transform.position) * separation_force;
+        }
+        return velocity;
+    }
+
+    private Vector3 get_cohesion_velocity(Vector3 target_pos) {
+        Vector3 velocity = Vector3.zero;
+        if (Vector3.Distance(target_pos, transform.position) > target_radius) {
+            velocity = (target_pos - transform.position).normalized * cohesion;
+        }
+        return velocity;
     }
 }

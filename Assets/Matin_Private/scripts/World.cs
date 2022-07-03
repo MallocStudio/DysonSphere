@@ -47,7 +47,7 @@ public class World : MonoBehaviour {
 
             //- Generate Enemies
         for (int i = 0; i < GROUP_MAX_CAPACITY; i++) {
-            Vector3 pos = get_random_position_in_worldspace();
+            Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
             GameObject gameobject = Instantiate(enemy_spaceship_prefab, pos, Quaternion.identity);
 
                 //- Link the created entity to the hologram tabel
@@ -68,7 +68,7 @@ public class World : MonoBehaviour {
 
             //- Generate Friendly Ships
         for (int i = 0; i < GROUP_MAX_CAPACITY; i++) {
-            Vector3 pos = get_random_position_in_worldspace();
+            Vector3 pos = get_random_position_in_worldspace(friendly_spawn_point.position);
             GameObject gameobject = Instantiate(friendly_spaceship_prefab, pos, Quaternion.identity);
 
                 //- Link the created entity to the hologram tabel
@@ -124,6 +124,13 @@ public class World : MonoBehaviour {
         //     entity.transform.position = clamped_pos;
         // }
 
+        foreach (AI_Actor entity in enemy_entities) {
+            entity.update();
+        }
+        foreach (AI_Actor entity in friendly_entities) {
+            entity.update();
+        }
+
         foreach (HolographicObject holographic_object in holographic_objects) {
             holographic_object.update(enemy_spawn_point.position, spawn_radius);
         }
@@ -175,11 +182,11 @@ public class World : MonoBehaviour {
         }
     }
 
-    Vector3 get_random_position_in_worldspace() {
+    Vector3 get_random_position_in_worldspace(Vector3 origin) {
         Vector3 result;
         result.y = (floor.offset * floor.normal).y + Random.Range(-2.0f, 2.0f);
-        result.x = enemy_spawn_point.position.x + Random.Range(-spawn_radius, spawn_radius);
-        result.z = enemy_spawn_point.position.z + Random.Range(-spawn_radius, spawn_radius);
+        result.x = origin.x + Random.Range(-spawn_radius, spawn_radius);
+        result.z = origin.z + Random.Range(-spawn_radius, spawn_radius);
 
         return result;
     }
