@@ -59,11 +59,16 @@ public class World : MonoBehaviour {
             }
 
             AI_Actor entity = gameobject.GetComponent<AI_Actor>();
-            entity.is_dead = true; // start dead until we start a new wave
+            AI_Actor lead = null;
+            if (i > 0) lead = enemy_entities[0];
+            // entity.is_dead = true; // start dead until we start a new wave
+
+            // Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
+                // Makes enemies undead
+            entity.init(this, enemy_blackboard, lead, pos, true);
             enemy_entities.Add(entity);
         }
 
-        Debug.Log("THIS one GOT CALLED");
             //- Generate Friendly Ships
         for (int i = 0; i < GROUP_MAX_CAPACITY; i++) {
                 // even though we set the position here, it'll get reset in entity.init()
@@ -87,15 +92,14 @@ public class World : MonoBehaviour {
         }
 
             //- Setup Teams
-        foreach (AI_Actor entity_1 in enemy_entities) {
-            foreach(AI_Actor entity_2 in friendly_entities) {
-                entity_1.blackboard.enemies.Add(entity_2);
-                entity_2.blackboard.enemies.Add(entity_1);
-            }
+        foreach (AI_Actor entity in enemy_entities) {
+            friendly_blackboard.enemies.Add(entity);
+        }
+        foreach(AI_Actor entity in friendly_entities) {
+            enemy_blackboard.enemies.Add(entity);
         }
 
             //- Reset alls enemies and prepares everything for a new wave
-        Debug.Log("THIS GOT CALLED");
         event_start_new_wave();
     }
 
