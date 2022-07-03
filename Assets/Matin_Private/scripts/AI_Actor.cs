@@ -101,6 +101,7 @@ public class AI_Actor : MonoBehaviour {
             //- Add this AI_Actor's boid to blackboard
         boid.transform = transform;
         blackboard.boids.Add(boid);
+        blackboard.group.Add(this);
 
         line_renderer = GetComponent<LineRenderer>();
         line_renderer_visibility_material_amount = line_renderer_visibility_material_min;
