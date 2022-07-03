@@ -47,6 +47,7 @@ public class World : MonoBehaviour {
 
             //- Generate Enemies
         for (int i = 0; i < GROUP_MAX_CAPACITY; i++) {
+                // even though we set the position here, it'll get reset in entity.init()
             Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
             GameObject gameobject = Instantiate(enemy_spaceship_prefab, pos, Quaternion.identity);
 
@@ -58,16 +59,14 @@ public class World : MonoBehaviour {
             }
 
             AI_Actor entity = gameobject.GetComponent<AI_Actor>();
-
-            AI_Actor lead = null;
-            if (i > 0) lead = enemy_entities[0];
-            entity.init(enemy_blackboard, lead, pos.y);
-
+            entity.is_dead = true; // start dead until we start a new wave
             enemy_entities.Add(entity);
         }
 
+        Debug.Log("THIS one GOT CALLED");
             //- Generate Friendly Ships
         for (int i = 0; i < GROUP_MAX_CAPACITY; i++) {
+                // even though we set the position here, it'll get reset in entity.init()
             Vector3 pos = get_random_position_in_worldspace(friendly_spawn_point.position);
             GameObject gameobject = Instantiate(friendly_spaceship_prefab, pos, Quaternion.identity);
 
@@ -82,7 +81,7 @@ public class World : MonoBehaviour {
 
             AI_Actor lead = null;
             if (i > 0) lead = friendly_entities[0];
-            entity.init(friendly_blackboard, lead, pos.y);
+            entity.init(this, friendly_blackboard, lead, pos, false);
 
             friendly_entities.Add(entity);
         }
@@ -94,6 +93,10 @@ public class World : MonoBehaviour {
                 entity_2.blackboard.enemies.Add(entity_1);
             }
         }
+
+            //- Reset alls enemies and prepares everything for a new wave
+        Debug.Log("THIS GOT CALLED");
+        event_start_new_wave();
     }
 
     public void input_select() {
@@ -124,9 +127,19 @@ public class World : MonoBehaviour {
         //     entity.transform.position = clamped_pos;
         // }
 
+            //- Update Enemies
+        bool are_all_enemies_dead = true;
         foreach (AI_Actor entity in enemy_entities) {
             entity.update();
+            if (!entity.is_dead) are_all_enemies_dead = false;
         }
+
+            //- All enemies are dead
+        if (are_all_enemies_dead) {
+            event_start_new_wave();
+        }
+
+            //- Update Friendlies
         foreach (AI_Actor entity in friendly_entities) {
             entity.update();
         }
@@ -198,7 +211,20 @@ public class World : MonoBehaviour {
         /// Spawn new enemies and regenerate friendlies.
         /// Does not get rid of left over enemies.
     public void event_start_new_wave() {
+        //- Reset Enemies
+        for (int i = 0; i < enemy_entities.Count; i++) {
+            AI_Actor entity = enemy_entities[i];
+            AI_Actor lead = null;
+            if (i > 0) lead = enemy_entities[0];
 
+            Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
+                // Makes enemies undead
+            entity.init(this, enemy_blackboard, lead, pos, true);
+        }
+            // @temp tell each leader to go to center to fight each other
+        Vector3 center = (enemy_spawn_point.position + friendly_spawn_point.position) / 2;
+        friendly_entities[0].move(center);
+        enemy_entities[0].move(center);
     }
 
         /// Pause the game and show the pause menu
@@ -216,11 +242,15 @@ public class World : MonoBehaviour {
 
     }
 
+    public void event_kill_entity(AI_Actor entity) {
+        entity.kill();
+    }
+
         /// Kill all enemy ships that are found within the given radius
     public void event_kill_enemies_in_radius(Vector3 origin, float radius) {
         foreach (AI_Actor entity in enemy_entities) {
             if (Vector3.Distance(entity.transform.position, origin) <= radius) {
-                entity.kill();
+                event_kill_entity(entity);
             }
         }
     }
@@ -229,7 +259,7 @@ public class World : MonoBehaviour {
     public void event_kill_friendly_in_radius(Vector3 origin, float radius) {
         foreach (AI_Actor entity in friendly_entities) {
             if (Vector3.Distance(entity.transform.position, origin) <= radius) {
-                entity.kill();
+                event_kill_entity(entity);
             }
         }
     }

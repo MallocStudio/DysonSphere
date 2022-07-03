@@ -7,6 +7,8 @@ public class AI_Actor : MonoBehaviour {
     //-      AI BOIDS
         // The data shared between AI_Actors
     public AI_Blackboard blackboard;
+    public World world;
+    public bool is_dead = false;
         // The leader of this crowd
         // ! Lead can be null. In that case this AI_Actor is the lead
     public AI_Actor lead;
@@ -14,7 +16,7 @@ public class AI_Actor : MonoBehaviour {
         // ! If we have a "lead" we don't move towards target_pos
     Vector3 nav_target_pos = Vector3.zero;
     public bool is_selected = false;
-    Boid boid = new Boid();
+    public Boid boid = new Boid();
     protected float speed = 10;
     [SerializeField] float attack_radius = 15;
     Vector3 velocity = Vector3.zero;
@@ -22,7 +24,9 @@ public class AI_Actor : MonoBehaviour {
     float floatiness_offset = 0;
 
     //-     COMBAT
-    float health = 1.0f; // 1 is max, 0 is min
+        // ! ONLY MEANT TO BE SET TO SOMETHING THROUGH WORLD.CS
+    public float health = 1.0f; // 1 is max, 0 is min
+    public bool is_enemy = false;
     float damage = 0.4f; // the amount of damage this entity applies to others
 
         //-     LINE RENDERER
@@ -36,11 +40,15 @@ public class AI_Actor : MonoBehaviour {
     /// Initialise a new ai actor. Each AI actor must share the same blackboard as others.
     /// the "lead" parameter can be null. If it is not null, this ai actor will follow the "lead" around.
     /// </summary>
-    public void init(AI_Blackboard blackboard, AI_Actor lead, float starting_y_pos) {
+    public void init(World world, AI_Blackboard blackboard, AI_Actor lead, Vector3 position, bool is_enemy) {
+        this.is_dead = false; // ! reset to alive
         this.blackboard = blackboard;
+        this.world = world;
         this.lead = lead;
-        this.starting_y_pos = starting_y_pos;
+        this.transform.position = position;
+        this.starting_y_pos = position.y;
         this.floatiness_offset = Random.Range(-1.0f, 1.0f);
+        this.is_enemy = is_enemy;
         nav_target_pos = transform.position;
 
             //- Add this AI_Actor's boid to blackboard
@@ -51,6 +59,7 @@ public class AI_Actor : MonoBehaviour {
         line_renderer = GetComponent<LineRenderer>();
         line_renderer_visibility_material_amount = line_renderer_visibility_material_min;
         line_renderer.material.SetFloat(line_renderer_visibility_material_name, line_renderer_visibility_material_amount);
+        line_renderer.enabled = true;
     }
 
     /// <summary>
@@ -69,6 +78,18 @@ public class AI_Actor : MonoBehaviour {
     /// Any movement calculated by the ai gets updated after this procedure is called.
     /// </summary>
     public void update() {
+        Vector3 position_last_frame = transform.position;
+
+        {   //- Check if we're dead or alive
+            if (is_dead) {
+                line_renderer.enabled = false;
+                return;
+            }
+            if (lead && lead.is_dead) {
+                this.kill(); // kill yourself you can't even protect your lead.
+            }
+        }
+
         {   //- Sync settings with the lead
             if (lead) {
                 speed                  = lead.speed;
@@ -81,21 +102,22 @@ public class AI_Actor : MonoBehaviour {
             }
         }
 
-        //- Go towards nav_target_pos
-        if (lead) {
-            nav_target_pos = lead.transform.position;
-            velocity = boid.get_velocity(nav_target_pos, blackboard.boids);
-        } else {
-            velocity = (nav_target_pos - transform.position).normalized;
+        {   //- Go towards nav_target_pos
+            if (lead) {
+                nav_target_pos = lead.transform.position;
+                velocity = boid.get_velocity(nav_target_pos, blackboard.boids);
+            } else {
+                velocity = (nav_target_pos - transform.position).normalized;
+            }
+
+            Vector3 final_velocity = velocity;
+
+            transform.position += final_velocity * speed * Time.deltaTime;
+
+            Vector3 final_pos = transform.position;
+            final_pos.y = Mathf.Sin(Time.fixedTime + floatiness_offset) + starting_y_pos;
+            transform.position = final_pos;
         }
-
-        Vector3 final_velocity = velocity;
-
-        transform.position += final_velocity * speed * Time.deltaTime;
-
-        Vector3 final_pos = transform.position;
-        final_pos.y = Mathf.Sin(Time.fixedTime + floatiness_offset) + starting_y_pos;
-        transform.position = final_pos;
 
         {   //- Look At Where You're Going
             if (lead) {
@@ -105,13 +127,14 @@ public class AI_Actor : MonoBehaviour {
                     transform.rotation = Quaternion.Slerp(transform.rotation, lead.transform.rotation, Time.deltaTime);
                 }
             }
-            Vector3 lookat_pos = final_velocity + transform.position;
+            Vector3 lookat_pos = (position_last_frame - transform.position).normalized;
             lookat_pos.y = transform.position.y;
             look_at(lookat_pos);
         }
 
         {   //- Attack enemies
             foreach (AI_Actor enemy in blackboard.enemies) {
+                if (enemy.is_dead) continue;
                 if (Vector3.Distance(transform.position, enemy.transform.position) < attack_radius) {
                     // look_at(enemy.transform.position); //@incomplete instead shoot at the enemy. Transform should be replaced with SpaceShip
                     if (line_renderer_visibility_material_amount <= line_renderer_visibility_material_min) {
@@ -163,7 +186,7 @@ public class AI_Actor : MonoBehaviour {
         /// This is called from shoot_at() when health is less than or equal to zero
     public void kill() {
         health = 0; // for sanity's sake for when we kill this thing outside of shoot_at()
-        // ...
+        is_dead = true;
     }
 }
 
