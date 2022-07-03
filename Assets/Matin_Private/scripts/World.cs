@@ -24,7 +24,7 @@ public class World : MonoBehaviour {
     [SerializeField] Camera main_camera;
     float spawn_radius = 10.0f;
     [SerializeField] Transform enemy_spawn_point;
-    [SerializeField] Transform friendly_spawn_point;
+    [SerializeField] public Transform friendly_spawn_point;
     [SerializeField] Hologram hologram_panel;
     [SerializeField] Transform left_hand;
 
@@ -114,7 +114,7 @@ public class World : MonoBehaviour {
         }
     }
 
-    void Update() {
+    void FixedUpdate() {
         // ! We used to clamp entities within the world_radius. But let's not do that and instead not
         // ! allow the player to move anything outside of the given coords of the hologram table.
         // ! Also, we're now using spawn_radius to determine how far from the spawn_point entities can spawn.
@@ -190,11 +190,12 @@ public class World : MonoBehaviour {
 
             //@debug shoot
         if (keyboard.spaceKey.wasPressedThisFrame) {
-            foreach (AI_Actor entity in enemy_entities) {
-                if (entity.lead != null) {
-                    entity.shoot_at(entity.lead);
-                }
-            }
+            event_start_new_wave();
+            // foreach (AI_Actor entity in enemy_entities) {
+            //     if (entity.lead != null) {
+            //         entity.shoot_at(entity.lead);
+            //     }
+            // }
             // enemy_entities[1].shoot_at(enemy_entities[1].lead);
         }
     }
@@ -224,6 +225,16 @@ public class World : MonoBehaviour {
             Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
                 // Makes enemies undead
             entity.init(this, enemy_blackboard, lead, pos, true);
+        }
+
+        for (int i = 0; i < friendly_entities.Count; i++) {
+            AI_Actor entity = friendly_entities[i];
+            AI_Actor lead = null;
+            if (i > 0) lead = friendly_entities[0];
+
+            Vector3 pos = get_random_position_in_worldspace(friendly_spawn_point.position);
+                // Makes enemies undead
+            entity.init(this, friendly_blackboard, lead, pos, false);
         }
             // @temp tell each leader to go to center to fight each other
         Vector3 center = (enemy_spawn_point.position + friendly_spawn_point.position) / 2;

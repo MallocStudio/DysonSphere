@@ -16,7 +16,7 @@ public class AI_Actor : MonoBehaviour {
         // ! If we have a "lead" we don't move towards target_pos
     Vector3 nav_target_pos = Vector3.zero;
     public bool is_selected = false;
-    public Boid boid = new Boid();
+    [System.NonSerialized] public Boid boid = new Boid();
     protected float speed = 10;
     [SerializeField] float attack_radius = 15;
     Vector3 velocity = Vector3.zero;
@@ -25,9 +25,9 @@ public class AI_Actor : MonoBehaviour {
 
     //-     COMBAT
         // ! ONLY MEANT TO BE SET TO SOMETHING THROUGH WORLD.CS
-    public float health = 1.0f; // 1 is max, 0 is min
+    public float health = 1.0f; // 1 is max, 0 is min // ! note that this gets set to 1 in init()
     public bool is_enemy = false;
-    float damage = 0.4f; // the amount of damage this entity applies to others
+    float damage = 0.01f; // the amount of damage this entity applies to others
 
         //-     LINE RENDERER
     private LineRenderer line_renderer;
@@ -49,6 +49,7 @@ public class AI_Actor : MonoBehaviour {
         this.starting_y_pos = position.y;
         this.floatiness_offset = Random.Range(-1.0f, 1.0f);
         this.is_enemy = is_enemy;
+        this.health = 1; // reset to max
         nav_target_pos = transform.position;
 
             //- Add this AI_Actor's boid to blackboard
@@ -78,7 +79,7 @@ public class AI_Actor : MonoBehaviour {
     /// Any movement calculated by the ai gets updated after this procedure is called.
     /// </summary>
     public void update() {
-        Vector3 position_last_frame = transform.position;
+        Vector3 position_previous_frame = transform.position;
 
         {   //- Check if we're dead or alive
             if (is_dead) {
@@ -102,6 +103,7 @@ public class AI_Actor : MonoBehaviour {
             }
         }
 
+        Vector3 final_velocity = Vector3.zero;
         {   //- Go towards nav_target_pos
             if (lead) {
                 nav_target_pos = lead.transform.position;
@@ -110,8 +112,7 @@ public class AI_Actor : MonoBehaviour {
                 velocity = (nav_target_pos - transform.position).normalized;
             }
 
-            Vector3 final_velocity = velocity;
-
+            final_velocity = velocity;
             transform.position += final_velocity * speed * Time.deltaTime;
 
             Vector3 final_pos = transform.position;
@@ -120,16 +121,12 @@ public class AI_Actor : MonoBehaviour {
         }
 
         {   //- Look At Where You're Going
-            if (lead) {
-                if (Vector3.Distance(transform.position, lead.transform.position) < boid.target_radius) {
-                    // transform.rotation = lead.transform.rotation;
-                    // look_at(lead.transform.position + lead.transform.forward);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, lead.transform.rotation, Time.deltaTime);
-                }
+            if (final_velocity.sqrMagnitude < 1) {
+            } else {
+                Vector3 lookat_pos = transform.position + final_velocity;
+                lookat_pos.y = transform.position.y;
+                look_at(lookat_pos);
             }
-            Vector3 lookat_pos = (position_last_frame - transform.position).normalized;
-            lookat_pos.y = transform.position.y;
-            look_at(lookat_pos);
         }
 
         {   //- Attack enemies
@@ -174,13 +171,17 @@ public class AI_Actor : MonoBehaviour {
     }
 
     private void look_at(Vector3 pos) {
-        // Quaternion rot = transform.rotation;
-        // Quaternion lookat_rot = Quaternion.LookRotation((pos - transform.position).normalized, Vector3.up);
+        Quaternion rot = transform.rotation;
+        Vector3 look_dir = (transform.position - (pos * 1000)).normalized;
+        if (look_dir.sqrMagnitude < 1) {
+            return; // don't do shit because what we looking at is outselves
+        }
+        Quaternion lookat_rot = Quaternion.LookRotation(look_dir, Vector3.up);
 
-        // rot = Quaternion.Slerp(rot, lookat_rot, Time.deltaTime * 10);
+        rot = Quaternion.Slerp(rot, lookat_rot, Time.deltaTime * 10);
 
-        // transform.rotation = rot;
-        transform.LookAt(pos, Vector3.up);
+        transform.rotation = rot;
+        // transform.LookAt(pos, Vector3.up);
     }
 
         /// This is called from shoot_at() when health is less than or equal to zero
@@ -193,15 +194,16 @@ public class AI_Actor : MonoBehaviour {
 
 [System.Serializable]
 public class Boid {
-    public float separation_radius = 3;
+    public float separation_radius = 5;
     public float separation = 0.5f;
-    public float cohesion = 1;
+    public float cohesion = 1.2f;
     public float target_radius = 10; // the radius around the target
-    public float alignment_radius = 2;
+    public float alignment_radius = 3;
     public float alignment = 0.01f;
     public Transform transform; // the parent transform
 
     protected Vector3 final_velocity = Vector3.zero;
+    private Vector3 previous_velocity = Vector3.zero; // used to dampen the fina velocity
 
     public Vector3 get_velocity(Vector3 target_pos, List<Boid> boids) {
         Vector3 separation_v = get_separation_velocity(boids);
@@ -209,6 +211,8 @@ public class Boid {
         Vector3 alignment_v = get_alignment_velocity(boids);
 
         this.final_velocity = separation_v + alignment_v + cohesion_v; // store for internal use
+        this.final_velocity = Vector3.Lerp(this.final_velocity, previous_velocity, 0.99f);
+        previous_velocity = this.final_velocity; // update previous vel
         return this.final_velocity;
     }
 
