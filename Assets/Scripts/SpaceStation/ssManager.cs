@@ -16,8 +16,8 @@ public class ssManager : MonoBehaviour
     [SerializeField] public Transform cannonAimRet;
     [SerializeField] public Transform mgunAimRet;
     [SerializeField] public Transform missileAimRet;
-    [SerializeField] private ssWeaponBay actWeaponBay;
     [SerializeField] private List<ssWeaponBay> weaponBays = new List<ssWeaponBay>();
+    [SerializeField] private List<float> weaponBayReloads = new List<float>();
 
     [Header("Combat Stats")]
     [SerializeField] private float rotateSpd;
@@ -62,9 +62,6 @@ public class ssManager : MonoBehaviour
         cannonTimer = 0f;
         mgunTimer = 0f;
         missileTimer = 0f;
-
-        actWeaponBay = weaponBays[0];
-        actWeaponBay.activeBay = true;
 
         gunMode = false;
         gModeLight.SetActive(false);
@@ -146,32 +143,26 @@ public class ssManager : MonoBehaviour
     }
     public void RotateBayUp()
     {
-        actWeaponBay.activeBay = false;
+        //Rotate 120* for each weapon bay
+        combatRing.Rotate(0, 120, 0);
         curBay = (weaponBay)((int)curBay + 1);
-        if (curBay == weaponBay.COUNT)
+        if(curBay == weaponBay.COUNT)
         {
-            curBay = (weaponBay)(0);
-            actWeaponBay = weaponBays[(int)curBay];
-            actWeaponBay.activeBay = true;
-        }
-        /* TEST IF ABOVE WORKS
-         if (curBay == weaponBay.cannon)
-            curBay = weaponBay.mgun;
-        else if (curBay == weaponBay.mgun)
-            curBay = weaponBay.missile;
-        else if (curBay == weaponBay.missile)
             curBay = weaponBay.cannon;
-         */
+        }
+        /*
+        for (int i = 0; i < (int)weaponBay.COUNT; i++)
+        {
+            weaponBay bay = (weaponBay)i;
+        }
+        */
     }
     public void RotateBayDown()
     {
-        actWeaponBay.activeBay = false;
         curBay = (weaponBay)((int)curBay - 1);
-        if(curBay == (weaponBay)(0))
+        if (curBay == weaponBay.cannon)
         {
-            curBay = weaponBay.COUNT -1;
-            actWeaponBay = weaponBays[(int)curBay];
-            actWeaponBay.activeBay = true;
+            curBay = weaponBay.missile;
         }
     }
 }
@@ -181,6 +172,8 @@ public enum weaponBay
     cannon, // 0
     mgun,   // 1
     missile, // 2
+
+
 
     COUNT, // 3 the maximum number of stuff above
 }

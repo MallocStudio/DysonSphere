@@ -1,11 +1,14 @@
 fileFormatVersion: 2
-guid: 8c841f27ef59a6f41997f1ae63b16d1d
+guid: 17fb33cbb9c5bef4e9566d8d5b1ec566
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
       74: 1827226128182048838
-    second: fleetShip_wingRotate
+    second: spin
+  - first:
+      74: 1827226128182048838
+    second: anim_fleetShip_anim
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,7 +38,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: fleetShip_wingRotate
+      name: anim_fleetShip_anim
       takeName: Take 001
       internalID: 0
       firstFrame: 1
