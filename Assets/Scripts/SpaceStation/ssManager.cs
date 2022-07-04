@@ -139,13 +139,12 @@ public class ssManager : MonoBehaviour
             mgunRet.SetActive(true);
             missileRet.SetActive(false);
         }
-        else if (curBay == weaponBay.cannon)
+        else if (curBay == weaponBay.missile)
         {
             cannonRet.SetActive(false);
             mgunRet.SetActive(false);
             missileRet.SetActive(true);
         }
-        else return;
     }
     public void RotateBayUp()
     {

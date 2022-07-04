@@ -45,9 +45,6 @@ public class jointPhysButton : MonoBehaviour
     private void Pressed()
     {
         isPressed = true;
-        
-        DebugVisualCube.gameObject.SetActive(!DebugVisualCube.gameObject.activeSelf);
-
         onPressed.Invoke();
     }
 
