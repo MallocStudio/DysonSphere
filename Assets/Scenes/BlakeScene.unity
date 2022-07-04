@@ -182,6 +182,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cannonRound
       objectReference: {fileID: 0}
+    - target: {fileID: 7534929845368310905, guid: f403ec66d0813624da73874d400547b0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f403ec66d0813624da73874d400547b0, type: 3}
 --- !u!1001 &42317738
@@ -524,6 +528,8 @@ MonoBehaviour:
   projkSpd: 0
   shootTimer: 0
   shootTimerMax: 0
+  reloadTime: 0
+  reloadTimeMax: 0
   weaponIndex: 0
   prefab: {fileID: 0}
   poolSize: 0
@@ -898,6 +904,8 @@ MonoBehaviour:
   projkSpd: 0
   shootTimer: 0
   shootTimerMax: 0
+  reloadTime: 0
+  reloadTimeMax: 0
   weaponIndex: 0
   prefab: {fileID: 0}
   poolSize: 0
@@ -2531,6 +2539,8 @@ MonoBehaviour:
   projkSpd: 0
   shootTimer: 0
   shootTimerMax: 0
+  reloadTime: 0
+  reloadTimeMax: 0
   weaponIndex: 0
   prefab: {fileID: 0}
   poolSize: 0

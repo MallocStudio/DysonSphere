@@ -10,12 +10,18 @@ public class ssProjk : MonoBehaviour
     [SerializeField] private float lifeTime;
     [SerializeField] private float timer;
     [SerializeField] private ssWeaponBay pool;
-    [SerializeField] private ShipHealth damageTarget;
+    [SerializeField] private AI_Actor damageTarget;
+    World world;
 
+    public void init(World world)
+    {
+        this.world = world;
+    }
 
     private void Start()
     {
         pool = transform.parent.GetComponent<ssWeaponBay>();
+        
     }
 
     private void Update()
@@ -36,7 +42,7 @@ public class ssProjk : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        damageTarget = other.transform.GetComponent<ShipHealth>();
+        damageTarget = other.transform.GetComponent<AI_Actor>();
 
         //Triggers when the object hit has the ShipHelth.cs
         if (other.gameObject == damageTarget.gameObject)
@@ -49,9 +55,11 @@ public class ssProjk : MonoBehaviour
     {
         //Set the visual of the projectile visibility to false
         transform.GetChild(0).gameObject.SetActive(false);
+        SphereCollider sphereCollider = gameObject.GetComponent<SphereCollider>();
+        world.event_damage_enemies_in_radius(transform.position, sphereCollider.radius);
 
-        //Stores all objects caught in the the blast radius of the projectile
-        Collider[] affectedColliders = Physics.OverlapSphere(transform.position, 4.0f);
+/*       //Stores all objects caught in the the blast radius of the projectile
+        Collider[] affectedColliders = Physics.OverlapSphere(transform.position, sphereCollider.radius);
 
         //Run a loop of all objects in the collision
         for(int i = 0; i < affectedColliders.Length - 1; i++)
@@ -60,12 +68,14 @@ public class ssProjk : MonoBehaviour
             //into the object health
             ShipHealth thisShip = affectedColliders[i].gameObject.GetComponent<ShipHealth>();
             thisShip.TakeDamage(projDamage);
+            
             //Break loop after all affected objects have been called
             if (i == affectedColliders.Length - 1)
             {
                 break;
             }
         }
+*/
         detonate = false;
         timer = 0;
         //Send the object back to the pool list
