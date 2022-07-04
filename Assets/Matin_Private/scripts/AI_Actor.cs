@@ -83,9 +83,12 @@ public class AI_Actor : MonoBehaviour {
 
         {   //- Check if we're dead or alive
             if (is_dead) {
-                line_renderer.enabled = false;
+                set_visibility(false);
                 return;
+            } else {
+                set_visibility(true);
             }
+
             if (lead && lead.is_dead) {
                 this.kill(); // kill yourself you can't even protect your lead.
             }
@@ -106,7 +109,7 @@ public class AI_Actor : MonoBehaviour {
         Vector3 final_velocity = Vector3.zero;
         {   //- Go towards nav_target_pos
             if (lead) {
-                nav_target_pos = lead.transform.position;
+                nav_target_pos = lead.nav_target_pos;
                 velocity = boid.get_velocity(nav_target_pos, blackboard.boids);
             } else {
                 velocity = (nav_target_pos - transform.position).normalized;
@@ -157,10 +160,19 @@ public class AI_Actor : MonoBehaviour {
         return result;
     }
 
+        /// This is called from update() depending on the status of "is_dead"
+    void set_visibility(bool visible) {
+        line_renderer.enabled = visible;
+    }
+
+    public void take_damage(float amount) {
+        this.health -= amount;
+        if (this.health <= 0) this.kill();
+    }
+
     public void shoot_at(AI_Actor entity) {
             //- Take Damage
-        entity.health -= damage;
-        if (entity.health <= 0) entity.kill();
+        entity.take_damage(this.damage);
 
             //- Setup Visuals
         line_renderer.SetPosition(0, transform.position);

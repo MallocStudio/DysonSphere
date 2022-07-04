@@ -58,7 +58,7 @@ public class ssProjkAddIns : MonoBehaviour
         //Set the visual of the projectile visibility to false
         transform.GetChild(0).gameObject.SetActive(false);
         SphereCollider sphereCollider = gameObject.GetComponent<SphereCollider>();
-        world.event_damage_enemies_in_radius(transform.position, sphereCollider.radius);
+        world.event_damage_enemies_in_radius(transform.position, sphereCollider.radius, 0.5f);
         detonate = false;
         timer = 0;
         //Send the object back to the pool list

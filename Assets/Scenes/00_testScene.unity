@@ -469,11 +469,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be76e5f14cfee674cb30b491fb72b09b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &209140595 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6063554146763141275, guid: 05df7733a4f823a4ea7ca1da4328d176, type: 3}
+--- !u!114 &209742454 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7731285395126999658, guid: 05df7733a4f823a4ea7ca1da4328d176, type: 3}
   m_PrefabInstance: {fileID: 2057783837}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 056f2a87d91bc9e4e95f247b0831f397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &284512166 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5859501392325560890, guid: d26838903f6b326449e446fad263c593, type: 3}
@@ -1359,7 +1365,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 460614136}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 196.2}
+  m_LocalPosition: {x: 0, y: 0, z: 200}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1626,7 +1632,12 @@ MonoBehaviour:
   enemy_spawn_point: {fileID: 460614137}
   friendly_spawn_point: {fileID: 1427651105}
   hologram_panel: {fileID: 1502853860}
-  left_hand: {fileID: 209140595}
+  player_hand: {fileID: 209742454}
+  input_action_select: {fileID: -6273882997181144163, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  wave_timer_init: 10
+  wave_timer: 10
+  player_score: 0
+  cost_of_new_friendly_group: 10
 --- !u!4 &626208111
 Transform:
   m_ObjectHideFlags: 0
@@ -1822,6 +1833,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 00a4dc9f-1ee6-4349-b0e9-72d5dccaadd6
     m_ActionName: XRI RightHand Locomotion/Move
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1a652647-d3e4-42ec-800b-9c4cb44032e1
+    m_ActionName: XRI Custom/Select
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: XRI RightHand Interaction
@@ -4252,7 +4267,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427651104}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 34.6}
+  m_LocalPosition: {x: 0, y: 0, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
