@@ -26,7 +26,13 @@ public class World : MonoBehaviour {
     [SerializeField] Transform enemy_spawn_point;
     [SerializeField] public Transform friendly_spawn_point;
     [SerializeField] Hologram hologram_panel;
-    [SerializeField] Transform left_hand;
+
+///
+/// INPUT
+///
+
+    [SerializeField] Player_Hand player_hand;
+    [SerializeField] InputActionReference input_action_select;
 
         //- Floor
     Plane floor = new Plane();
@@ -38,7 +44,11 @@ public class World : MonoBehaviour {
         Debug.Assert(friendly_spaceship_prefab != null);
         Debug.Assert(enemy_spawn_point != null);
         Debug.Assert(friendly_spawn_point != null);
-        Debug.Assert(left_hand != null);
+        Debug.Assert(player_hand != null);
+
+            //- Input Action
+        input_action_select.action.performed += on_input_select;
+        input_action_select.action.canceled  += on_input_unselect;
 
             //- Generate the Entities
         enemy_entities = new List<AI_Actor>(GROUP_MAX_CAPACITY);
@@ -103,16 +113,17 @@ public class World : MonoBehaviour {
         event_start_new_wave();
     }
 
-    public void input_select() {
-        if (Player_Raycaster.get_selection(left_hand, out RaycastHit hit)) {
-            HolographicObject selection_holographic_obj = hit.transform.GetComponent<HolographicObject>();
-            if (selection_holographic_obj != null) {
-                event_select_holographic_object(selection_holographic_obj);
-            }
-        } else {
+        //! We're no longer using this function
+    // public void input_select() {
+    //     if (Player_Raycaster.get_selection(player_hand.transform, out RaycastHit hit)) {
+    //         HolographicObject selection_holographic_obj = hit.transform.GetComponent<HolographicObject>();
+    //         if (selection_holographic_obj != null) {
+    //             event_select_holographic_object(selection_holographic_obj);
+    //         }
+    //     } else {
 
-        }
-    }
+    //     }
+    // }
 
     void FixedUpdate() {
         // ! We used to clamp entities within the world_radius. But let's not do that and instead not
@@ -133,6 +144,7 @@ public class World : MonoBehaviour {
 
             //- Update Enemies
         bool are_all_enemies_dead = true;
+        bool are_all_friendlies_dead = true;
         foreach (AI_Actor entity in enemy_entities) {
             entity.update();
             if (!entity.is_dead) are_all_enemies_dead = false;
@@ -146,6 +158,12 @@ public class World : MonoBehaviour {
             //- Update Friendlies
         foreach (AI_Actor entity in friendly_entities) {
             entity.update();
+            if (!entity.is_dead) are_all_friendlies_dead = false;
+        }
+
+            //- All enemies are dead
+        if (are_all_friendlies_dead) {
+            event_start_new_wave();
         }
 
         foreach (HolographicObject holographic_object in holographic_objects) {
@@ -163,19 +181,7 @@ public class World : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)){
                 AI_Actor actor = hit.transform.GetComponent<AI_Actor>();
-                if (actor) {
-                        // unselect other actors
-                    foreach (AI_Actor entity in enemy_entities) {
-                        entity.is_selected = false;
-                    }
-
-                        //- Select the Leader of this flock
-                    if (actor.lead == null) {
-                        actor.is_selected = true;
-                    } else {
-                        actor.lead.is_selected = true;
-                    }
-                }
+                select_entity(actor);
             } else {
                     //- Move Actor
                     // The raycast did not hit any object so just move the actor there
@@ -207,6 +213,47 @@ public class World : MonoBehaviour {
         result.z = origin.z + Random.Range(-spawn_radius, spawn_radius);
 
         return result;
+    }
+
+        /// only allows the selection of friendly entities
+    void select_entity(AI_Actor actor) {
+        if (!actor.is_enemy) {
+                //- unselect other actors
+            foreach (AI_Actor entity in friendly_entities) {
+                entity.is_selected = false;
+            }
+
+                //- Select the Leader of this flock
+            if (actor.lead == null) {
+                actor.is_selected = true;
+            } else {
+                actor.lead.is_selected = true;
+            }
+        }
+    }
+
+///
+///                      INPUT CONTROLLER
+///
+
+    void on_input_select(InputAction.CallbackContext ctx) {
+        HolographicObject obj = player_hand.select();
+        if (obj) {
+            AI_Actor entity = obj.attachedObject.GetComponent<AI_Actor>();
+            if (entity) {
+                    //- This is where we select an entity through a holographic object
+                select_entity(entity);
+            }
+        }
+    }
+
+    void on_input_unselect(InputAction.CallbackContext ctx) {
+        Vector3 target_pos = player_hand.transform.position;
+        for (int i = 0; i < enemy_entities.Count; i++) {
+            if (enemy_entities[i].is_selected) {
+                enemy_entities[i].move(target_pos);
+            }
+        }
     }
 
 ///

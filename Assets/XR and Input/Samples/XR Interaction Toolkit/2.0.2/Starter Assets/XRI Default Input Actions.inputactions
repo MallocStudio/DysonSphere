@@ -1073,6 +1073,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "XRI Custom",
+            "id": "b1b44d9b-1f90-46cd-a2dd-707142812868",
+            "actions": [
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "1a652647-d3e4-42ec-800b-9c4cb44032e1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e7808bd4-8750-4531-ac9a-d7988617aa03",
+                    "path": "<XRController>{RightHand}/gripPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a3a27909-9d9b-4741-a73e-006dc848735f",
+                    "path": "<XRController>{LeftHand}/gripPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

@@ -27,7 +27,7 @@ public class AI_Actor : MonoBehaviour {
         // ! ONLY MEANT TO BE SET TO SOMETHING THROUGH WORLD.CS
     public float health = 1.0f; // 1 is max, 0 is min // ! note that this gets set to 1 in init()
     public bool is_enemy = false;
-    float damage = 0.01f; // the amount of damage this entity applies to others
+    float damage = 0.02f; // the amount of damage this entity applies to others
 
         //-     LINE RENDERER
     private LineRenderer line_renderer;
@@ -53,7 +53,7 @@ public class AI_Actor : MonoBehaviour {
         nav_target_pos = transform.position;
 
             //- Add this AI_Actor's boid to blackboard
-        boid.transform = transform;
+        boid.reset(transform);
         blackboard.boids.Add(boid);
         blackboard.group.Add(this);
 
@@ -190,19 +190,24 @@ public class AI_Actor : MonoBehaviour {
     }
 }
 
-
 [System.Serializable]
 public class Boid {
-    public float separation_radius = 5;
+    public float separation_radius = 10;
     public float separation = 0.5f;
     public float cohesion = 1.2f;
-    public float target_radius = 10; // the radius around the target
+    public float target_radius = 15; // the radius around the target
     public float alignment_radius = 3;
     public float alignment = 0.01f;
     public Transform transform; // the parent transform
 
     protected Vector3 final_velocity = Vector3.zero;
     private Vector3 previous_velocity = Vector3.zero; // used to dampen the fina velocity
+
+    public void reset(Transform transform) {
+        this.transform = transform;
+        this.previous_velocity = Vector3.zero;
+        this.final_velocity = Vector3.zero;
+    }
 
     public Vector3 get_velocity(Vector3 target_pos, List<Boid> boids) {
         Vector3 separation_v = get_separation_velocity(boids);
