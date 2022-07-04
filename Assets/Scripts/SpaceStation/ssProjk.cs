@@ -16,6 +16,7 @@ public class ssProjk : MonoBehaviour
     private void Start()
     {
         pool = transform.parent.GetComponent<ssWeaponBay>();
+        
     }
 
     private void Update()
@@ -49,9 +50,10 @@ public class ssProjk : MonoBehaviour
     {
         //Set the visual of the projectile visibility to false
         transform.GetChild(0).gameObject.SetActive(false);
+        SphereCollider sphereCollider = gameObject.GetComponent<SphereCollider>();
 
         //Stores all objects caught in the the blast radius of the projectile
-        Collider[] affectedColliders = Physics.OverlapSphere(transform.position, 4.0f);
+        Collider[] affectedColliders = Physics.OverlapSphere(transform.position, sphereCollider.radius);
 
         //Run a loop of all objects in the collision
         for(int i = 0; i < affectedColliders.Length - 1; i++)
