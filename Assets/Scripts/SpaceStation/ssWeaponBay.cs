@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ssWeaponBay : MonoBehaviour
 {
@@ -9,15 +10,20 @@ public class ssWeaponBay : MonoBehaviour
     [SerializeField] private bool triggerDown;
     [SerializeField] private weaponBay weapon;
     [SerializeField] private ssManager ss;
+    [SerializeField] private TMP_Text TMPweaponTimer;
     [SerializeField] private List<Transform> weaponList = new List<Transform>();
     [SerializeField] private List<ParticleSystem> particleList;
+    [SerializeField] private List<AudioSource> audioList;
 
     [Header("Combat Stats")]
     [SerializeField] public bool reloading;
+    [SerializeField] private bool isMissile;
     [SerializeField] public float projkDmg;
-    [SerializeField] private float projkSpd;
+    [SerializeField] public float projkSpd;
     [SerializeField] private float shootTimer;
     [SerializeField] private float shootTimerMax;
+    [SerializeField] private float fireReady;
+    [SerializeField] private float fireReadyMax;
     [SerializeField] private float reloadTime;
     [SerializeField] private float reloadTimeMax;
     [SerializeField] private int weaponIndex;
@@ -50,7 +56,10 @@ public class ssWeaponBay : MonoBehaviour
         foreach (Transform weapon in weaponList)
         {
             particleList.Add(weapon.GetComponent<ParticleSystem>());
+            audioList.Add(weapon.GetComponent<AudioSource>());
         }
+        TMPweaponTimer.SetText("CURRENT WEAPON: " + weapon.ToString());
+
     }
 
     private void Update()
@@ -58,6 +67,17 @@ public class ssWeaponBay : MonoBehaviour
         if (ss.gunMode == true)
         {
             Aim();
+        }
+        if(fireReady >= fireReadyMax)
+        {
+            reloading = true;
+            reloadTime -= Time.deltaTime;
+            if(reloadTime <= 0)
+            {
+                reloading = false;
+                fireReady = 0;
+                reloadTime = reloadTimeMax;
+            }
         }
         if (triggerDown)
         {
@@ -71,6 +91,14 @@ public class ssWeaponBay : MonoBehaviour
                 shootTimer -= Time.deltaTime;
             }
         }
+    }
+
+    private void LateUpdate()
+    {
+        if (!reloading)
+            TMPweaponTimer.SetText(weapon.ToString() + ": READY FIRE");
+        else
+            TMPweaponTimer.SetText(weapon.ToString() + ": RELOADING: " + Mathf.Floor(reloadTime));
     }
 
     public void TriggerOn()
@@ -88,21 +116,21 @@ public class ssWeaponBay : MonoBehaviour
     {
         if (ss.gunMode)
         {
-            if (weapon == weaponBay.cannon)
+            if (weapon == weaponBay.Cannon)
             {
                 foreach (Transform battery in weaponList)
                 {
                     battery.LookAt(ss.cannonAimRet);
                 }
             }
-            else if (weapon == weaponBay.mgun)
+            else if (weapon == weaponBay.MachineGun)
             {
                 foreach (Transform battery in weaponList)
                 {
                     battery.LookAt(ss.mgunAimRet);
                 }
             }
-            else if (weapon == weaponBay.missile)
+            else if (weapon == weaponBay.Missile)
             {
                 foreach (Transform battery in weaponList)
                 {
@@ -116,9 +144,11 @@ public class ssWeaponBay : MonoBehaviour
 
     public void Fire()
     {
-        if (activeBay)
+        if (activeBay && !isMissile && !reloading)
         {
+            fireReady += Time.deltaTime;
             particleList[weaponIndex].Play();
+            audioList[weaponIndex].Play();
             weaponIndex++;
             if (weaponIndex >= weaponList.Count)
                 weaponIndex = 0;
@@ -128,9 +158,24 @@ public class ssWeaponBay : MonoBehaviour
             g.transform.rotation = weaponList[weaponIndex].rotation;
             g.SetActive(true);
             /* END INSTANTIATE */
-
         }
         else return;
+    }
+
+    public void MissileFire(int tubeIndex)
+    {
+        if (activeBay && isMissile)
+        {
+            particleList[tubeIndex].Play();
+            audioList[tubeIndex].Play();
+
+            /* INSTANTIATE PROJK */
+            GameObject g = GetObject();
+            g.transform.position = weaponList[tubeIndex].position;
+            g.transform.rotation = weaponList[tubeIndex].rotation;
+            g.SetActive(true);
+            /* END INSTANTIATE */
+        }
     }
 
     /* OBJECT POOLING */

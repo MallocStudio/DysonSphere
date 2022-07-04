@@ -9,6 +9,7 @@ public class ssProjk : MonoBehaviour
     [SerializeField] private float spd;
     [SerializeField] private float lifeTime;
     [SerializeField] private float timer;
+    [SerializeField] private ParticleSystem explPS;
     [SerializeField] private ssWeaponBay pool;
     [SerializeField] private AI_Actor damageTarget;
     World world;
@@ -21,7 +22,15 @@ public class ssProjk : MonoBehaviour
     private void Start()
     {
         pool = transform.parent.GetComponent<ssWeaponBay>();
-        
+        explPS = GetComponent<ParticleSystem>();
+        projDamage = pool.projkDmg;
+        spd = pool.projkSpd;
+    }
+
+    public void evDetonate()
+    {
+        detonate = true;
+        explPS.Play();
     }
 
     private void Update()
