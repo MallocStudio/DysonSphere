@@ -5,7 +5,7 @@ using UnityEngine;
 public class ssWeaponBay : MonoBehaviour
 {
     [Header("Plugins")]
-    [SerializeField] private bool curBay;
+    [SerializeField] public bool activeBay;
     [SerializeField] private bool triggerDown;
     [SerializeField] private weaponBay weapon;
     [SerializeField] private ssManager ss;
@@ -13,7 +13,8 @@ public class ssWeaponBay : MonoBehaviour
     [SerializeField] private List<ParticleSystem> particleList;
 
     [Header("Combat Stats")]
-    [SerializeField] private float projkDmg;
+    [SerializeField] public bool reloading;
+    [SerializeField] public float projkDmg;
     [SerializeField] private float projkSpd;
     [SerializeField] private float shootTimer;
     [SerializeField] private float shootTimerMax;
@@ -29,6 +30,7 @@ public class ssWeaponBay : MonoBehaviour
     [SerializeField] private List<GameObject> freeList;
     [SerializeField] private List<GameObject> usedList;
 
+
     private void Awake()
     {
         /* OBJECT POOL */
@@ -41,7 +43,7 @@ public class ssWeaponBay : MonoBehaviour
         }
 
         /* DEFAULTS */
-        curBay = false;
+        activeBay = false;
         triggerDown = false;
         weaponIndex = 0;
         ss = GetComponentInParent<ssManager>();
@@ -114,7 +116,7 @@ public class ssWeaponBay : MonoBehaviour
 
     public void Fire()
     {
-        if (curBay)
+        if (activeBay)
         {
             particleList[weaponIndex].Play();
             weaponIndex++;
