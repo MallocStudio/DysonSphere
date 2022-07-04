@@ -48,9 +48,12 @@ public class ssProjk : MonoBehaviour
 
     public void Explosion()
     {
-        transform.GetChild(0).gameObject.SetActive(false);
+        SphereCollider sphereCollider = gameObject.GetComponent<SphereCollider>();
 
-        Collider[] affectedColliders = Physics.OverlapSphere(transform.position, 3.5f);
+        //Stores all objects caught in the the blast radius of the projectile
+        Collider[] affectedColliders = Physics.OverlapSphere(transform.position, sphereCollider.radius);
+
+        transform.GetChild(0).gameObject.SetActive(false);
 
         for(int i = 0; i < affectedColliders.Length - 1; i++)
         {
