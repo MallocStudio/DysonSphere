@@ -6,6 +6,7 @@ using UnityEngine.XR;
 using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.XR.Interaction.Toolkit;
+using TMPro;
 
 public class World : MonoBehaviour {
     const int MOUSE_BUTTON_LEFT   = 0;
