@@ -133,7 +133,6 @@ public class AI_Actor : MonoBehaviour {
             foreach (AI_Actor enemy in blackboard.enemies) {
                 if (enemy.is_dead) continue;
                 if (Vector3.Distance(transform.position, enemy.transform.position) < attack_radius) {
-                    // look_at(enemy.transform.position); //@incomplete instead shoot at the enemy. Transform should be replaced with SpaceShip
                     if (line_renderer_visibility_material_amount <= line_renderer_visibility_material_min) {
                         shoot_at(enemy);
                     }
@@ -171,17 +170,17 @@ public class AI_Actor : MonoBehaviour {
     }
 
     private void look_at(Vector3 pos) {
-        Quaternion rot = transform.rotation;
-        Vector3 look_dir = (transform.position - (pos * 1000)).normalized;
-        if (look_dir.sqrMagnitude < 1) {
-            return; // don't do shit because what we looking at is outselves
-        }
-        Quaternion lookat_rot = Quaternion.LookRotation(look_dir, Vector3.up);
+        // Quaternion rot = transform.rotation;
+        // Vector3 look_dir = (transform.position - (pos * 1000)).normalized;
+        // if (look_dir.sqrMagnitude < 1) {
+        //     return; // don't do shit because what we looking at is outselves
+        // }
+        // Quaternion lookat_rot = Quaternion.LookRotation(look_dir, Vector3.up);
 
-        rot = Quaternion.Slerp(rot, lookat_rot, Time.deltaTime * 10);
+        // rot = Quaternion.Slerp(rot, lookat_rot, Time.deltaTime * 10);
 
-        transform.rotation = rot;
-        // transform.LookAt(pos, Vector3.up);
+        // transform.rotation = rot;
+        transform.LookAt(pos, Vector3.up);
     }
 
         /// This is called from shoot_at() when health is less than or equal to zero

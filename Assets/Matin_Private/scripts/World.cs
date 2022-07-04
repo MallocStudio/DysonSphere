@@ -270,6 +270,10 @@ public class World : MonoBehaviour {
         }
     }
 
+    public void event_damage_enemies_in_radius(Vector3 origin, float radius) {
+
+    }
+
         /// Kill all friendly ships that are found within the given radius
     public void event_kill_friendly_in_radius(Vector3 origin, float radius) {
         foreach (AI_Actor entity in friendly_entities) {
