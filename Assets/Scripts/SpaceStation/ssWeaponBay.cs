@@ -162,6 +162,7 @@ public class ssWeaponBay : MonoBehaviour
         else return;
     }
 
+
     public void MissileFire(int tubeIndex)
     {
         if (activeBay && isMissile)
@@ -170,7 +171,8 @@ public class ssWeaponBay : MonoBehaviour
             audioList[tubeIndex].Play();
 
             /* INSTANTIATE PROJK */
-            GameObject g = GetObject();
+            //  GameObject g = GetObject();
+            GameObject g = weaponList[tubeIndex].gameObject;
             g.transform.position = weaponList[tubeIndex].position;
             g.transform.rotation = weaponList[tubeIndex].rotation;
             g.SetActive(true);
