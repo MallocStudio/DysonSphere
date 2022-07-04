@@ -4,21 +4,24 @@ using UnityEngine;
 
 public class ssProjk : MonoBehaviour
 {
-    [SerializeField] private bool detonate = false;
-    [SerializeField] private float missileDamage;
+    [SerializeField] private bool detonate;
+    [SerializeField] private float projDamage;
     [SerializeField] private float spd;
     [SerializeField] private float lifeTime;
     [SerializeField] private float timer;
     [SerializeField] private ssWeaponBay pool;
+    [SerializeField] private AI_Actor damageTarget;
+    World world;
 
-    private ShipHealth damageTarget;
+    public void init(World world)
+    {
+        this.world = world;
+    }
 
     private void Start()
     {
-        pool = transform.parent.parent.GetComponent<ssWeaponBay>();
-
-        //damage = transform.gameObject.GetComponentInParent<ssWeaponBay>().projkDmg;
-        missileDamage = transform.parent.transform.gameObject.GetComponentInParent<ssWeaponBay>().projkDmg;
+        pool = transform.parent.GetComponent<ssWeaponBay>();
+        
     }
 
     private void Update()
@@ -39,41 +42,45 @@ public class ssProjk : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Enemy")
+        damageTarget = other.transform.GetComponent<AI_Actor>();
+
+        //Triggers when the object hit has the ShipHelth.cs
+        if (other.gameObject == damageTarget.gameObject)
         {
             detonate = true;
-            //Debug.Log("object collid");
         }
     }
 
     public void Explosion()
     {
+        //Set the visual of the projectile visibility to false
+        transform.GetChild(0).gameObject.SetActive(false);
         SphereCollider sphereCollider = gameObject.GetComponent<SphereCollider>();
+        world.event_damage_enemies_in_radius(transform.position, sphereCollider.radius);
 
-        //Stores all objects caught in the the blast radius of the projectile
+/*       //Stores all objects caught in the the blast radius of the projectile
         Collider[] affectedColliders = Physics.OverlapSphere(transform.position, sphereCollider.radius);
 
-        transform.GetChild(0).gameObject.SetActive(false);
-
+        //Run a loop of all objects in the collision
         for(int i = 0; i < affectedColliders.Length - 1; i++)
         {
+            //Gets the components of the object and passes the damage of the projectile
+            //into the object health
             ShipHealth thisShip = affectedColliders[i].gameObject.GetComponent<ShipHealth>();
-            thisShip.TakeDamage(missileDamage);
-            Debug.Log(missileDamage);
-
+            thisShip.TakeDamage(projDamage);
+            
+            //Break loop after all affected objects have been called
             if (i == affectedColliders.Length - 1)
             {
                 break;
             }
         }
-
-        //Debug.Log("break");
-
-        //Debug.Log(missileDamage);
-        //
-        //ShipHealth shipHealth = this.gameObject.GetComponent<ShipHealth>();
-        //shipHealth.TakeDamage(missileDamage);
-
-        //pool.ReturnObject(gameObject);
+*/
+        detonate = false;
+        timer = 0;
+        //Send the object back to the pool list
+        pool.ReturnObject(gameObject);
+        //Sets the visual back to true
+        transform.GetChild(0).gameObject.SetActive(true);
     }
 }

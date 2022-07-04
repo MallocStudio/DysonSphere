@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2007735134341243480}
   - component: {fileID: 9021797398034145480}
-  - component: {fileID: 5907709688163982516}
   - component: {fileID: 767200133699044087}
   - component: {fileID: 1783917171}
   m_Layer: 0
@@ -50,18 +49,6 @@ MonoBehaviour:
   lead: {fileID: 0}
   is_selected: 0
   attack_radius: 15
---- !u!114 &5907709688163982516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3942207151965568247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f22195ad2183e3a4086eeab4caf65caf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!120 &767200133699044087
 LineRenderer:
   m_ObjectHideFlags: 0
