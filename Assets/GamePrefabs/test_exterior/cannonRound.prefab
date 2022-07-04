@@ -126,8 +126,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detonate: 0
-  missileDamage: 0
+  projDamage: 0
   spd: 10
   lifeTime: 5
   timer: 0
   pool: {fileID: 0}
+  damageTarget: {fileID: 0}

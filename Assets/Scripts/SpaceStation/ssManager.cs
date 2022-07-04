@@ -43,10 +43,10 @@ public class ssManager : MonoBehaviour
     [SerializeField] private TMP_Text TMPcannonTimer;
     [SerializeField] private TMP_Text TMPmgunTimer;
     [SerializeField] private TMP_Text TMPmissileTimer;
+    [SerializeField] private TMP_Text TMPcurWeapon;
 
     [Header("Station Console Inserts")]
     [SerializeField] public GameObject gModeLight;
-    [SerializeField] public GameObject ringSel;
 
     [Header("Input Events")]
     [SerializeField] public UnityEvent trigStartEv;
@@ -58,6 +58,8 @@ public class ssManager : MonoBehaviour
 
         /* Set Default */
         curBay = weaponBay.cannon;
+        TMPcurWeapon.SetText("CURRENT WEAPON: " + curBay);
+
         combatRing.Rotate(0, 0, 0);
         cannonTimer = 0f;
         mgunTimer = 0f;
@@ -75,6 +77,7 @@ public class ssManager : MonoBehaviour
         /* Input Action SetUp */
         trigActRef.action.performed += TrigStartAction;
         trigActRef.action.canceled += TrigEndAction;
+
     }
 
     private void LateUpdate()
@@ -136,13 +139,12 @@ public class ssManager : MonoBehaviour
             mgunRet.SetActive(true);
             missileRet.SetActive(false);
         }
-        else if (curBay == weaponBay.cannon)
+        else if (curBay == weaponBay.missile)
         {
             cannonRet.SetActive(false);
             mgunRet.SetActive(false);
             missileRet.SetActive(true);
         }
-        else return;
     }
     public void RotateBayUp()
     {
@@ -154,6 +156,7 @@ public class ssManager : MonoBehaviour
             actWeaponBay = weaponBays[(int)curBay];
             actWeaponBay.activeBay = true;
         }
+        TMPcurWeapon.SetText("Current Weapon:" + curBay);
         /* TEST IF ABOVE WORKS
          if (curBay == weaponBay.cannon)
             curBay = weaponBay.mgun;
@@ -173,6 +176,8 @@ public class ssManager : MonoBehaviour
             actWeaponBay = weaponBays[(int)curBay];
             actWeaponBay.activeBay = true;
         }
+        TMPcurWeapon.SetText("Current Weapon:" + curBay);
+
     }
 }
 
