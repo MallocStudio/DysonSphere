@@ -1221,7 +1221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  m_NotificationBehavior: 2
+  m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -1391,7 +1391,7 @@ MonoBehaviour:
     m_ActionName: XRI RightHand Locomotion/Move
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: XRI RightHand Interaction
+  m_DefaultActionMap: b1b44d9b-1f90-46cd-a2dd-707142812868
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &630488591
