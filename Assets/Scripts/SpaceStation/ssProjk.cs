@@ -9,9 +9,10 @@ public class ssProjk : MonoBehaviour
     [SerializeField] private float spd;
     [SerializeField] private float lifeTime;
     [SerializeField] private float timer;
+    [SerializeField] private ParticleSystem explPS;
     [SerializeField] private ssWeaponBay pool;
     [SerializeField] private AI_Actor damageTarget;
-    World world;
+    [SerializeField] World world;
 
     public void init(World world)
     {
@@ -20,8 +21,21 @@ public class ssProjk : MonoBehaviour
 
     private void Start()
     {
+        if (world == null) {
+            var objs = FindObjectsOfType<World>();
+            this.world = objs[0];
+        }
+        Debug.Assert(world != null);
         pool = transform.parent.GetComponent<ssWeaponBay>();
-        
+        explPS = GetComponent<ParticleSystem>();
+        projDamage = pool.projkDmg;
+        spd = pool.projkSpd;
+    }
+
+    public void evDetonate()
+    {
+        detonate = true;
+        explPS.Play();
     }
 
     private void Update()
@@ -56,7 +70,7 @@ public class ssProjk : MonoBehaviour
         //Set the visual of the projectile visibility to false
         transform.GetChild(0).gameObject.SetActive(false);
         SphereCollider sphereCollider = gameObject.GetComponent<SphereCollider>();
-        world.event_damage_enemies_in_radius(transform.position, sphereCollider.radius);
+        world.event_damage_enemies_in_radius(transform.position, sphereCollider.radius, 0.5f);
 
 /*       //Stores all objects caught in the the blast radius of the projectile
         Collider[] affectedColliders = Physics.OverlapSphere(transform.position, sphereCollider.radius);
@@ -68,7 +82,7 @@ public class ssProjk : MonoBehaviour
             //into the object health
             ShipHealth thisShip = affectedColliders[i].gameObject.GetComponent<ShipHealth>();
             thisShip.TakeDamage(projDamage);
-            
+
             //Break loop after all affected objects have been called
             if (i == affectedColliders.Length - 1)
             {

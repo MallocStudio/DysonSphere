@@ -26,7 +26,15 @@ public class World : MonoBehaviour {
     [SerializeField] Transform enemy_spawn_point;
     [SerializeField] public Transform friendly_spawn_point;
     [SerializeField] Hologram hologram_panel;
-    [SerializeField] Transform left_hand;
+    uint number_of_enemy_groups = 0;
+    uint number_of_friendly_groups = 0;
+
+///
+/// INPUT
+///
+
+    [SerializeField] Player_Hand player_hand;
+    [SerializeField] InputActionReference input_action_select;
 
         //- Floor
     Plane floor = new Plane();
@@ -38,7 +46,11 @@ public class World : MonoBehaviour {
         Debug.Assert(friendly_spaceship_prefab != null);
         Debug.Assert(enemy_spawn_point != null);
         Debug.Assert(friendly_spawn_point != null);
-        Debug.Assert(left_hand != null);
+        Debug.Assert(player_hand != null);
+
+            //- Input Action
+        input_action_select.action.performed += on_input_select;
+        input_action_select.action.canceled  += on_input_unselect;
 
             //- Generate the Entities
         enemy_entities = new List<AI_Actor>(GROUP_MAX_CAPACITY);
@@ -46,73 +58,29 @@ public class World : MonoBehaviour {
         holographic_objects = new List<HolographicObject>();
 
             //- Generate Enemies
-        for (int i = 0; i < GROUP_MAX_CAPACITY; i++) {
-                // even though we set the position here, it'll get reset in entity.init()
-            Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
-            GameObject gameobject = Instantiate(enemy_spaceship_prefab, pos, Quaternion.identity);
-
-                //- Link the created entity to the hologram tabel
-            if (hologram_panel != null) {
-                holographic_objects.Add(hologram_panel.LinkNewEntity(gameobject.transform));
-            } else {
-                Debug.LogWarning("hologram_panel on world component is null");
-            }
-
-            AI_Actor entity = gameobject.GetComponent<AI_Actor>();
-            AI_Actor lead = null;
-            if (i > 0) lead = enemy_entities[0];
-            // entity.is_dead = true; // start dead until we start a new wave
-
-            // Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
-                // Makes enemies undead
-            entity.init(this, enemy_blackboard, lead, pos, true);
-            enemy_entities.Add(entity);
-        }
+        event_add_enemy_group();
 
             //- Generate Friendly Ships
-        for (int i = 0; i < GROUP_MAX_CAPACITY; i++) {
-                // even though we set the position here, it'll get reset in entity.init()
-            Vector3 pos = get_random_position_in_worldspace(friendly_spawn_point.position);
-            GameObject gameobject = Instantiate(friendly_spaceship_prefab, pos, Quaternion.identity);
-
-                //- Link the created entity to the hologram tabel
-            if (hologram_panel != null) {
-                holographic_objects.Add(hologram_panel.LinkNewEntity(gameobject.transform));
-            } else {
-                Debug.LogWarning("hologram_panel on world component is null");
-            }
-
-            AI_Actor entity = gameobject.GetComponent<AI_Actor>();
-
-            AI_Actor lead = null;
-            if (i > 0) lead = friendly_entities[0];
-            entity.init(this, friendly_blackboard, lead, pos, false);
-
-            friendly_entities.Add(entity);
-        }
+        event_add_friendly_group();
 
             //- Setup Teams
-        foreach (AI_Actor entity in enemy_entities) {
-            friendly_blackboard.enemies.Add(entity);
-        }
-        foreach(AI_Actor entity in friendly_entities) {
-            enemy_blackboard.enemies.Add(entity);
-        }
+        event_update_teams();
 
             //- Reset alls enemies and prepares everything for a new wave
-        event_start_new_wave();
+        event_start_new_wave_immediately();
     }
 
-    public void input_select() {
-        if (Player_Raycaster.get_selection(left_hand, out RaycastHit hit)) {
-            HolographicObject selection_holographic_obj = hit.transform.GetComponent<HolographicObject>();
-            if (selection_holographic_obj != null) {
-                event_select_holographic_object(selection_holographic_obj);
-            }
-        } else {
+        //! We're no longer using this function
+    // public void input_select() {
+    //     if (Player_Raycaster.get_selection(player_hand.transform, out RaycastHit hit)) {
+    //         HolographicObject selection_holographic_obj = hit.transform.GetComponent<HolographicObject>();
+    //         if (selection_holographic_obj != null) {
+    //             event_select_holographic_object(selection_holographic_obj);
+    //         }
+    //     } else {
 
-        }
-    }
+    //     }
+    // }
 
     void FixedUpdate() {
         // ! We used to clamp entities within the world_radius. But let's not do that and instead not
@@ -138,9 +106,8 @@ public class World : MonoBehaviour {
             if (!entity.is_dead) are_all_enemies_dead = false;
         }
 
-            //- All enemies are dead
         if (are_all_enemies_dead) {
-            event_start_new_wave();
+            event_start_new_wave_with_delay();
         }
 
             //- Update Friendlies
@@ -163,19 +130,7 @@ public class World : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)){
                 AI_Actor actor = hit.transform.GetComponent<AI_Actor>();
-                if (actor) {
-                        // unselect other actors
-                    foreach (AI_Actor entity in enemy_entities) {
-                        entity.is_selected = false;
-                    }
-
-                        //- Select the Leader of this flock
-                    if (actor.lead == null) {
-                        actor.is_selected = true;
-                    } else {
-                        actor.lead.is_selected = true;
-                    }
-                }
+                select_entity(actor);
             } else {
                     //- Move Actor
                     // The raycast did not hit any object so just move the actor there
@@ -190,7 +145,7 @@ public class World : MonoBehaviour {
 
             //@debug shoot
         if (keyboard.spaceKey.wasPressedThisFrame) {
-            event_start_new_wave();
+            event_start_new_wave_immediately();
             // foreach (AI_Actor entity in enemy_entities) {
             //     if (entity.lead != null) {
             //         entity.shoot_at(entity.lead);
@@ -209,37 +164,86 @@ public class World : MonoBehaviour {
         return result;
     }
 
+        /// only allows the selection of friendly entities
+    void select_entity(AI_Actor actor) {
+        if (!actor.is_enemy) {
+                //- unselect other actors
+            foreach (AI_Actor entity in friendly_entities) {
+                entity.is_selected = false;
+            }
+
+                //- Select the Leader of this flock
+            if (actor.lead == null) {
+                actor.is_selected = true;
+            } else {
+                actor.lead.is_selected = true;
+            }
+        }
+    }
+
+///
+///                      INPUT CONTROLLER
+///
+
+    void on_input_select(InputAction.CallbackContext ctx) {
+        HolographicObject obj = player_hand.select();
+        if (obj) {
+            AI_Actor entity = obj.attachedObject.GetComponent<AI_Actor>();
+            if (entity) {
+                    //- This is where we select an entity through a holographic object
+                select_entity(entity);
+            }
+        }
+    }
+
+    void on_input_unselect(InputAction.CallbackContext ctx) {
+        Vector3 target_pos = player_hand.transform.position;
+        for (int i = 0; i < enemy_entities.Count; i++) {
+            if (enemy_entities[i].is_selected) {
+                enemy_entities[i].move(target_pos);
+            }
+        }
+    }
+
 ///
 ///     GAME EVENTS THAT CAN BE CALLED FROM OUTSIDE OF THIS SCRIPT
 ///
+    bool wave_timer_has_started = false;
+    [SerializeField] float wave_timer_init = 10;
+    [SerializeField] float wave_timer = 10;
+        /// Calls event_start_new_wave_immediately after "wave_timer_init" time
+    public void event_start_new_wave_with_delay() {
+        if (wave_timer_has_started) {
+            if (wave_timer > 0) {
+                wave_timer -= Time.deltaTime;
+            } else {
+                // - TIMER REACHED ITS END
+                wave_timer_has_started = false;
+                event_start_new_wave_immediately();
+            }
+        } else {
+            wave_timer_has_started = true;
+            wave_timer = wave_timer_init;
+        }
+    }
 
         /// Spawn new enemies and regenerate friendlies.
         /// Does not get rid of left over enemies.
-    public void event_start_new_wave() {
-        //- Reset Enemies
-        for (int i = 0; i < enemy_entities.Count; i++) {
-            AI_Actor entity = enemy_entities[i];
-            AI_Actor lead = null;
-            if (i > 0) lead = enemy_entities[0];
+    [SerializeField] float player_score = 0;
+    [SerializeField] float cost_of_new_friendly_group = 10;
+    public void event_start_new_wave_immediately() {
+            //- Reset Enemies
+        event_reset_enemy_groups();
 
-            Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
-                // Makes enemies undead
-            entity.init(this, enemy_blackboard, lead, pos, true);
+            //- Reset Friendlies
+            // @temp do we want to reset friendlies?
+        event_reset_friendly_groups();
+
+            //- Add a new group of friendlies if we have enough score
+        if (player_score > cost_of_new_friendly_group) {
+            cost_of_new_friendly_group += player_score;
+            event_add_friendly_group();
         }
-
-        for (int i = 0; i < friendly_entities.Count; i++) {
-            AI_Actor entity = friendly_entities[i];
-            AI_Actor lead = null;
-            if (i > 0) lead = friendly_entities[0];
-
-            Vector3 pos = get_random_position_in_worldspace(friendly_spawn_point.position);
-                // Makes enemies undead
-            entity.init(this, friendly_blackboard, lead, pos, false);
-        }
-            // @temp tell each leader to go to center to fight each other
-        Vector3 center = (enemy_spawn_point.position + friendly_spawn_point.position) / 2;
-        friendly_entities[0].move(center);
-        enemy_entities[0].move(center);
     }
 
         /// Pause the game and show the pause menu
@@ -270,8 +274,14 @@ public class World : MonoBehaviour {
         }
     }
 
-    public void event_damage_enemies_in_radius(Vector3 origin, float radius) {
-
+    public void event_damage_enemies_in_radius(Vector3 origin, float radius, float amount) {
+        foreach (AI_Actor entity in enemy_entities) {
+            if (!entity.is_dead) {
+                if (Vector3.Distance(entity.transform.position, origin) <= radius) {
+                    entity.take_damage(amount);
+                }
+            }
+        }
     }
 
         /// Kill all friendly ships that are found within the given radius
@@ -312,6 +322,104 @@ public class World : MonoBehaviour {
             entity.is_selected = true;
         } else {
             entity.lead.is_selected = true;
+        }
+    }
+
+        /// Remember to call event_update_teams() afterwards
+        /// Adds another group of friendlies to the world
+    public void event_add_friendly_group() {
+        number_of_friendly_groups++;
+        AI_Actor lead = null;
+        for (int i = 0; i < GROUP_MAX_CAPACITY; i++) {
+                // even though we set the position here, it'll get reset in entity.init()
+            Vector3 pos = get_random_position_in_worldspace(friendly_spawn_point.position);
+            GameObject gameobject = Instantiate(friendly_spaceship_prefab, pos, Quaternion.identity);
+
+                //- Link the created entity to the hologram tabel
+            if (hologram_panel != null) {
+                holographic_objects.Add(hologram_panel.LinkNewEntity(gameobject.transform));
+            } else {
+                Debug.LogWarning("hologram_panel on world component is null");
+            }
+
+            AI_Actor entity = gameobject.GetComponent<AI_Actor>();
+
+            if (i == 0) lead = entity;
+            entity.init(this, friendly_blackboard, lead, pos, false);
+            friendly_entities.Add(entity);
+        }
+    }
+
+        /// Remember to call event_update_teams() afterwards
+        /// Adds another group of enemies to the world
+    public void event_add_enemy_group() {
+        number_of_enemy_groups++;
+        AI_Actor lead = null;
+        for (int i = 0; i < GROUP_MAX_CAPACITY; i++) {
+                // even though we set the position here, it'll get reset in entity.init()
+            Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
+            GameObject gameobject = Instantiate(enemy_spaceship_prefab, pos, Quaternion.identity);
+
+                //- Link the created entity to the hologram tabel
+            if (hologram_panel != null) {
+                holographic_objects.Add(hologram_panel.LinkNewEntity(gameobject.transform));
+            } else {
+                Debug.LogWarning("hologram_panel on world component is null");
+            }
+
+            AI_Actor entity = gameobject.GetComponent<AI_Actor>();
+            if (i == 0) lead = entity;
+            entity.init(this, enemy_blackboard, lead, pos, true);
+            enemy_entities.Add(entity);
+        }
+    }
+
+    public void event_update_teams() {
+        foreach (AI_Actor entity in enemy_entities) {
+            friendly_blackboard.enemies.Add(entity);
+        }
+        foreach(AI_Actor entity in friendly_entities) {
+            enemy_blackboard.enemies.Add(entity);
+        }
+    }
+
+    public void event_reset_enemy_groups() {
+        // make sure that the number of spawned enemies (dead or alive) is equal to the number of groups * GROUP_MAX_CAPACITY
+        Debug.Assert(number_of_enemy_groups * GROUP_MAX_CAPACITY == enemy_entities.Count());
+
+        for (int group = 0; group < number_of_enemy_groups; group++) {
+            AI_Actor lead = null;
+            for (int i = group; i < (GROUP_MAX_CAPACITY + group); i++) {
+                AI_Actor entity = enemy_entities[i];
+                if (i == 0) {
+                    lead = entity;
+                }
+
+                Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
+                    // Makes enemies undead
+                entity.init(this, enemy_blackboard, lead, pos, true);
+
+                if (lead) {
+                    lead.move(friendly_spawn_point.position);
+                }
+            }
+        }
+    }
+
+    public void event_reset_friendly_groups() {
+        // make sure that the number of spawned friendlies (dead or alive) is equal to the number of groups * GROUP_MAX_CAPACITY
+        Debug.Assert(number_of_friendly_groups * GROUP_MAX_CAPACITY == friendly_entities.Count());
+
+        for (int group = 0; group < number_of_friendly_groups; group++) {
+            AI_Actor lead = null;
+            for (int i = group; i < (GROUP_MAX_CAPACITY + group); i++) {
+                AI_Actor entity = friendly_entities[i];
+                if (i == 0) lead = entity;
+
+                Vector3 pos = get_random_position_in_worldspace(friendly_spawn_point.position);
+                    // Makes enemies undead
+                entity.init(this, friendly_blackboard, lead, pos, false);
+            }
         }
     }
 }

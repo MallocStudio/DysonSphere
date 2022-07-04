@@ -103,7 +103,7 @@ Material:
     - _Metallic: 1
     - _OcclusionStrength: 1
     - _OutlineActive: 0
-    - _OutlineWidth: 0.0245
+    - _OutlineWidth: 0.0253
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1

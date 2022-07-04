@@ -32,21 +32,14 @@ public class ssManager : MonoBehaviour
     [SerializeField] public bool gunMode;
     [SerializeField] public bool fireSafety;
 
-    [SerializeField] private float cannonTimer;
-    [SerializeField] private float mgunTimer;
-    [SerializeField] private float missileTimer;
-
     [Header("Station Status GUI")]
     [SerializeField] private GameObject cannonRet;
     [SerializeField] private GameObject mgunRet;
     [SerializeField] private GameObject missileRet;
-    [SerializeField] private TMP_Text TMPcannonTimer;
-    [SerializeField] private TMP_Text TMPmgunTimer;
-    [SerializeField] private TMP_Text TMPmissileTimer;
+    [SerializeField] private TMP_Text TMPcurWeapon;
 
     [Header("Station Console Inserts")]
     [SerializeField] public GameObject gModeLight;
-    [SerializeField] public GameObject ringSel;
 
     [Header("Input Events")]
     [SerializeField] public UnityEvent trigStartEv;
@@ -57,11 +50,10 @@ public class ssManager : MonoBehaviour
         /* CACHE SHIT */
 
         /* Set Default */
-        curBay = weaponBay.cannon;
+        curBay = weaponBay.Cannon;
+        TMPcurWeapon.SetText("CURRENT WEAPON: " +curBay.ToString());
+
         combatRing.Rotate(0, 0, 0);
-        cannonTimer = 0f;
-        mgunTimer = 0f;
-        missileTimer = 0f;
 
         actWeaponBay = weaponBays[0];
         actWeaponBay.activeBay = true;
@@ -75,26 +67,9 @@ public class ssManager : MonoBehaviour
         /* Input Action SetUp */
         trigActRef.action.performed += TrigStartAction;
         trigActRef.action.canceled += TrigEndAction;
+
     }
 
-    private void LateUpdate()
-    {
-        /* Update Console UI elements */
-        if (cannonTimer >= 0)
-            TMPcannonTimer.SetText("Cannon: READY FIRE");
-        else
-            TMPcannonTimer.SetText("Cannon: RELOADING: " + cannonTimer);
-
-        if (mgunTimer >= 0)
-            TMPmgunTimer.SetText("Machine Gun: READY FIRE");
-        else
-            TMPmgunTimer.SetText("Machine Gun: RELOADING " + mgunTimer);
-
-        if (missileTimer >= 0)
-            TMPmissileTimer.SetText("Missile: READY FIRE");
-        else
-            TMPmissileTimer.SetText("Missile: RELOADING " + missileTimer);
-    }
     private void TrigStartAction(InputAction.CallbackContext obj)
     {
         trigStartEv.Invoke();
@@ -124,25 +99,24 @@ public class ssManager : MonoBehaviour
     }
     private void GunnaryActive()
     {
-        if (curBay == weaponBay.cannon)
+        if (curBay == weaponBay.Cannon)
         {
             cannonRet.SetActive(true);
             mgunRet.SetActive(false);
             missileRet.SetActive(false);
         }
-        else if (curBay == weaponBay.mgun)
+        else if (curBay == weaponBay.MachineGun)
         {
             cannonRet.SetActive(false);
             mgunRet.SetActive(true);
             missileRet.SetActive(false);
         }
-        else if (curBay == weaponBay.cannon)
+        else if (curBay == weaponBay.Missile)
         {
             cannonRet.SetActive(false);
             mgunRet.SetActive(false);
             missileRet.SetActive(true);
         }
-        else return;
     }
     public void RotateBayUp()
     {
@@ -154,6 +128,7 @@ public class ssManager : MonoBehaviour
             actWeaponBay = weaponBays[(int)curBay];
             actWeaponBay.activeBay = true;
         }
+        TMPcurWeapon.SetText("Current Weapon: " + curBay.ToString());
         /* TEST IF ABOVE WORKS
          if (curBay == weaponBay.cannon)
             curBay = weaponBay.mgun;
@@ -173,14 +148,16 @@ public class ssManager : MonoBehaviour
             actWeaponBay = weaponBays[(int)curBay];
             actWeaponBay.activeBay = true;
         }
+        TMPcurWeapon.SetText("Current Weapon: " + curBay.ToString());
+
     }
 }
 
 public enum weaponBay
 {
-    cannon, // 0
-    mgun,   // 1
-    missile, // 2
+    Cannon, // 0
+    MachineGun,   // 1
+    Missile, // 2
 
     COUNT, // 3 the maximum number of stuff above
 }
