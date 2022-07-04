@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7608943991914372480}
-  - component: {fileID: 6047902232001205233}
   - component: {fileID: 7986564549719065624}
   - component: {fileID: 7986564549719065623}
   - component: {fileID: 7986564549719065622}
+  - component: {fileID: 4082094693184400505}
   m_Layer: 0
   m_Name: Push
   m_TagString: Untagged
@@ -35,19 +35,6 @@ Transform:
   m_Father: {fileID: 6728695044438268742}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6047902232001205233
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2601916377883761745}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.8, y: 0.8, z: 0.8}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7986564549719065624
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -62,8 +49,8 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
+  m_Constraints: 122
+  m_CollisionDetection: 2
 --- !u!153 &7986564549719065623
 ConfigurableJoint:
   m_ObjectHideFlags: 0
@@ -76,7 +63,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0.20999998, z: 0}
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -123,8 +110,8 @@ ConfigurableJoint:
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
-    positionSpring: 50
-    positionDamper: 10
+    positionSpring: 5
+    positionDamper: 1
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
@@ -172,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 978ca353a8a0e4946aa9a00b51ac1ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  threshold: 0.1
+  threshold: 0.05
   deadZone: 0.025
   onPressed:
     m_PersistentCalls:
@@ -181,6 +168,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   DebugVisualCube: {fileID: 0}
+--- !u!65 &4082094693184400505
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2601916377883761745}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.043827437, y: 0.010890818, z: 0.04356896}
+  m_Center: {x: 0.0000000018626451, y: -0.005445385, z: -0.0008685896}
 --- !u!1 &4952386772507649677
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,8 +273,8 @@ GameObject:
   - component: {fileID: 8589740092784052045}
   - component: {fileID: 6882119390516327777}
   - component: {fileID: 3887071542623839845}
-  - component: {fileID: 8956377503533233591}
   - component: {fileID: 5484051379472853188}
+  - component: {fileID: 3996791465422059844}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -345,19 +345,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8956377503533233591
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5666027570621061286}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5484051379472853188
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -374,6 +361,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &3996791465422059844
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5666027570621061286}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.06772148, y: 0.025774911, z: 0.06772154}
+  m_Center: {x: 0, y: -0.01982059, z: 0}
 --- !u!1 &7869470419721272533
 GameObject:
   m_ObjectHideFlags: 0
