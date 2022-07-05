@@ -740,7 +740,7 @@ RectTransform:
   - {fileID: 136021950}
   - {fileID: 1208415003}
   m_Father: {fileID: 2035119893}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1859,6 +1859,11 @@ MonoBehaviour:
   m_DefaultActionMap: XRI RightHand Interaction
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!4 &628209007 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9084027331238047865, guid: a72afe5a24a6b91498265190e02d3d8f, type: 3}
+  m_PrefabInstance: {fileID: 3041865870177606842}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &630488591
 GameObject:
   m_ObjectHideFlags: 0
@@ -4688,7 +4693,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1502853859}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.629, z: -0.302}
+  m_LocalPosition: {x: 0, y: 0.629, z: 0.506}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1519181813}
@@ -5951,15 +5956,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5859501392325560890, guid: d26838903f6b326449e446fad263c593, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.05
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5859501392325560890, guid: d26838903f6b326449e446fad263c593, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.66
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 5859501392325560890, guid: d26838903f6b326449e446fad263c593, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.801
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5859501392325560890, guid: d26838903f6b326449e446fad263c593, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6514,9 +6519,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 1588402289}
     m_Modifications:
     - target: {fileID: 9084027331238047861, guid: a72afe5a24a6b91498265190e02d3d8f, type: 3}
-      propertyPath: m_AnimateModel
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: m_ModelParent
+      value: 
+      objectReference: {fileID: 628209007}
     - target: {fileID: 9084027333003576125, guid: a72afe5a24a6b91498265190e02d3d8f, type: 3}
       propertyPath: m_Name
       value: XR Origin
@@ -6565,6 +6570,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9084027333182882843, guid: a72afe5a24a6b91498265190e02d3d8f, type: 3}
+      propertyPath: m_ModelParent
+      value: 
+      objectReference: {fileID: 6063554145420056741}
+    - target: {fileID: 9084027333182882843, guid: a72afe5a24a6b91498265190e02d3d8f, type: 3}
+      propertyPath: m_ModelPrefab
+      value: 
+      objectReference: {fileID: 1828160756434462703, guid: 651eb41745203b34a88a8000d1ce8c7c, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a72afe5a24a6b91498265190e02d3d8f, type: 3}
 --- !u!1001 &5541843904902181460
@@ -6575,69 +6588,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 1519181813}
     m_Modifications:
     - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: prefab
-      value: 
-      objectReference: {fileID: 7534929845368310905, guid: c6b48710d93c84f499cccf08daeee3fd, type: 3}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: poolSize
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: isMissile
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: fireReadyMax
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: reloadTimeMax
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
       propertyPath: TMPweaponTimer
       value: 
       objectReference: {fileID: 1643667982}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: freeList.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: weaponList.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: freeList.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: freeList.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: freeList.Array.data[2]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: freeList.Array.data[3]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: freeList.Array.data[4]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: freeList.Array.data[5]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: freeList.Array.data[6]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: freeList.Array.data[7]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5541843904681070397, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
       propertyPath: m_Name
       value: ssManager
@@ -6707,17 +6660,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 712541113}
     - target: {fileID: 5541843904681070399, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: trigActRef
-      value: 
-      objectReference: {fileID: 6629258846874049571, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-    - target: {fileID: 5541843904681070399, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
       propertyPath: TMPcurWeapon
       value: 
       objectReference: {fileID: 1379857242}
-    - target: {fileID: 5541843904681070399, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: TMPmgunTimer
-      value: 
-      objectReference: {fileID: 774906506}
     - target: {fileID: 5541843904681070399, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
       propertyPath: cannonAimRet
       value: 
@@ -6730,34 +6675,10 @@ PrefabInstance:
       propertyPath: missileAimRet
       value: 
       objectReference: {fileID: 712541114}
-    - target: {fileID: 5541843904681070399, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: TMPcannonTimer
-      value: 
-      objectReference: {fileID: 1851970837}
-    - target: {fileID: 5541843904681070399, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: TMPmissileTimer
-      value: 
-      objectReference: {fileID: 1643667982}
-    - target: {fileID: 5541843904983562175, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: fireReadyMax
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843904983562175, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: reloadTimeMax
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 5541843904983562175, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
       propertyPath: TMPweaponTimer
       value: 
       objectReference: {fileID: 774906506}
-    - target: {fileID: 5541843905287826970, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: fireReadyMax
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5541843905287826970, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
-      propertyPath: reloadTimeMax
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 5541843905287826970, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
       propertyPath: TMPweaponTimer
       value: 
