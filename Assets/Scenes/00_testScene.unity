@@ -474,7 +474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &188819144
 Transform:
   m_ObjectHideFlags: 0
@@ -6485,6 +6485,14 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6063554145595909842, guid: 05df7733a4f823a4ea7ca1da4328d176, type: 3}
+      propertyPath: m_ModelParent
+      value: 
+      objectReference: {fileID: 2057783840}
+    - target: {fileID: 6063554145595909842, guid: 05df7733a4f823a4ea7ca1da4328d176, type: 3}
+      propertyPath: m_ModelPrefab
+      value: 
+      objectReference: {fileID: 5825843044962399709, guid: ff9733b63d84b3549887690e27e0c459, type: 3}
     - target: {fileID: 6063554145595909852, guid: 05df7733a4f823a4ea7ca1da4328d176, type: 3}
       propertyPath: m_HapticSelectEnterDuration
       value: 1
@@ -6570,6 +6578,11 @@ MonoBehaviour:
 --- !u!4 &2057783839 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6063554147086194072, guid: 05df7733a4f823a4ea7ca1da4328d176, type: 3}
+  m_PrefabInstance: {fileID: 2057783837}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2057783840 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6063554146763141275, guid: 05df7733a4f823a4ea7ca1da4328d176, type: 3}
   m_PrefabInstance: {fileID: 2057783837}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2060083800
