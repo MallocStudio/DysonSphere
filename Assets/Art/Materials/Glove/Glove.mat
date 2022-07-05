@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Glove
-  m_Shader: {fileID: 4800000, guid: 2c77c788170dbc3438cfd9a5bf20bb96, type: 3}
+  m_Shader: {fileID: 4800000, guid: 96524fe05aa0bd240932fb70ed3f3a7a, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -51,6 +51,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: 4c4d5a0f27468d0478fb32b1369887e2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -64,7 +68,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _basecolour:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 4445d5f69e7583145ad0242b073251ff, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _metallicsmoothness:
+        m_Texture: {fileID: 2800000, guid: 3518900b9dc3548489b27c9d302ac5c6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -117,7 +125,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _basecolourtint: {r: 1, g: 1, b: 1, a: 0}
-    - _emissiontint: {r: 1, g: 1, b: 1, a: 0}
+    - _emissiontint: {r: 0, g: 0.8784314, b: 2, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6780656599631716845
 MonoBehaviour:
