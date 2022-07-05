@@ -17,6 +17,7 @@ public class ssWeaponBay : MonoBehaviour
 
     [Header("Combat Stats")]
     [SerializeField] public bool reloading;
+    [SerializeField] public bool gunModeAct;
     [SerializeField] private bool isMissile;
     [SerializeField] private float shootTimer;
     [SerializeField] private float shootTimerMax;
@@ -60,7 +61,9 @@ public class ssWeaponBay : MonoBehaviour
 
     private void Update()
     {
-        if (ss.gunMode == true)
+        gunModeAct = ss.gunMode;
+
+        if (gunModeAct)
         {
             Aim();
         }
@@ -110,8 +113,6 @@ public class ssWeaponBay : MonoBehaviour
 
     private void Aim()
     {
-        if (ss.gunMode)
-        {
             if (weapon == weaponBay.Cannon)
             {
                 foreach (Transform battery in weaponList)
@@ -134,13 +135,12 @@ public class ssWeaponBay : MonoBehaviour
                 }
             }
             else return;
-        }
-        else return;
     }
 
     public void Fire()
     {
-        if (activeBay && !isMissile && !reloading)
+        
+        if (activeBay && gunModeAct && !isMissile && !reloading)
         {
             fireReady += Time.deltaTime;
             particleList[weaponIndex].Play();

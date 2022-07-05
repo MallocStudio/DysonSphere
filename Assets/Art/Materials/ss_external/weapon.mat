@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: weapon
-  m_Shader: {fileID: 4800000, guid: 8df4673b4d9519040a22eadf71a9df1c, type: 3}
+  m_Shader: {fileID: 4800000, guid: 93a62e0f8b54f874c9583bd9e80d5744, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -77,7 +77,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _albedoMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 343227eba901f514a92fac390bb0d035, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -136,6 +136,6 @@ Material:
     - _RimColour: {r: 0.7143016, g: 1, b: 0, a: 0}
     - _RimSmooth: {r: 0, g: 0.1, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _albedoTint: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 0}
-    - _emissiontint: {r: 0, g: 0, b: 0, a: 0}
+    - _albedoTint: {r: 1, g: 1, b: 1, a: 0}
+    - _emissiontint: {r: 0, g: 2, b: 1.0588236, a: 0}
   m_BuildTextureStacks: []

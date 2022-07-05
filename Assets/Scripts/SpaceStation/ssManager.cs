@@ -99,24 +99,34 @@ public class ssManager : MonoBehaviour
     }
     private void GunnaryActive()
     {
-        if (curBay == weaponBay.Cannon)
+        if (gunMode)
         {
-            cannonRet.SetActive(true);
-            mgunRet.SetActive(false);
-            missileRet.SetActive(false);
+            if (curBay == weaponBay.Cannon)
+            {
+                cannonRet.SetActive(true);
+                mgunRet.SetActive(false);
+                missileRet.SetActive(false);
+            }
+            else if (curBay == weaponBay.MachineGun)
+            {
+                cannonRet.SetActive(false);
+                mgunRet.SetActive(true);
+                missileRet.SetActive(false);
+            }
+            else if (curBay == weaponBay.Missile)
+            {
+                cannonRet.SetActive(false);
+                mgunRet.SetActive(false);
+                missileRet.SetActive(true);
+            }
         }
-        else if (curBay == weaponBay.MachineGun)
+        else if (!gunMode)
         {
             cannonRet.SetActive(false);
-            mgunRet.SetActive(true);
-            missileRet.SetActive(false);
-        }
-        else if (curBay == weaponBay.Missile)
-        {
-            cannonRet.SetActive(false);
             mgunRet.SetActive(false);
-            missileRet.SetActive(true);
-        }
+            missileRet.SetActive(false);
+            gModeLight.SetActive(false);
+        };
     }
     public void RotateBayUp()
     {
@@ -128,6 +138,7 @@ public class ssManager : MonoBehaviour
             actWeaponBay = weaponBays[(int)curBay];
             actWeaponBay.activeBay = true;
         }
+        GunnaryActive();
         TMPcurWeapon.SetText("Current Weapon: " + curBay.ToString());
         /* TEST IF ABOVE WORKS
          if (curBay == weaponBay.cannon)
@@ -142,12 +153,13 @@ public class ssManager : MonoBehaviour
     {
         actWeaponBay.activeBay = false;
         curBay = (weaponBay)((int)curBay - 1);
-        if(curBay == (weaponBay)(0))
+        if(curBay <= (weaponBay)(0))
         {
             curBay = weaponBay.COUNT -1;
             actWeaponBay = weaponBays[(int)curBay];
             actWeaponBay.activeBay = true;
         }
+        GunnaryActive();
         TMPcurWeapon.SetText("Current Weapon: " + curBay.ToString());
 
     }
