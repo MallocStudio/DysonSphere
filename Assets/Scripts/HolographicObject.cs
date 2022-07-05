@@ -36,7 +36,7 @@ public class HolographicObject : MonoBehaviour
     }
 
     public Transform select() {
-        mesh_renderer.material.color = Color.white; // @debug // @nocheckin
+        //mesh_renderer.material.color = Color.white; // @debug // @nocheckin
         return attachedObject;
     }
 }
