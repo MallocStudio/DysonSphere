@@ -25,6 +25,7 @@ public class World : MonoBehaviour {
 
     List<HolographicObject> holographic_objects;
     [SerializeField] GameObject enemy_spaceship_prefab;
+    [SerializeField] GameObject enemy_capitalship_prefab;
     [SerializeField] GameObject friendly_spaceship_prefab;
     [SerializeField] Camera main_camera;
     float spawn_radius = 10.0f;
@@ -56,6 +57,7 @@ public class World : MonoBehaviour {
         Debug.Assert(enemy_blackboard != null);
         Debug.Assert(main_camera != null);
         Debug.Assert(enemy_spaceship_prefab != null);
+        Debug.Assert(enemy_capitalship_prefab != null);
         Debug.Assert(friendly_spaceship_prefab != null);
         Debug.Assert(enemy_spawn_point != null);
         Debug.Assert(friendly_spawn_point != null);
@@ -325,7 +327,12 @@ public class World : MonoBehaviour {
         for (int i = 0; i < GROUP_MAX_CAPACITY; i++) {
                 // even though we set the position here, it'll get reset in entity.init()
             Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
-            GameObject gameobject = Instantiate(enemy_spaceship_prefab, pos, Quaternion.identity);
+            GameObject gameobject = null;
+            if (i == 0) {
+                gameobject = Instantiate(enemy_capitalship_prefab, pos, Quaternion.identity);
+            } else {
+                gameobject = Instantiate(enemy_spaceship_prefab, pos, Quaternion.identity);
+            }
 
                 //- Link the created entity to the hologram tabel
             if (hologram_panel != null) {
@@ -396,6 +403,10 @@ public class World : MonoBehaviour {
 
     public void event_log_clear() {
         debug_console.text = "";
+    }
+
+    public void event_play_sound(AudioSource audio, AudioClip clip) {
+        audio.PlayOneShot(clip);
     }
 }
 
