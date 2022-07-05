@@ -27,6 +27,7 @@ public class World : MonoBehaviour {
     [SerializeField] GameObject enemy_spaceship_prefab;
     [SerializeField] GameObject enemy_capitalship_prefab;
     [SerializeField] GameObject friendly_spaceship_prefab;
+    [SerializeField] Light alarm;
     [SerializeField] Camera main_camera;
     float spawn_radius = 10.0f;
     [SerializeField] Transform enemy_spawn_point;
@@ -59,6 +60,7 @@ public class World : MonoBehaviour {
         Debug.Assert(enemy_spaceship_prefab != null);
         Debug.Assert(enemy_capitalship_prefab != null);
         Debug.Assert(friendly_spaceship_prefab != null);
+        Debug.Assert(alarm != null);
         Debug.Assert(enemy_spawn_point != null);
         Debug.Assert(friendly_spawn_point != null);
         Debug.Assert(player_hand != null);
@@ -76,7 +78,7 @@ public class World : MonoBehaviour {
         holographic_objects = new List<HolographicObject>();
 
             //- Generate Enemies
-        event_add_enemy_group();
+        // event_add_enemy_group();
 
             //- Generate Friendly Ships
         event_add_friendly_group();
@@ -84,8 +86,8 @@ public class World : MonoBehaviour {
             //- Setup Teams
         event_update_teams();
 
-            //- Reset alls enemies and prepares everything for a new wave
-        event_start_new_wave_immediately();
+        //     //- Reset alls enemies and prepares everything for a new wave
+        // event_start_new_wave_immediately();
 
         //@temp test debug console
         event_log_clear();
@@ -111,6 +113,11 @@ public class World : MonoBehaviour {
 
         foreach (HolographicObject holographic_object in holographic_objects) {
             holographic_object.update(enemy_spawn_point.position, spawn_radius);
+        }
+
+            //- Alarm
+        if (alarm_has_gone_off) {
+            event_alarm_activate();
         }
 
             //@debug
@@ -185,7 +192,16 @@ public class World : MonoBehaviour {
         /// Does not get rid of left over enemies.
     [SerializeField] float player_score = 0;
     [SerializeField] float cost_of_new_friendly_group = 10;
+    [SerializeField] uint wave_count = 0;
     public void event_start_new_wave_immediately() {
+        wave_count++;
+        if (wave_count == 1) {
+            // add enemies for the first time
+            event_add_enemy_group();
+        } else
+        if (wave_count % 5 == 0) {
+            event_add_enemy_group();
+        }
             //- Reset Enemies
         event_reset_enemy_groups();
 
@@ -198,6 +214,9 @@ public class World : MonoBehaviour {
             cost_of_new_friendly_group += player_score;
             event_add_friendly_group();
         }
+
+            //- Activate the Alarm
+        event_alarm_activate();
     }
 
         /// Pause the game and show the pause menu
@@ -363,7 +382,7 @@ public class World : MonoBehaviour {
 
         for (int group = 0; group < number_of_enemy_groups; group++) {
             AI_Actor lead = null;
-            for (int i = group; i < (GROUP_MAX_CAPACITY + group); i++) {
+            for (int i = group; i < (GROUP_MAX_CAPACITY * group); i++) {
                 AI_Actor entity = enemy_entities[i];
                 if (i == 0) {
                     lead = entity;
@@ -386,7 +405,7 @@ public class World : MonoBehaviour {
 
         for (int group = 0; group < number_of_friendly_groups; group++) {
             AI_Actor lead = null;
-            for (int i = group; i < (GROUP_MAX_CAPACITY + group); i++) {
+            for (int i = group; i < (GROUP_MAX_CAPACITY * group); i++) {
                 AI_Actor entity = friendly_entities[i];
                 if (i == 0) lead = entity;
 
@@ -403,6 +422,28 @@ public class World : MonoBehaviour {
 
     public void event_log_clear() {
         debug_console.text = "";
+    }
+
+    float alarm_timer = 3;
+    float alarm_timer_init = 3;
+    bool alarm_has_gone_off = false;
+    public void event_alarm_activate() {
+            //- Timer aspect
+        alarm_has_gone_off = true;
+        if (alarm_timer > 0) {
+            alarm_timer -= Time.deltaTime;
+        } else {
+            alarm_timer = alarm_timer_init;
+            alarm_has_gone_off = false;
+        }
+
+            //- Visual aspect
+        if (alarm_has_gone_off) {
+            alarm.enabled = true;
+            alarm.transform.RotateAround(alarm.transform.position, Vector3.up, Time.deltaTime * 360);
+        } else {
+            alarm.enabled = false;
+        }
     }
 
     public void event_play_sound(AudioSource audio, AudioClip clip) {

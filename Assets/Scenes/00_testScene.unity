@@ -474,7 +474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &188819144
 Transform:
   m_ObjectHideFlags: 0
@@ -496,7 +496,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 188819143}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
@@ -1630,6 +1630,7 @@ MonoBehaviour:
   enemy_spaceship_prefab: {fileID: 3942207151965568247, guid: dc87162aad148054b826582ce8551b25, type: 3}
   enemy_capitalship_prefab: {fileID: 3942207151965568247, guid: 7ef95a9d1c791224cb4195aa9b0885f8, type: 3}
   friendly_spaceship_prefab: {fileID: 3942207151965568247, guid: 6aafa52625f672d4b9bfbe2c49cfc36a, type: 3}
+  alarm: {fileID: 188819145}
   main_camera: {fileID: 6063554145719222863}
   enemy_spawn_point: {fileID: 460614137}
   friendly_spawn_point: {fileID: 1427651105}
@@ -1643,6 +1644,7 @@ MonoBehaviour:
   wave_timer: 10
   player_score: 0
   cost_of_new_friendly_group: 10
+  wave_count: 0
 --- !u!4 &626208111
 Transform:
   m_ObjectHideFlags: 0
