@@ -12,8 +12,8 @@ public class HolographicObject : MonoBehaviour
 {
     public Transform attachedObject;
 
-    float differnceInScale = 0.01f;
-    float differenceInVisualScale = 0.01f;
+    public float differnceInScale = 0.01f;
+    public float differenceInVisualScale = 0.01f;
 
     MeshRenderer mesh_renderer;
     Vector3 offSet;
@@ -21,6 +21,13 @@ public class HolographicObject : MonoBehaviour
     public void init(Transform _attachedObject)
     {
         this.attachedObject = _attachedObject;
+        
+            // If this attachment is with an AI Actor, set its attachment obj to this
+        AI_Actor entity = _attachedObject.GetComponent<AI_Actor>();
+        if (entity != null)
+        {
+            entity.attached_holographic_obj = this;
+        }
 
         Debug.Assert(attachedObject != null);
 

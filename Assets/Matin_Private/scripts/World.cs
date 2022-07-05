@@ -90,18 +90,6 @@ public class World : MonoBehaviour {
         event_log("Things get logged here");
     }
 
-        //! We're no longer using this function
-    // public void input_select() {
-    //     if (Player_Raycaster.get_selection(player_hand.transform, out RaycastHit hit)) {
-    //         HolographicObject selection_holographic_obj = hit.transform.GetComponent<HolographicObject>();
-    //         if (selection_holographic_obj != null) {
-    //             event_select_holographic_object(selection_holographic_obj);
-    //         }
-    //     } else {
-
-    //     }
-    // }
-
     void FixedUpdate() {
             //- Update Enemies
         bool are_all_enemies_dead = true;
@@ -147,11 +135,6 @@ public class World : MonoBehaviour {
         HolographicObject obj = player_hand.select();
         if (obj) {
             event_select_holographic_object(obj);
-            AI_Actor entity = obj.attachedObject.GetComponent<AI_Actor>();
-            if (entity) {
-                    //- This is where we select an entity through a holographic object
-                event_select_ship(entity);
-            }
         }
     }
 
@@ -165,10 +148,10 @@ public class World : MonoBehaviour {
 
     void on_input_unselect(InputAction.CallbackContext ctx) {
         Vector3 target_pos = player_hand.transform.position;
-        event_log("unselecting at " + target_pos);
         for (int i = 0; i < enemy_entities.Count; i++) {
             if (enemy_entities[i].is_selected) {
-                enemy_entities[i].move(target_pos);
+                event_log("unselecting at " + target_pos * enemy_entities[i].attached_holographic_obj.differnceInScale);
+                enemy_entities[i].move(target_pos * enemy_entities[i].attached_holographic_obj.differnceInScale);
             }
         }
     }
@@ -280,25 +263,17 @@ public class World : MonoBehaviour {
         {
             event_log("hologram has an attachment");
             AI_Actor entity = obj_attachment.GetComponent<AI_Actor>();
-            if (entity != null)
-                event_log("attachment has an AI Actor");
-            else
-                event_log("attachment DID NOT have an AI Actor");
 
             if (entity != null) {
                 // if the selected holographic object is an ai actor select the actor
+                event_log("attachment has an AI Actor");
                 event_select_ship(entity);
             }
-        }
-        else
-        {
-            event_log("hologram DID NOT have an attachment");
         }
     }
 
         /// only allows the selection of friendly entities
     public void event_select_ship(AI_Actor actor) {
-            event_log("selecting a ship");
         if (!actor.is_enemy) {
             event_log("selecting a friendlyship");
 

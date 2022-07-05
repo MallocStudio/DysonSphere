@@ -22,6 +22,7 @@ public class AI_Actor : MonoBehaviour {
     Vector3 velocity = Vector3.zero;
     float starting_y_pos = 0;
     float floatiness_offset = 0;
+    public HolographicObject attached_holographic_obj;
 
     //-     COMBAT
         // ! ONLY MEANT TO BE SET TO SOMETHING THROUGH WORLD.CS
