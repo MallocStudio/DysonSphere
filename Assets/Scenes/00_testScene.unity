@@ -1728,6 +1728,7 @@ MonoBehaviour:
   hologram_panel: {fileID: 1502853860}
   player_hand: {fileID: 209742454}
   input_action_select: {fileID: -6273882997181144163, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  debug_console: {fileID: 1208415004}
   wave_timer_init: 10
   wave_timer: 10
   player_score: 0

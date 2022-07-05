@@ -270,6 +270,7 @@ public class World : MonoBehaviour {
 
         /// only allows the selection of friendly entities
     public void event_select_ship(AI_Actor actor) {
+            event_log("selecting a ship");
         if (!actor.is_enemy) {
             event_log("selecting a friendlyship");
 
