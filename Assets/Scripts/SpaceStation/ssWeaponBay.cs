@@ -18,8 +18,6 @@ public class ssWeaponBay : MonoBehaviour
     [Header("Combat Stats")]
     [SerializeField] public bool reloading;
     [SerializeField] private bool isMissile;
-    [SerializeField] public float projkDmg;
-    [SerializeField] public float projkSpd;
     [SerializeField] private float shootTimer;
     [SerializeField] private float shootTimerMax;
     [SerializeField] private float fireReady;
@@ -35,8 +33,6 @@ public class ssWeaponBay : MonoBehaviour
 
     [SerializeField] private List<GameObject> freeList;
     [SerializeField] private List<GameObject> usedList;
-
-
 
     private void Awake()
     {
@@ -60,7 +56,6 @@ public class ssWeaponBay : MonoBehaviour
             audioList.Add(weapon.GetComponent<AudioSource>());
         }
         TMPweaponTimer.SetText("CURRENT WEAPON: " + weapon.ToString());
-
     }
 
     private void Update()
@@ -205,7 +200,6 @@ public class ssWeaponBay : MonoBehaviour
 
     public void ReturnObject(GameObject obj)
     {
-        Debug.Assert(usedList.Contains(obj));
         obj.SetActive(false);
         usedList.Remove(obj);
         freeList.Add(obj);

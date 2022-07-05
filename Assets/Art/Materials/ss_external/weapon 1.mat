@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: weapon 1
-  m_Shader: {fileID: 4800000, guid: 0477805169948144ca3e3f23b74e2c8b, type: 3}
+  m_Shader: {fileID: 4800000, guid: 8df4673b4d9519040a22eadf71a9df1c, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -107,6 +107,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _Distance: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
@@ -114,6 +115,8 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _OutlineActive: 0
+    - _OutlineWidth: 0.05
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -129,8 +132,10 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColour: {r: 1, g: 1, b: 1, a: 0}
     - _RimColour: {r: 0.7143016, g: 1, b: 0, a: 0}
     - _RimSmooth: {r: 0, g: 0.1, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _albedoTint: {r: 0, g: 0.7273154, b: 1, a: 0}
+    - _emissiontint: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

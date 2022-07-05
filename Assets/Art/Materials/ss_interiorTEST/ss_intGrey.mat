@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ss_intGrey
-  m_Shader: {fileID: 4800000, guid: d95d5f4cf26dc0b41b8f96c2aaf9be38, type: 3}
+  m_Shader: {fileID: 4800000, guid: 8df4673b4d9519040a22eadf71a9df1c, type: 3}
   m_ShaderKeywords: _TOGGLESWITCH0_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -125,6 +125,7 @@ Material:
     - _RimSmooth: {r: 0, g: 0.1, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _albedoTint: {r: 1, g: 1, b: 1, a: 0}
+    - _emissiontint: {r: 2, g: 2, b: 2, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2896856323019083892
 MonoBehaviour:
