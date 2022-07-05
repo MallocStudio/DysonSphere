@@ -72,6 +72,7 @@ public class AI_Actor : MonoBehaviour {
     public void move(Vector3 position) {
             // If we have someone else to follow, follow him during update()
         nav_target_pos = position;
+        if (lead) lead.nav_target_pos = position;
     }
 
     /// <summary>

@@ -13,6 +13,10 @@ public class World : MonoBehaviour {
     const int MOUSE_BUTTON_RIGHT  = 1;
     const int MOUSE_BUTTON_MIDDLE = 2;
 
+///
+/// AI
+///
+
     AI_Blackboard enemy_blackboard = new AI_Blackboard();
     AI_Blackboard friendly_blackboard = new AI_Blackboard();
     const int GROUP_MAX_CAPACITY = 6;
@@ -37,6 +41,12 @@ public class World : MonoBehaviour {
     [SerializeField] Player_Hand player_hand;
     [SerializeField] InputActionReference input_action_select;
 
+///
+/// DEBUG CONSOLE
+///
+
+    [SerializeField] TextMeshProUGUI debug_console;
+
         //- Floor
     Plane floor = new Plane();
 
@@ -48,6 +58,7 @@ public class World : MonoBehaviour {
         Debug.Assert(enemy_spawn_point != null);
         Debug.Assert(friendly_spawn_point != null);
         Debug.Assert(player_hand != null);
+        Debug.Assert(debug_console != null);
 
             //- Input Action
         input_action_select.action.performed += on_input_select;
@@ -69,6 +80,10 @@ public class World : MonoBehaviour {
 
             //- Reset alls enemies and prepares everything for a new wave
         event_start_new_wave_immediately();
+
+        //@temp test debug console
+        event_log_clear();
+        event_log("Things get logged here");
     }
 
         //! We're no longer using this function
@@ -84,22 +99,6 @@ public class World : MonoBehaviour {
     // }
 
     void FixedUpdate() {
-        // ! We used to clamp entities within the world_radius. But let's not do that and instead not
-        // ! allow the player to move anything outside of the given coords of the hologram table.
-        // ! Also, we're now using spawn_radius to determine how far from the spawn_point entities can spawn.
-        // ! Note that enemy and friendly entities have separate spawn points - Matin
-        // foreach (AI_Actor entity in enemy_entities) {
-        //     entity.update();
-        //     Vector3 clamped_pos = entity.transform.position;
-        //     if (clamped_pos.x > spawn_point.position.x + spawn_radius) clamped_pos.x = spawn_point.position.x + spawn_radius;
-        //     if (clamped_pos.x < spawn_point.position.x - spawn_radius) clamped_pos.x = spawn_point.position.x - spawn_radius;
-        //     if (clamped_pos.y > spawn_point.position.y + spawn_radius) clamped_pos.y = spawn_point.position.y + spawn_radius;
-        //     if (clamped_pos.y < spawn_point.position.y - spawn_radius) clamped_pos.y = spawn_point.position.y - spawn_radius;
-        //     if (clamped_pos.z > spawn_point.position.z + spawn_radius) clamped_pos.z = spawn_point.position.z + spawn_radius;
-        //     if (clamped_pos.z < spawn_point.position.z - spawn_radius) clamped_pos.z = spawn_point.position.z - spawn_radius;
-        //     entity.transform.position = clamped_pos;
-        // }
-
             //- Update Enemies
         bool are_all_enemies_dead = true;
         foreach (AI_Actor entity in enemy_entities) {
@@ -120,39 +119,10 @@ public class World : MonoBehaviour {
             holographic_object.update(enemy_spawn_point.position, spawn_radius);
         }
 
-        Mouse mouse = Mouse.current;
+            //@debug
         Keyboard keyboard = Keyboard.current;
-
-        Debug.Assert(mouse != null);
-
-        if (mouse.leftButton.wasPressedThisFrame) {
-                //- Player giving Input
-            Ray ray = main_camera.ScreenPointToRay(mouse.position.ReadValue());
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit)){
-                AI_Actor actor = hit.transform.GetComponent<AI_Actor>();
-                select_entity(actor);
-            } else {
-                    //- Move Actor
-                    // The raycast did not hit any object so just move the actor there
-                Vector3 target_pos = floor.get_pos_on_plane(ray);
-                for (int i = 0; i < enemy_entities.Count; i++) {
-                    if (enemy_entities[i].is_selected) {
-                        enemy_entities[i].move(target_pos);
-                    }
-                }
-            }
-        }
-
-            //@debug shoot
         if (keyboard.spaceKey.wasPressedThisFrame) {
             event_start_new_wave_immediately();
-            // foreach (AI_Actor entity in enemy_entities) {
-            //     if (entity.lead != null) {
-            //         entity.shoot_at(entity.lead);
-            //     }
-            // }
-            // enemy_entities[1].shoot_at(enemy_entities[1].lead);
         }
     }
 
@@ -165,23 +135,6 @@ public class World : MonoBehaviour {
         return result;
     }
 
-        /// only allows the selection of friendly entities
-    void select_entity(AI_Actor actor) {
-        if (!actor.is_enemy) {
-                //- unselect other actors
-            foreach (AI_Actor entity in friendly_entities) {
-                entity.is_selected = false;
-            }
-
-                //- Select the Leader of this flock
-            if (actor.lead == null) {
-                actor.is_selected = true;
-            } else {
-                actor.lead.is_selected = true;
-            }
-        }
-    }
-
 ///
 ///                      INPUT CONTROLLER
 ///
@@ -189,16 +142,18 @@ public class World : MonoBehaviour {
     void on_input_select(InputAction.CallbackContext ctx) {
         HolographicObject obj = player_hand.select();
         if (obj) {
+            event_select_holographic_object(obj);
             AI_Actor entity = obj.attachedObject.GetComponent<AI_Actor>();
             if (entity) {
                     //- This is where we select an entity through a holographic object
-                select_entity(entity);
+                event_select_ship(entity);
             }
         }
     }
 
     void on_input_unselect(InputAction.CallbackContext ctx) {
         Vector3 target_pos = player_hand.transform.position;
+        event_log("unselecting at " + target_pos);
         for (int i = 0; i < enemy_entities.Count; i++) {
             if (enemy_entities[i].is_selected) {
                 enemy_entities[i].move(target_pos);
@@ -305,6 +260,7 @@ public class World : MonoBehaviour {
     }
 
     public void event_select_holographic_object(HolographicObject obj) {
+        event_log("selecting a hologram");
         AI_Actor entity = obj.select().GetComponent<AI_Actor>();
         if (entity != null) {
             // if the selected holographic object is an ai actor select the actor
@@ -312,17 +268,22 @@ public class World : MonoBehaviour {
         }
     }
 
-    public void event_select_ship(AI_Actor entity) {
-        // unselect other actors
-        foreach (AI_Actor other_entity in entity.blackboard.group) {
-            other_entity.is_selected = false;
-        }
+        /// only allows the selection of friendly entities
+    public void event_select_ship(AI_Actor actor) {
+        if (!actor.is_enemy) {
+            event_log("selecting a friendlyship");
 
-            //- Select the Leader of this flock
-        if (entity.lead == null) {
-            entity.is_selected = true;
-        } else {
-            entity.lead.is_selected = true;
+                //- unselect other actors
+            foreach (AI_Actor entity in friendly_entities) {
+                entity.is_selected = false;
+            }
+
+                //- Select the Leader of this flock
+            if (actor.lead == null) {
+                actor.is_selected = true;
+            } else {
+                actor.lead.is_selected = true;
+            }
         }
     }
 
@@ -422,6 +383,14 @@ public class World : MonoBehaviour {
                 entity.init(this, friendly_blackboard, lead, pos, false);
             }
         }
+    }
+
+    public void event_log(string message) {
+        debug_console.text += ">>" + message + '\n';
+    }
+
+    public void event_log_clear() {
+        debug_console.text = "";
     }
 }
 
