@@ -41,6 +41,7 @@ public class World : MonoBehaviour {
     [SerializeField] Player_Hand player_hand;
     [SerializeField] InputActionReference input_action_select;
     [SerializeField] InputActionReference input_action_clear_console;
+    [SerializeField] InputActionReference input_action_new_wave;
 
 ///
 /// DEBUG CONSOLE
@@ -65,8 +66,9 @@ public class World : MonoBehaviour {
         input_action_select.action.performed += on_input_select;
         input_action_select.action.canceled  += on_input_unselect;
         input_action_clear_console.action.performed += on_input_clear_console;
+        input_action_new_wave.action.performed += on_input_new_wave;
 
-            //- Generate the Entities
+        //- Generate the Entities
         enemy_entities = new List<AI_Actor>(GROUP_MAX_CAPACITY);
         friendly_entities = new List<AI_Actor>(GROUP_MAX_CAPACITY);
         holographic_objects = new List<HolographicObject>();
@@ -155,6 +157,10 @@ public class World : MonoBehaviour {
 
     void on_input_clear_console(InputAction.CallbackContext ctx) {
         event_log_clear();
+    }
+
+    void on_input_new_wave(InputAction.CallbackContext ctx) {
+        event_start_new_wave_immediately();
     }
 
     void on_input_unselect(InputAction.CallbackContext ctx) {
