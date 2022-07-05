@@ -6825,6 +6825,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1588402289}
     m_Modifications:
+    - target: {fileID: 9084027331238047861, guid: a72afe5a24a6b91498265190e02d3d8f, type: 3}
+      propertyPath: m_AnimateModel
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9084027333003576125, guid: a72afe5a24a6b91498265190e02d3d8f, type: 3}
       propertyPath: m_Name
       value: XR Origin
