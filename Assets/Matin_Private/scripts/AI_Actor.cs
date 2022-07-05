@@ -47,8 +47,8 @@ public class AI_Actor : MonoBehaviour {
         this.world = world;
         this.lead = lead;
         this.transform.position = position;
-        this.starting_y_pos = position.y;
-        this.floatiness_offset = Random.Range(-1.0f, 1.0f);
+        this.starting_y_pos = position.y + Random.Range(-1.0f, 15.0f);
+        this.floatiness_offset = Random.Range(-1.0f, 15.0f);
         this.is_enemy = is_enemy;
         this.health = 1; // reset to max
         nav_target_pos = transform.position;
