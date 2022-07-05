@@ -153,6 +153,7 @@ public class World : MonoBehaviour {
 
     void on_input_unselect(InputAction.CallbackContext ctx) {
         Vector3 target_pos = player_hand.transform.position;
+        event_log("unselecting at " + target_pos);
         for (int i = 0; i < enemy_entities.Count; i++) {
             if (enemy_entities[i].is_selected) {
                 enemy_entities[i].move(target_pos);
