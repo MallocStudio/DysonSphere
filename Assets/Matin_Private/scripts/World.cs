@@ -261,7 +261,14 @@ public class World : MonoBehaviour {
 
     public void event_select_holographic_object(HolographicObject obj) {
         event_log("selecting a hologram");
-        AI_Actor entity = obj.select().GetComponent<AI_Actor>();
+        Transform obj_attachment = obj.select();
+        if (obj_attachment != null)
+            event_log("hologram has an attachment");
+
+        AI_Actor entity = obj_attachment.GetComponent<AI_Actor>();
+        if (entity != null)
+            event_log("attachment has an AI Actor");
+
         if (entity != null) {
             // if the selected holographic object is an ai actor select the actor
             event_select_ship(entity);
