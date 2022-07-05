@@ -1104,6 +1104,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "DebugNewWave",
+                    "type": "Button",
+                    "id": "1dbe11cb-efa0-4539-b029-8910e434cc1d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1132,7 +1141,7 @@
                 {
                     "name": "",
                     "id": "ef704577-dac0-4c9a-9d5d-b63fdfa90edb",
-                    "path": "",
+                    "path": "<XRController>{RightHand}/triggerPressed",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1148,6 +1157,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ClearConsole",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "17f2b89d-c7a3-4eb9-b360-633f9143f5dd",
+                    "path": "<XRController>{LeftHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DebugNewWave",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
