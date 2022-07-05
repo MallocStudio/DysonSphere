@@ -1728,6 +1728,7 @@ MonoBehaviour:
   hologram_panel: {fileID: 1502853860}
   player_hand: {fileID: 209742454}
   input_action_select: {fileID: -6273882997181144163, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  input_action_clear_console: {fileID: 171786128307709536, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   debug_console: {fileID: 1208415004}
   wave_timer_init: 10
   wave_timer: 10
@@ -1932,6 +1933,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 1a652647-d3e4-42ec-800b-9c4cb44032e1
     m_ActionName: XRI Custom/Select
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f24b909f-2c2d-46d2-bd4d-02befa37f332
+    m_ActionName: XRI Custom/Trigger
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ca5da361-6ee8-4bdd-a48d-0f9e861a1fdd
+    m_ActionName: XRI Custom/ClearConsole
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: XRI RightHand Interaction

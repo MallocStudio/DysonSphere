@@ -40,6 +40,7 @@ public class World : MonoBehaviour {
 
     [SerializeField] Player_Hand player_hand;
     [SerializeField] InputActionReference input_action_select;
+    [SerializeField] InputActionReference input_action_clear_console;
 
 ///
 /// DEBUG CONSOLE
@@ -63,6 +64,7 @@ public class World : MonoBehaviour {
             //- Input Action
         input_action_select.action.performed += on_input_select;
         input_action_select.action.canceled  += on_input_unselect;
+        input_action_clear_console.action.performed += on_input_clear_console;
 
             //- Generate the Entities
         enemy_entities = new List<AI_Actor>(GROUP_MAX_CAPACITY);
@@ -149,6 +151,10 @@ public class World : MonoBehaviour {
                 event_select_ship(entity);
             }
         }
+    }
+
+    void on_input_clear_console(InputAction.CallbackContext ctx) {
+        event_log_clear();
     }
 
     void on_input_unselect(InputAction.CallbackContext ctx) {
@@ -260,18 +266,27 @@ public class World : MonoBehaviour {
     }
 
     public void event_select_holographic_object(HolographicObject obj) {
+        if (obj == null) return;
+
         event_log("selecting a hologram");
         Transform obj_attachment = obj.select();
         if (obj_attachment != null)
+        {
             event_log("hologram has an attachment");
+            AI_Actor entity = obj_attachment.GetComponent<AI_Actor>();
+            if (entity != null)
+                event_log("attachment has an AI Actor");
+            else
+                event_log("attachment DID NOT have an AI Actor");
 
-        AI_Actor entity = obj_attachment.GetComponent<AI_Actor>();
-        if (entity != null)
-            event_log("attachment has an AI Actor");
-
-        if (entity != null) {
-            // if the selected holographic object is an ai actor select the actor
-            event_select_ship(entity);
+            if (entity != null) {
+                // if the selected holographic object is an ai actor select the actor
+                event_select_ship(entity);
+            }
+        }
+        else
+        {
+            event_log("hologram DID NOT have an attachment");
         }
     }
 
