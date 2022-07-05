@@ -18,8 +18,6 @@ public class ssWeaponBay : MonoBehaviour
     [Header("Combat Stats")]
     [SerializeField] public bool reloading;
     [SerializeField] private bool isMissile;
-    [SerializeField] public float projkDmg;
-    [SerializeField] public float projkSpd;
     [SerializeField] private float shootTimer;
     [SerializeField] private float shootTimerMax;
     [SerializeField] private float fireReady;

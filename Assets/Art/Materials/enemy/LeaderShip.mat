@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FleetShip
+  m_Name: LeaderShip
   m_Shader: {fileID: 4800000, guid: 0477805169948144ca3e3f23b74e2c8b, type: 3}
   m_ShaderKeywords: _OUTLINEACTIVE_ON
   m_LightmapFlags: 2

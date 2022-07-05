@@ -1729,6 +1729,7 @@ MonoBehaviour:
   player_hand: {fileID: 209742454}
   input_action_select: {fileID: -6273882997181144163, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   input_action_clear_console: {fileID: 171786128307709536, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  input_action_new_wave: {fileID: 0}
   debug_console: {fileID: 1208415004}
   wave_timer_init: 10
   wave_timer: 10
@@ -6479,6 +6480,18 @@ PrefabInstance:
     - target: {fileID: 6014617024710597817, guid: 05df7733a4f823a4ea7ca1da4328d176, type: 3}
       propertyPath: m_LocalScale.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063554145595909852, guid: 05df7733a4f823a4ea7ca1da4328d176, type: 3}
+      propertyPath: m_HapticSelectEnterDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063554145595909852, guid: 05df7733a4f823a4ea7ca1da4328d176, type: 3}
+      propertyPath: m_HapticSelectEnterIntensity
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6063554145595909852, guid: 05df7733a4f823a4ea7ca1da4328d176, type: 3}
+      propertyPath: m_PlayHapticsOnSelectEntered
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6063554147086194072, guid: 05df7733a4f823a4ea7ca1da4328d176, type: 3}
       propertyPath: m_RootOrder
