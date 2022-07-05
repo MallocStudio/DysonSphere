@@ -37,10 +37,8 @@ public class AI_Actor : MonoBehaviour {
     const float line_renderer_visibility_material_min = 0;
     float line_renderer_visibility_material_amount = 0;
 
-    /// <summary>
-    /// Initialise a new ai actor. Each AI actor must share the same blackboard as others.
-    /// the "lead" parameter can be null. If it is not null, this ai actor will follow the "lead" around.
-    /// </summary>
+        /// Initialise a new ai actor. Each AI actor must share the same blackboard as others.
+        /// the "lead" parameter can be null. If it is not null, this ai actor will follow the "lead" around.
     public void init(World world, AI_Blackboard blackboard, AI_Actor lead, Vector3 position, bool is_enemy) {
         this.is_dead = false; // ! reset to alive
         this.blackboard = blackboard;
@@ -50,7 +48,18 @@ public class AI_Actor : MonoBehaviour {
         this.starting_y_pos = position.y + Random.Range(-1.0f, 15.0f);
         this.floatiness_offset = Random.Range(-1.0f, 15.0f);
         this.is_enemy = is_enemy;
-        this.health = 1; // reset to max
+
+            // if we're the leader, give us extra juice <3
+        if (lead) {
+            this.health = 1; // reset to max
+        } else {
+            if (!is_enemy) {
+                this.health = 5; // give lead player more health to avoid the problem of the players dying so soon because of the leader
+            } else {
+                this.health = 3; // reset to max
+            }
+        }
+
         nav_target_pos = transform.position;
 
             //- Add this AI_Actor's boid to blackboard
@@ -64,22 +73,18 @@ public class AI_Actor : MonoBehaviour {
         line_renderer.enabled = true;
     }
 
-    /// <summary>
-    /// Moves this AI_Actor towards the given point.
-    /// This point can be anywhere in space, and the AI will navigate its way towards that point.
-    /// NOTE that if this ai actor has a lead (some other actor that it must follow)
-    /// this procedure will do nothing.
-    /// </summary>
+        /// Moves this AI_Actor towards the given point.
+        /// This point can be anywhere in space, and the AI will navigate its way towards that point.
+        /// NOTE that if this ai actor has a lead (some other actor that it must follow)
+        /// this procedure will do nothing.
     public void move(Vector3 position) {
             // If we have someone else to follow, follow him during update()
         nav_target_pos = position;
         if (lead) lead.nav_target_pos = position;
     }
 
-    /// <summary>
-    /// Update the state of this ai actor.
-    /// Any movement calculated by the ai gets updated after this procedure is called.
-    /// </summary>
+        /// Update the state of this ai actor.
+        /// Any movement calculated by the ai gets updated after this procedure is called.
     public void update() {
         Vector3 position_previous_frame = transform.position;
 
@@ -118,7 +123,11 @@ public class AI_Actor : MonoBehaviour {
             }
 
             final_velocity = velocity;
-            transform.position += final_velocity * speed * Time.deltaTime;
+            float final_speed = speed;
+            if (!lead) {
+                final_speed = speed * 0.25f;
+            }
+            transform.position += final_velocity * final_speed * Time.deltaTime;
 
             Vector3 final_pos = transform.position;
             final_pos.y = Mathf.Sin(Time.fixedTime + floatiness_offset) + starting_y_pos;
@@ -206,12 +215,12 @@ public class AI_Actor : MonoBehaviour {
 
 [System.Serializable]
 public class Boid {
-    public float separation_radius = 10;
-    public float separation = 0.5f;
+    public float separation_radius = 30;
+    public float separation = 0.2f;
     public float cohesion = 1.2f;
     public float target_radius = 15; // the radius around the target
-    public float alignment_radius = 3;
-    public float alignment = 0.01f;
+    public float alignment_radius = 5;
+    public float alignment = 0.02f;
     public Transform transform; // the parent transform
 
     protected Vector3 final_velocity = Vector3.zero;
