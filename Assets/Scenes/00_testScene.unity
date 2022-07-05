@@ -386,18 +386,18 @@ PrefabInstance:
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5541843904902181464}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: evDetonate
+      value: DetonateActive
       objectReference: {fileID: 0}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ssProjk, Assembly-CSharp
+      value: ssMissileTube, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -857,18 +857,18 @@ PrefabInstance:
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5541843904902181462}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: evDetonate
+      value: DetonateActive
       objectReference: {fileID: 0}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ssProjk, Assembly-CSharp
+      value: ssMissileTube, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -2348,18 +2348,18 @@ PrefabInstance:
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5541843904902181461}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: evDetonate
+      value: DetonateActive
       objectReference: {fileID: 0}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ssProjk, Assembly-CSharp
+      value: ssMissileTube, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -5111,18 +5111,18 @@ PrefabInstance:
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5541843904902181463}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: evDetonate
+      value: DetonateActive
       objectReference: {fileID: 0}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ssProjk, Assembly-CSharp
+      value: ssMissileTube, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1777967929, guid: aff7c539aa1585044973ce52d1036900, type: 3}
       propertyPath: turnModeOnEv.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -6603,6 +6603,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
+      propertyPath: weaponList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5541843903360434514, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
       propertyPath: freeList.Array.data[0]
       value: 
       objectReference: {fileID: 0}
@@ -6760,6 +6764,50 @@ PrefabInstance:
       objectReference: {fileID: 1851970837}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
+--- !u!114 &5541843904902181461 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1127020209953299377, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
+  m_PrefabInstance: {fileID: 5541843904902181460}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883a627536374704cba5a5906d97402f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5541843904902181462 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2038469803881035134, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
+  m_PrefabInstance: {fileID: 5541843904902181460}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883a627536374704cba5a5906d97402f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5541843904902181463 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5533432448865794772, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
+  m_PrefabInstance: {fileID: 5541843904902181460}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883a627536374704cba5a5906d97402f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5541843904902181464 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2280606004196053227, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
+  m_PrefabInstance: {fileID: 5541843904902181460}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883a627536374704cba5a5906d97402f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6063554145420056741 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9084027333182882847, guid: a72afe5a24a6b91498265190e02d3d8f, type: 3}
