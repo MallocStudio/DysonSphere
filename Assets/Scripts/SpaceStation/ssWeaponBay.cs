@@ -36,8 +36,6 @@ public class ssWeaponBay : MonoBehaviour
     [SerializeField] private List<GameObject> freeList;
     [SerializeField] private List<GameObject> usedList;
 
-
-
     private void Awake()
     {
         /* OBJECT POOL */
@@ -60,7 +58,6 @@ public class ssWeaponBay : MonoBehaviour
             audioList.Add(weapon.GetComponent<AudioSource>());
         }
         TMPweaponTimer.SetText("CURRENT WEAPON: " + weapon.ToString());
-
     }
 
     private void Update()
