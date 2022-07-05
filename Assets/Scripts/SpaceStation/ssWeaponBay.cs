@@ -37,6 +37,7 @@ public class ssWeaponBay : MonoBehaviour
     [SerializeField] private List<GameObject> usedList;
 
 
+
     private void Awake()
     {
         /* OBJECT POOL */
@@ -161,22 +162,27 @@ public class ssWeaponBay : MonoBehaviour
         }
         else return;
     }
-
+    public void MissileLoad(int tubeIndex)
+    {
+        /* INSTANTIATE PROJK */
+        //  GameObject g = GetObject();
+        GameObject g = weaponList[tubeIndex].gameObject;
+        g.transform.position = weaponList[tubeIndex].position;
+        g.transform.rotation = weaponList[tubeIndex].rotation;
+        /* END INSTANTIATE */
+    }
 
     public void MissileFire(int tubeIndex)
     {
-        if (activeBay && isMissile)
+        if (activeBay && isMissile )
         {
+
             particleList[tubeIndex].Play();
             audioList[tubeIndex].Play();
 
-            /* INSTANTIATE PROJK */
-            //  GameObject g = GetObject();
             GameObject g = weaponList[tubeIndex].gameObject;
-            g.transform.position = weaponList[tubeIndex].position;
-            g.transform.rotation = weaponList[tubeIndex].rotation;
             g.SetActive(true);
-            /* END INSTANTIATE */
+
         }
     }
 
