@@ -2169,7 +2169,7 @@ MonoBehaviour:
   main_camera: {fileID: 6063554145719222863}
   enemy_spawn_point: {fileID: 460614137}
   friendly_spawn_point: {fileID: 1427651105}
-  player_ship_point: {fileID: 0}
+  player_ship_point: {fileID: 1208415003}
   player_health: 10
   hologram_panel: {fileID: 1502853860}
   player_hand: {fileID: 209742454}
