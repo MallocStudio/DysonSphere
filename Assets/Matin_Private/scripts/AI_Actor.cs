@@ -29,6 +29,7 @@ public class AI_Actor : MonoBehaviour {
     public float health = 1.0f; // 1 is max, 0 is min // ! note that this gets set to 1 in init()
     public bool is_enemy = false;
     float damage = 0.02f; // the amount of damage this entity applies to others
+    public bool attacking_the_player = false;
 
         //-     LINE RENDERER
     private LineRenderer line_renderer;
@@ -113,6 +114,11 @@ public class AI_Actor : MonoBehaviour {
             }
         }
 
+            //- Go towards player
+        if (is_enemy && attacking_the_player) {
+            this.move(world.player_ship_point.position);
+        }
+
         Vector3 final_velocity = Vector3.zero;
         {   //- Go towards nav_target_pos
             if (lead) {
@@ -144,11 +150,20 @@ public class AI_Actor : MonoBehaviour {
         }
 
         {   //- Attack enemies
-            foreach (AI_Actor enemy in blackboard.enemies) {
-                if (enemy.is_dead) continue;
-                if (Vector3.Distance(transform.position, enemy.transform.position) < attack_radius) {
-                    if (line_renderer_visibility_material_amount <= line_renderer_visibility_material_min) {
-                        shoot_at(enemy);
+                // damage player
+            if (is_enemy && attacking_the_player) {
+                if (Vector3.Distance(transform.position, world.player_ship_point.position) < attack_radius) {
+                    world.player_health -= damage;
+                    shoot_at_pos(world.player_ship_point.position);
+                }
+            } else {
+                // damage other entities
+                foreach (AI_Actor enemy in blackboard.enemies) {
+                    if (enemy.is_dead) continue;
+                    if (Vector3.Distance(transform.position, enemy.transform.position) < attack_radius) {
+                        if (line_renderer_visibility_material_amount <= line_renderer_visibility_material_min) {
+                            shoot_at(enemy);
+                        }
                     }
                 }
             }
@@ -186,8 +201,13 @@ public class AI_Actor : MonoBehaviour {
         entity.take_damage(this.damage);
 
             //- Setup Visuals
+        shoot_at_pos(entity.transform.position);
+    }
+
+    public void shoot_at_pos(Vector3 pos) {
+            //- Setup Visuals
         line_renderer.SetPosition(0, transform.position);
-        line_renderer.SetPosition(1, entity.transform.position + get_random_pos(1));
+        line_renderer.SetPosition(1, pos + get_random_pos(1));
         line_renderer_visibility_material_amount = line_renderer_visibility_material_max;
         line_renderer.material.SetFloat(line_renderer_visibility_material_name, line_renderer_visibility_material_amount);
     }

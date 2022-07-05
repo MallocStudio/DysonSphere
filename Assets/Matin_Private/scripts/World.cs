@@ -32,6 +32,8 @@ public class World : MonoBehaviour {
     float spawn_radius = 10.0f;
     [SerializeField] Transform enemy_spawn_point;
     [SerializeField] public Transform friendly_spawn_point;
+    [SerializeField] public Transform player_ship_point;
+    public float player_health = 10;
     [SerializeField] Hologram hologram_panel;
     uint number_of_enemy_groups = 0;
     uint number_of_friendly_groups = 0;
@@ -65,6 +67,7 @@ public class World : MonoBehaviour {
         Debug.Assert(friendly_spawn_point != null);
         Debug.Assert(player_hand != null);
         Debug.Assert(debug_console != null);
+        Debug.Assert(player_ship_point != null);
 
             //- Input Action
         input_action_select.action.performed += on_input_select;
@@ -106,9 +109,16 @@ public class World : MonoBehaviour {
             event_start_new_wave_with_delay();
         }
 
+        bool are_all_friendlies_dead = true;
             //- Update Friendlies
         foreach (AI_Actor entity in friendly_entities) {
             entity.update();
+            if (!entity.is_dead) are_all_friendlies_dead = false;
+        }
+
+            //- All friendlies are dead. So enemies should attack the player
+        if (are_all_friendlies_dead && !are_all_enemies_dead) {
+            event_attack_player_ship();
         }
 
         foreach (HolographicObject holographic_object in holographic_objects) {
@@ -252,6 +262,26 @@ public class World : MonoBehaviour {
             if (!entity.is_dead) {
                 if (Vector3.Distance(entity.transform.position, origin) <= radius) {
                     entity.take_damage(amount);
+                }
+            }
+        }
+    }
+
+        /// The enemies now target the player
+    public void event_attack_player_ship() {
+        // make sure that the number of spawned enemies (dead or alive) is equal to the number of groups * GROUP_MAX_CAPACITY
+        Debug.Assert(number_of_enemy_groups * GROUP_MAX_CAPACITY == enemy_entities.Count());
+
+        for (int group = 0; group < number_of_enemy_groups; group++) {
+            AI_Actor lead = null;
+            for (int i = group; i < (GROUP_MAX_CAPACITY * group); i++) {
+                AI_Actor entity = enemy_entities[i];
+                entity.attacking_the_player = true;
+                if (i == 0) {
+                    lead = entity;
+                }
+                if (lead) {
+                    lead.move(player_ship_point.position);
                 }
             }
         }
