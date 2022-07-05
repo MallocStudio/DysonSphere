@@ -200,7 +200,6 @@ public class ssWeaponBay : MonoBehaviour
 
     public void ReturnObject(GameObject obj)
     {
-        Debug.Assert(usedList.Contains(obj));
         obj.SetActive(false);
         usedList.Remove(obj);
         freeList.Add(obj);
