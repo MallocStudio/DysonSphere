@@ -14,6 +14,8 @@ public class ssProjk : MonoBehaviour
     [SerializeField] private AI_Actor damageTarget;
     [SerializeField] World world;
 
+    public float radius = 3.0f;
+
     public void init(World world)
     {
         this.world = world;
@@ -28,8 +30,6 @@ public class ssProjk : MonoBehaviour
         Debug.Assert(world != null);
         pool = transform.parent.GetComponent<ssWeaponBay>();
         explPS = GetComponent<ParticleSystem>();
-        projDamage = pool.projkDmg;
-        spd = pool.projkSpd;
     }
 
     public void evDetonate()
@@ -65,12 +65,16 @@ public class ssProjk : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position, radius);
+    }
+
     public void Explosion()
     {
         //Set the visual of the projectile visibility to false
         transform.GetChild(0).gameObject.SetActive(false);
-        SphereCollider sphereCollider = gameObject.GetComponent<SphereCollider>();
-        world.event_damage_enemies_in_radius(transform.position, sphereCollider.radius, 0.5f);
+        world.event_damage_enemies_in_radius(transform.position, radius, projDamage);
 
 /*       //Stores all objects caught in the the blast radius of the projectile
         Collider[] affectedColliders = Physics.OverlapSphere(transform.position, sphereCollider.radius);

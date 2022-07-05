@@ -93,7 +93,6 @@ GameObject:
   - component: {fileID: 4919119699511966547}
   - component: {fileID: -8497119772498840711}
   - component: {fileID: 4247837211552596085}
-  - component: {fileID: 7305866864515871721}
   - component: {fileID: 5932771138973432822}
   - component: {fileID: 35791904799807078}
   m_Layer: 0
@@ -131,12 +130,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detonate: 0
-  projDamage: 0
+  projDamage: 30
   spd: 10
   lifeTime: 5
   timer: 0
+  explPS: {fileID: 0}
   pool: {fileID: 0}
   damageTarget: {fileID: 0}
+  world: {fileID: 0}
+  radius: 6
 --- !u!136 &4247837211552596085
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -150,19 +152,6 @@ CapsuleCollider:
   m_Radius: 0.8
   m_Height: 5
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &7305866864515871721
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7534929845368310905}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!199 &5932771138973432822
 ParticleSystemRenderer:
