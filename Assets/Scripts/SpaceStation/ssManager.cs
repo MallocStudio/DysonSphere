@@ -55,7 +55,7 @@ public class ssManager : MonoBehaviour
 
         combatRing.Rotate(0, 0, 0);
 
-        actWeaponBay = weaponBays[0];
+        actWeaponBay = weaponBays[0].GetComponent<ssWeaponBay>();
         actWeaponBay.activeBay = true;
 
         gunMode = false;
@@ -135,7 +135,7 @@ public class ssManager : MonoBehaviour
         if (curBay == weaponBay.COUNT)
         {
             curBay = (weaponBay)(0);
-            actWeaponBay = weaponBays[(int)curBay];
+            actWeaponBay = weaponBays[(int)curBay].GetComponent<ssWeaponBay>();
             actWeaponBay.activeBay = true;
         }
         GunnaryActive();
@@ -153,10 +153,10 @@ public class ssManager : MonoBehaviour
     {
         actWeaponBay.activeBay = false;
         curBay = (weaponBay)((int)curBay - 1);
-        if(curBay <= (weaponBay)(0))
+        if(curBay < (weaponBay)(0))
         {
             curBay = weaponBay.COUNT -1;
-            actWeaponBay = weaponBays[(int)curBay];
+            actWeaponBay = weaponBays[(int)curBay].GetComponent<ssWeaponBay>();
             actWeaponBay.activeBay = true;
         }
         GunnaryActive();
