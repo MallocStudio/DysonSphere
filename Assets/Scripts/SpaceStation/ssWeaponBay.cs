@@ -63,9 +63,21 @@ public class ssWeaponBay : MonoBehaviour
     {
         gunModeAct = ss.gunMode;
 
-        if (gunModeAct)
+        if (gunModeAct && activeBay)
         {
             Aim();
+            if (triggerDown)
+            {
+                if (shootTimer <= 0)
+                {
+                    shootTimer = shootTimerMax;
+                    Fire();
+                }
+                else
+                {
+                    shootTimer -= Time.deltaTime;
+                }
+            }
         }
         if(fireReady >= fireReadyMax)
         {
@@ -78,18 +90,7 @@ public class ssWeaponBay : MonoBehaviour
                 reloadTime = reloadTimeMax;
             }
         }
-        if (triggerDown)
-        {
-            if (shootTimer <= 0)
-            {
-                shootTimer = shootTimerMax;
-                Fire();
-            }
-            else
-            {
-                shootTimer -= Time.deltaTime;
-            }
-        }
+        
     }
 
     private void LateUpdate()
@@ -113,34 +114,33 @@ public class ssWeaponBay : MonoBehaviour
 
     private void Aim()
     {
-            if (weapon == weaponBay.Cannon)
-            {
-                foreach (Transform battery in weaponList)
-                {
-                    battery.LookAt(ss.cannonAimRet);
-                }
-            }
-            else if (weapon == weaponBay.MachineGun)
-            {
-                foreach (Transform battery in weaponList)
-                {
-                    battery.LookAt(ss.mgunAimRet);
-                }
-            }
-            else if (weapon == weaponBay.Missile)
-            {
-                foreach (Transform battery in weaponList)
-                {
-                    battery.LookAt(ss.missileAimRet);
-                }
-            }
+        if (weapon == weaponBay.Cannon)
+        {
+           foreach (Transform battery in weaponList)
+           {
+                battery.LookAt(ss.cannonAimRet);
+           }
+        }
+        else if (weapon == weaponBay.MachineGun)
+        {
+           foreach (Transform battery in weaponList)
+           {
+                battery.LookAt(ss.mgunAimRet);
+           }
+        }
+        else if (weapon == weaponBay.Missile)
+        {
+           foreach (Transform battery in weaponList)
+           {
+                battery.LookAt(ss.missileAimRet);
+           }
+        }
             else return;
     }
 
     public void Fire()
-    {
-        
-        if (activeBay && gunModeAct && !isMissile && !reloading)
+    { 
+        if (!isMissile && !reloading)
         {
             fireReady += Time.deltaTime;
             particleList[weaponIndex].Play();
@@ -156,29 +156,6 @@ public class ssWeaponBay : MonoBehaviour
             /* END INSTANTIATE */
         }
         else return;
-    }
-    public void MissileLoad(int tubeIndex)
-    {
-        /* INSTANTIATE PROJK */
-        //  GameObject g = GetObject();
-        GameObject g = weaponList[tubeIndex].gameObject;
-        g.transform.position = weaponList[tubeIndex].position;
-        g.transform.rotation = weaponList[tubeIndex].rotation;
-        /* END INSTANTIATE */
-    }
-
-    public void MissileFire(int tubeIndex)
-    {
-        if (activeBay && isMissile )
-        {
-
-            particleList[tubeIndex].Play();
-            audioList[tubeIndex].Play();
-
-            GameObject g = weaponList[tubeIndex].gameObject;
-            g.SetActive(true);
-
-        }
     }
 
     /* OBJECT POOLING */

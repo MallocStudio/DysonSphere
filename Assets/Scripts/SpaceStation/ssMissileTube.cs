@@ -9,12 +9,21 @@ public class ssMissileTube : MonoBehaviour
     [SerializeField] private int poolSize;
     [SerializeField] private bool expandable;
 
+    [SerializeField] private ParticleSystem muzzleFlash;
+    [SerializeField] private AudioSource fireAS;
+
     [SerializeField] private List<ssProjk> projkList;
 
     [SerializeField] private List<GameObject> freeList;
     [SerializeField] private List<GameObject> usedList;
 
     private void Awake()
+    {
+        muzzleFlash = GetComponent<ParticleSystem>();
+        fireAS = GetComponent<AudioSource>();
+    }
+
+    private void Start()
     {
         /* OBJECT POOL */
         freeList = new List<GameObject>();
@@ -33,6 +42,24 @@ public class ssMissileTube : MonoBehaviour
         {
             projk.evDetonate();
         }
+    }
+
+    public void MissileLoad()
+    {
+        /* INSTANTIATE PROJK */
+        GameObject g = GetObject();
+        g.transform.position = transform.position;
+        g.transform.rotation = transform.rotation;
+        /* END INSTANTIATE */
+    }
+
+    public void MissileFire()
+    {
+        muzzleFlash.Play();
+        fireAS.Play();
+
+        GameObject g = usedList[0];
+        g.SetActive(true);
     }
 
     /* OBJECT POOLING */

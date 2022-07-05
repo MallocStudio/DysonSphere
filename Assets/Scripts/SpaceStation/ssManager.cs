@@ -37,6 +37,7 @@ public class ssManager : MonoBehaviour
     [SerializeField] private GameObject mgunRet;
     [SerializeField] private GameObject missileRet;
     [SerializeField] private TMP_Text TMPcurWeapon;
+    [SerializeField] private TMP_Text TMPweaponsHot;
 
     [Header("Station Console Inserts")]
     [SerializeField] public GameObject gModeLight;
@@ -49,27 +50,26 @@ public class ssManager : MonoBehaviour
     {
         /* CACHE SHIT */
 
-        /* Set Default */
-        curBay = weaponBay.Cannon;
-        TMPcurWeapon.SetText("CURRENT WEAPON: " +curBay.ToString());
-
-        combatRing.Rotate(0, 0, 0);
-
-        actWeaponBay = weaponBays[0].GetComponent<ssWeaponBay>();
-        actWeaponBay.activeBay = true;
-
-        gunMode = false;
-        gModeLight.SetActive(false);
-        cannonRet.SetActive(false);
-        mgunRet.SetActive(false);
-        missileRet.SetActive(false);
-
         /* Input Action SetUp */
         trigActRef.action.performed += TrigStartAction;
         trigActRef.action.canceled += TrigEndAction;
-
     }
 
+    private void Start()
+    {
+        /* Set Default */
+        combatRing.Rotate(0, 0, 0);
+
+        curBay = weaponBay.Cannon;
+        actWeaponBay = weaponBays[0].GetComponent<ssWeaponBay>();
+        actWeaponBay.activeBay = true;
+        TMPcurWeapon.SetText("CURRENT WEAPON: " + curBay.ToString());
+
+        gunMode = false;
+        GunneryCall();
+        TMPweaponsHot.SetText("Weapons Off");
+        gModeLight.SetActive(false);
+    }
     private void TrigStartAction(InputAction.CallbackContext obj)
     {
         trigStartEv.Invoke();
@@ -78,26 +78,26 @@ public class ssManager : MonoBehaviour
     {
         trigEndEv.Invoke();
     }
-
+    private void LateUpdate()
+    {
+        GunneryCall();    
+    }
     public void GunneryToggle()
     {
         gunMode = !gunMode;
 
         if (gunMode)
         {
-            GunnaryActive();
-            gModeLight.SetActive(true);
+            TMPweaponsHot.SetText("Weapons Active");
+            gModeLight.SetActive(false);
         }
-
-        if (!gunMode)
+        else if (!gunMode)
         {
-            cannonRet.SetActive(false);
-            mgunRet.SetActive(false);
-            missileRet.SetActive(false);
+            TMPweaponsHot.SetText("Weapons Off");
             gModeLight.SetActive(false);
         }
     }
-    private void GunnaryActive()
+    private void GunneryCall()
     {
         if (gunMode)
         {
@@ -126,7 +126,7 @@ public class ssManager : MonoBehaviour
             mgunRet.SetActive(false);
             missileRet.SetActive(false);
             gModeLight.SetActive(false);
-        };
+        }
     }
     public void RotateBayUp()
     {
@@ -138,7 +138,8 @@ public class ssManager : MonoBehaviour
             actWeaponBay = weaponBays[(int)curBay].GetComponent<ssWeaponBay>();
             actWeaponBay.activeBay = true;
         }
-        GunnaryActive();
+        else return;
+        GunneryCall();
         TMPcurWeapon.SetText("Current Weapon: " + curBay.ToString());
         /* TEST IF ABOVE WORKS
          if (curBay == weaponBay.cannon)
@@ -153,15 +154,15 @@ public class ssManager : MonoBehaviour
     {
         actWeaponBay.activeBay = false;
         curBay = (weaponBay)((int)curBay - 1);
-        if(curBay < (weaponBay)(0))
+        if (curBay < (weaponBay)(0))
         {
-            curBay = weaponBay.COUNT -1;
+            curBay = weaponBay.COUNT - 1;
             actWeaponBay = weaponBays[(int)curBay].GetComponent<ssWeaponBay>();
             actWeaponBay.activeBay = true;
         }
-        GunnaryActive();
+        else return;
+        GunneryCall();
         TMPcurWeapon.SetText("Current Weapon: " + curBay.ToString());
-
     }
 }
 
