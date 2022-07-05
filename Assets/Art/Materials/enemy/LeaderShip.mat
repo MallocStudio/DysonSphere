@@ -7,11 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: console
-  m_Shader: {fileID: 4800000, guid: 2c77c788170dbc3438cfd9a5bf20bb96, type: 3}
-  m_ShaderKeywords: 
+  m_Name: FleetShip
+  m_Shader: {fileID: 4800000, guid: 0477805169948144ca3e3f23b74e2c8b, type: 3}
+  m_ShaderKeywords: _OUTLINEACTIVE_ON
   m_LightmapFlags: 2
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 23e2746f16fc11447a77d6b899cca7fe, type: 3}
+        m_Texture: {fileID: 2800000, guid: 40f817273ccd69f4db501d4339bb1a71, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -44,7 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 23e2746f16fc11447a77d6b899cca7fe, type: 3}
+        m_Texture: {fileID: 2800000, guid: 40f817273ccd69f4db501d4339bb1a71, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -63,8 +63,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _basecolour:
-        m_Texture: {fileID: 2800000, guid: 23e2746f16fc11447a77d6b899cca7fe, type: 3}
+    - _albedoMap:
+        m_Texture: {fileID: 2800000, guid: 7d64d28ac1dcad047944a11024b086e2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -94,6 +94,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _Distance: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
@@ -101,10 +102,13 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _OutlineActive: 1
+    - _OutlineWidth: 0.0659
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.95
+    - _RimOffset: -0.9
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -115,11 +119,15 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColour: {r: 0, g: 0, b: 0, a: 0}
+    - _RimColour: {r: 1, g: 1, b: 1, a: 0}
+    - _RimSmooth: {r: 0, g: 0.1, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _basecolourtint: {r: 1, g: 1, b: 1, a: 0}
-    - _emissiontint: {r: 0.10980392, g: 1.9294118, b: 2.9960785, a: 0}
+    - _albedoTint: {r: 1, g: 1, b: 1, a: 0}
+    - _emissiontint: {r: 8, g: 0.3231653, b: 0, a: 0}
+    - _emmissiontint: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &2997292670304458218
+--- !u!114 &1603021178323888446
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
