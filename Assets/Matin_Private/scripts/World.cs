@@ -454,6 +454,9 @@ public class World : MonoBehaviour {
     }
 
     public void event_log(string message) {
+        if (debug_console.isTextOverflowing) {
+            event_log_clear();
+        }
         debug_console.text += ">>" + message + '\n';
         Debug.Log(message);
     }
@@ -490,7 +493,9 @@ public class World : MonoBehaviour {
 
     public void event_damage_player(float damage) {
         player_health -= damage;
-        event_log("WARNING: Under Attack. Stability: " + player_health);
+        if ((int)player_health % 1 == 0) {
+            event_log("WARNING: Under Attack. Stability: " + player_health);
+        }
         if (player_health <= 0) {
             event_start_player_death_sequence();
         }
