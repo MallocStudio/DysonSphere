@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class AI_Blackboard {
         /// The list of boids found in friendlies of this group
