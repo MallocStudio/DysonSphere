@@ -7319,6 +7319,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1030039491}
     m_Modifications:
+    - target: {fileID: 1502853860, guid: 9b3c0907187387147a78a498ca7ad22a, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 3252113657537611186, guid: 05cbc50630ee65d4d90075156456f1e5, type: 3}
+    - target: {fileID: 1502853860, guid: 9b3c0907187387147a78a498ca7ad22a, type: 3}
+      propertyPath: friendly
+      value: 
+      objectReference: {fileID: 3252113657537611186, guid: 55917a486678b3a48a1239b5c4012c3e, type: 3}
+    - target: {fileID: 1502853860, guid: 9b3c0907187387147a78a498ca7ad22a, type: 3}
+      propertyPath: leadership
+      value: 
+      objectReference: {fileID: 3252113657537611186, guid: badb60f6e88a16443bc0a806951d46ad, type: 3}
+    - target: {fileID: 1502853861, guid: 9b3c0907187387147a78a498ca7ad22a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502853861, guid: 9b3c0907187387147a78a498ca7ad22a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502853861, guid: 9b3c0907187387147a78a498ca7ad22a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502853861, guid: 9b3c0907187387147a78a498ca7ad22a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502853861, guid: 9b3c0907187387147a78a498ca7ad22a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
     - target: {fileID: 108158207544472143, guid: 9b3c0907187387147a78a498ca7ad22a, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0

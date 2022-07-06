@@ -13,7 +13,7 @@ public class HolographicObject : MonoBehaviour
     public Transform attachedObject;
 
     public float differnceInScale = 0.01f;
-    public float differenceInVisualScale = 0.01f;
+    public float differenceInVisualScale = 0.005f;
 
     MeshRenderer mesh_renderer;
     Vector3 offSet;

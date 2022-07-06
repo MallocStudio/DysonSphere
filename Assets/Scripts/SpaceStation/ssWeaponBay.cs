@@ -62,7 +62,7 @@ public class ssWeaponBay : MonoBehaviour
     {
         gunModeAct = ss.gunMode;
 
-        if (gunModeAct && activeBay)
+        if (gunModeAct) 
         {
             Aim();
             if (triggerDown)
