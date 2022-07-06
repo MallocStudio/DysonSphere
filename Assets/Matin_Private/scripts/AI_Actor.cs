@@ -194,8 +194,7 @@ public class AI_Actor : MonoBehaviour {
         /// This is called from update() depending on the status of "is_dead"
     void set_visibility(bool visible) {
         line_renderer.enabled = visible;
-        MeshRenderer mesh = visual_mesh.GetComponent<MeshRenderer>();
-        if (mesh) mesh.enabled = visible;
+        visual_mesh.gameObject.SetActive(visible);
     }
 
     public void take_damage(float amount) {
