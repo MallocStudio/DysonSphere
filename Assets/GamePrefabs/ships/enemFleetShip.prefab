@@ -69,9 +69,11 @@ MonoBehaviour:
   is_dead: 0
   lead: {fileID: 0}
   is_selected: 0
-  attack_radius: 15
+  attached_holographic_obj: {fileID: 0}
   health: 1
   is_enemy: 0
+  attacking_the_player: 0
+  visual_mesh: {fileID: 4425292336297794217}
 --- !u!120 &767200133699044087
 LineRenderer:
   m_ObjectHideFlags: 0
