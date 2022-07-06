@@ -6,6 +6,7 @@ using TMPro;
 public class ssWeaponBay : MonoBehaviour
 {
     [Header("Plugins")]
+    [SerializeField] public World wd;
     [SerializeField] public bool activeBay;
     [SerializeField] private bool triggerDown;
     [SerializeField] private weaponBay weapon;
@@ -122,6 +123,9 @@ public class ssWeaponBay : MonoBehaviour
     {
         foreach (Transform battery in weaponList)
         {
+
+            wd.event_log("AIMING" + weapon);
+
             battery.LookAt(ss.cannonAimRet);
         }
         /*

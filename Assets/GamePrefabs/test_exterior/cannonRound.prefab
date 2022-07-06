@@ -130,7 +130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detonate: 0
   projDamage: 20
-  spd: 10
+  spd: 30
   lifeTime: 5
   timer: 0
   explPS: {fileID: 0}
