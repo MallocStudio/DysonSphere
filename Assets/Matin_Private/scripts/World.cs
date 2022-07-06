@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.XR.Interaction.Toolkit;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class World : MonoBehaviour {
     const int MOUSE_BUTTON_LEFT   = 0;
@@ -19,7 +20,6 @@ public class World : MonoBehaviour {
 
     AI_Blackboard enemy_blackboard = new AI_Blackboard();
     AI_Blackboard friendly_blackboard = new AI_Blackboard();
-    const int GROUP_MAX_CAPACITY = 6;
     List<AI_Actor> enemy_entities;
     List<AI_Actor> friendly_entities;
 
@@ -29,11 +29,9 @@ public class World : MonoBehaviour {
     [SerializeField] GameObject friendly_spaceship_prefab;
     [SerializeField] Light alarm;
     [SerializeField] Camera main_camera;
-    float spawn_radius = 30.0f;
     [SerializeField] Transform enemy_spawn_point;
     [SerializeField] public Transform friendly_spawn_point;
     [SerializeField] public Transform player_ship_point;
-    public float player_health = 10;
     [SerializeField] Hologram hologram_panel;
     uint number_of_enemy_groups = 0;
     uint number_of_friendly_groups = 0;
@@ -52,6 +50,15 @@ public class World : MonoBehaviour {
 ///
 
     [SerializeField] TextMeshProUGUI debug_console;
+
+///
+/// PLAYER STATS
+///
+    //@temp serialized to debug
+    [SerializeField] float player_health = 10;
+    bool is_player_dead = false;
+    float spawn_radius = 30.0f;
+    const int GROUP_MAX_CAPACITY = 6;
 
         //- Floor
     Plane floor = new Plane();
@@ -451,6 +458,7 @@ public class World : MonoBehaviour {
 
     public void event_log(string message) {
         debug_console.text += ">>" + message + '\n';
+        Debug.Log(message);
     }
 
     public void event_log_clear() {
@@ -481,6 +489,35 @@ public class World : MonoBehaviour {
 
     public void event_play_sound(AudioSource audio, AudioClip clip) {
         audio.PlayOneShot(clip);
+    }
+
+    public void event_damage_player(float damage) {
+        player_health -= damage;
+        if (player_health <= 0) {
+            event_start_player_death_sequence();
+        }
+    }
+
+    bool has_player_death_started = false;
+    public void event_start_player_death_sequence() {
+        if (!has_player_death_started) {
+            has_player_death_started = true;
+            is_player_dead = true;
+            event_log("System Failure. Edject Now.");
+        }
+    }
+
+    float player_death_sequence_timer = 10;
+    void update_player_death_sequence() {
+        if (has_player_death_started) {
+                // @temp load scene when the player dies for now
+            if (player_death_sequence_timer > 0) {
+                player_death_sequence_timer -= Time.deltaTime;
+            } else {
+                event_log("reloaded scene");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
     }
 }
 

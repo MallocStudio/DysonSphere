@@ -18,7 +18,7 @@ public class AI_Actor : MonoBehaviour {
     public bool is_selected = false;
     [System.NonSerialized] public Boid boid = new Boid();
     protected float speed = 10;
-    [SerializeField] float attack_radius = 15;
+    float attack_radius = 30;
     Vector3 velocity = Vector3.zero;
     float starting_y_pos = 0;
     float floatiness_offset = 0;
@@ -31,12 +31,13 @@ public class AI_Actor : MonoBehaviour {
     float damage = 0.02f; // the amount of damage this entity applies to others
     public bool attacking_the_player = false;
 
-        //-     LINE RENDERER
+    //-     VISUALIZATION
     private LineRenderer line_renderer;
     const string line_renderer_visibility_material_name = "Vector1_17cb148168fe458f8bcf66707d08fcfe";
     const float line_renderer_visibility_material_max = 1;
     const float line_renderer_visibility_material_min = 0;
     float line_renderer_visibility_material_amount = 0;
+    [SerializeField] Transform visual_mesh = null;
 
         /// Initialise a new ai actor. Each AI actor must share the same blackboard as others.
         /// the "lead" parameter can be null. If it is not null, this ai actor will follow the "lead" around.
@@ -72,6 +73,8 @@ public class AI_Actor : MonoBehaviour {
         line_renderer_visibility_material_amount = line_renderer_visibility_material_min;
         line_renderer.material.SetFloat(line_renderer_visibility_material_name, line_renderer_visibility_material_amount);
         line_renderer.enabled = true;
+
+        Debug.Assert(visual_mesh != null);
     }
 
         /// Moves this AI_Actor towards the given point.
@@ -117,7 +120,6 @@ public class AI_Actor : MonoBehaviour {
             //- Go towards player
         if (is_enemy && attacking_the_player) {
             this.move(world.player_ship_point.position);
-            Debug.Log("attacking the player");
         }
 
         Vector3 final_velocity = Vector3.zero;
@@ -154,8 +156,10 @@ public class AI_Actor : MonoBehaviour {
                 // damage player
             if (is_enemy && attacking_the_player) {
                 if (Vector3.Distance(transform.position, world.player_ship_point.position) < attack_radius) {
-                    world.player_health -= damage;
-                    shoot_at_pos(world.player_ship_point.position);
+                    world.event_damage_player(damage);
+                    if (line_renderer_visibility_material_amount <= line_renderer_visibility_material_min) {
+                        shoot_at_pos(world.player_ship_point.position);
+                    }
                 }
             } else {
                 // damage other entities
@@ -190,6 +194,8 @@ public class AI_Actor : MonoBehaviour {
         /// This is called from update() depending on the status of "is_dead"
     void set_visibility(bool visible) {
         line_renderer.enabled = visible;
+        MeshRenderer mesh = visual_mesh.GetComponent<MeshRenderer>();
+        if (mesh) mesh.enabled = visible;
     }
 
     public void take_damage(float amount) {
@@ -231,10 +237,10 @@ public class AI_Actor : MonoBehaviour {
     public void kill() {
         health = 0; // for sanity's sake for when we kill this thing outside of shoot_at()
         is_dead = true;
+        set_visibility(false);
     }
 }
 
-[System.Serializable]
 public class Boid {
     public float separation_radius = 30;
     public float separation = 0.2f;
