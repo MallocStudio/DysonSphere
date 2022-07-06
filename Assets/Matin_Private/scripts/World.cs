@@ -137,11 +137,8 @@ public class World : MonoBehaviour {
             event_alarm_activate();
         }
 
-            //@debug
-        Keyboard keyboard = Keyboard.current;
-        if (keyboard.spaceKey.wasPressedThisFrame) {
-            event_start_new_wave_immediately();
-        }
+            //- Update death sequence
+        update_player_death_sequence();
     }
 
     Vector3 get_random_position_in_worldspace(Vector3 origin) {
@@ -493,6 +490,7 @@ public class World : MonoBehaviour {
 
     public void event_damage_player(float damage) {
         player_health -= damage;
+        event_log("WARNING: Under Attack. Stability: " + player_health);
         if (player_health <= 0) {
             event_start_player_death_sequence();
         }
@@ -503,7 +501,7 @@ public class World : MonoBehaviour {
         if (!has_player_death_started) {
             has_player_death_started = true;
             is_player_dead = true;
-            event_log("System Failure. Edject Now.");
+            event_log("System Failure. Eject Now.");
         }
     }
 
@@ -513,6 +511,7 @@ public class World : MonoBehaviour {
                 // @temp load scene when the player dies for now
             if (player_death_sequence_timer > 0) {
                 player_death_sequence_timer -= Time.deltaTime;
+                if (((int)player_death_sequence_timer) % 1 == 0) event_log("EJECTING IN " + (int)player_death_sequence_timer + " SECONDS.");
             } else {
                 event_log("reloaded scene");
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

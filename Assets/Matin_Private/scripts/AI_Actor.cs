@@ -236,7 +236,6 @@ public class AI_Actor : MonoBehaviour {
     public void kill() {
         health = 0; // for sanity's sake for when we kill this thing outside of shoot_at()
         is_dead = true;
-        set_visibility(false);
     }
 }
 
