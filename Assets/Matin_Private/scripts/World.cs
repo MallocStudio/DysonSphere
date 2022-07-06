@@ -139,6 +139,11 @@ public class World : MonoBehaviour {
 
             //- Update death sequence
         update_player_death_sequence();
+
+        Keyboard keyboard = Keyboard.current;
+        if (keyboard.spaceKey.wasPressedThisFrame) {
+            event_start_new_wave_immediately();
+        }
     }
 
     Vector3 get_random_position_in_worldspace(Vector3 origin) {
@@ -216,6 +221,11 @@ public class World : MonoBehaviour {
         if (wave_count % 5 == 0) {
             event_add_enemy_group();
         }
+
+        if (wave_count % 6 == 0) {
+            event_add_friendly_group();
+        }
+
             //- Reset Enemies
         event_reset_enemy_groups();
 
@@ -231,6 +241,7 @@ public class World : MonoBehaviour {
 
             //- Activate the Alarm
         event_alarm_activate();
+        event_update_teams();
     }
 
         /// Pause the game and show the pause menu
@@ -414,42 +425,52 @@ public class World : MonoBehaviour {
     }
 
     public void event_reset_enemy_groups() {
-        // make sure that the number of spawned enemies (dead or alive) is equal to the number of groups * GROUP_MAX_CAPACITY
-        Debug.Assert(number_of_enemy_groups * GROUP_MAX_CAPACITY == enemy_entities.Count());
+        // // make sure that the number of spawned enemies (dead or alive) is equal to the number of groups * GROUP_MAX_CAPACITY
+        // Debug.Assert(number_of_enemy_groups * GROUP_MAX_CAPACITY == enemy_entities.Count());
 
-        for (int group = 0; group < number_of_enemy_groups; group++) {
-            AI_Actor lead = null;
-            for (int i = group; i < (GROUP_MAX_CAPACITY * (group+1)); i++) {
-                AI_Actor entity = enemy_entities[i];
-                if (i == 0) {
-                    lead = entity;
-                }
+        // for (int group = 0; group < number_of_enemy_groups; group++) {
+        //     AI_Actor lead = null;
+        //     for (int i = group; i < (GROUP_MAX_CAPACITY * (group+1)); i++) {
+        //         AI_Actor entity = enemy_entities[i];
+        //         if (i == 0) {
+        //             lead = entity;
+        //         }
 
-                Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
-                    // Makes enemies undead
-                entity.init(this, enemy_blackboard, lead, pos, true);
+        //         Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
+        //             // Makes enemies undead
+        //         entity.init(this, enemy_blackboard, lead, pos, true);
 
-                if (lead) {
-                    lead.move(friendly_spawn_point.position);
-                }
-            }
+        //         if (lead) {
+        //             lead.move(friendly_spawn_point.position);
+        //         }
+        //     }
+        // }
+        foreach (AI_Actor entity in enemy_entities) {
+            Vector3 pos = get_random_position_in_worldspace(enemy_spawn_point.position);
+            entity.init(this, enemy_blackboard, entity.lead, pos, true);
+            entity.move(friendly_spawn_point.position);
         }
     }
 
     public void event_reset_friendly_groups() {
-        // make sure that the number of spawned friendlies (dead or alive) is equal to the number of groups * GROUP_MAX_CAPACITY
-        Debug.Assert(number_of_friendly_groups * GROUP_MAX_CAPACITY == friendly_entities.Count());
+        // // make sure that the number of spawned friendlies (dead or alive) is equal to the number of groups * GROUP_MAX_CAPACITY
+        // Debug.Assert(number_of_friendly_groups * GROUP_MAX_CAPACITY == friendly_entities.Count());
 
-        for (int group = 0; group < number_of_friendly_groups; group++) {
-            AI_Actor lead = null;
-            for (int i = group; i < (GROUP_MAX_CAPACITY * (group+1)); i++) {
-                AI_Actor entity = friendly_entities[i];
-                if (i == 0) lead = entity;
+        // for (int group = 0; group < number_of_friendly_groups; group++) {
+        //     AI_Actor lead = null;
+        //     for (int i = group; i < (GROUP_MAX_CAPACITY * (group+1)); i++) {
+        //         AI_Actor entity = friendly_entities[i];
+        //         if (i == 0) lead = entity;
 
-                Vector3 pos = get_random_position_in_worldspace(friendly_spawn_point.position);
-                    // Makes enemies undead
-                entity.init(this, friendly_blackboard, lead, pos, false);
-            }
+        //         Vector3 pos = get_random_position_in_worldspace(friendly_spawn_point.position);
+        //             // Makes enemies undead
+        //         entity.init(this, friendly_blackboard, lead, pos, false);
+        //     }
+        // }
+        foreach (AI_Actor entity in friendly_entities) {
+            Vector3 pos = get_random_position_in_worldspace(friendly_spawn_point.position);
+            entity.init(this, friendly_blackboard, entity.lead, pos, false);
+            entity.move(friendly_spawn_point.position);
         }
     }
 
@@ -493,11 +514,12 @@ public class World : MonoBehaviour {
 
     public void event_damage_player(float damage) {
         player_health -= damage;
-        if ((int)player_health % 1 == 0) {
-            event_log("WARNING: Under Attack. Stability: " + player_health);
-        }
         if (player_health <= 0) {
             event_start_player_death_sequence();
+        } else {
+            if ((int)player_health % 1 == 0) {
+                event_log("WARNING: Under Attack. Stability: " + (int)player_health);
+            }
         }
     }
 
@@ -513,6 +535,9 @@ public class World : MonoBehaviour {
     float player_death_sequence_timer = 10;
     void update_player_death_sequence() {
         if (has_player_death_started) {
+            if (!alarm_has_gone_off) {
+                event_alarm_activate();
+            }
                 // @temp load scene when the player dies for now
             if (player_death_sequence_timer > 0) {
                 player_death_sequence_timer -= Time.deltaTime;

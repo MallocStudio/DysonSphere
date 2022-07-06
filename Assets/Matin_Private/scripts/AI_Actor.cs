@@ -18,7 +18,7 @@ public class AI_Actor : MonoBehaviour {
     public bool is_selected = false;
     [System.NonSerialized] public Boid boid = new Boid();
     protected float speed = 10;
-    float attack_radius = 30;
+    float attack_radius = 35;
     Vector3 velocity = Vector3.zero;
     float starting_y_pos = 0;
     float floatiness_offset = 0;
@@ -28,7 +28,7 @@ public class AI_Actor : MonoBehaviour {
         // ! ONLY MEANT TO BE SET TO SOMETHING THROUGH WORLD.CS
     public float health = 1.0f; // 1 is max, 0 is min // ! note that this gets set to 1 in init()
     public bool is_enemy = false;
-    float damage = 0.02f; // the amount of damage this entity applies to others
+    float damage = 0.05f; // the amount of damage this entity applies to others
     public bool attacking_the_player = false;
 
     //-     VISUALIZATION
@@ -56,9 +56,9 @@ public class AI_Actor : MonoBehaviour {
             this.health = 1; // reset to max
         } else {
             if (!is_enemy) {
-                this.health = 5; // give lead player more health to avoid the problem of the players dying so soon because of the leader
+                this.health = 10; // give lead player more health to avoid the problem of the players dying so soon because of the leader
             } else {
-                this.health = 3; // reset to max
+                this.health = 4; // reset to max
             }
         }
 
@@ -105,17 +105,17 @@ public class AI_Actor : MonoBehaviour {
             }
         }
 
-        {   //- Sync settings with the lead
-            if (lead) {
-                speed                  = lead.speed;
-                boid.separation_radius = lead.boid.separation_radius;
-                boid.separation        = lead.boid.separation;
-                boid.cohesion          = lead.boid.cohesion;
-                boid.target_radius     = lead.boid.target_radius;
-                boid.alignment_radius  = lead.boid.alignment_radius;
-                boid.alignment         = lead.boid.alignment;
-            }
-        }
+        // {   //- Sync settings with the lead
+        //     if (lead) {
+        //         speed                  = lead.speed;
+        //         boid.separation_radius = lead.boid.separation_radius;
+        //         boid.separation        = lead.boid.separation;
+        //         boid.cohesion          = lead.boid.cohesion;
+        //         boid.target_radius     = lead.boid.target_radius;
+        //         boid.alignment_radius  = lead.boid.alignment_radius;
+        //         boid.alignment         = lead.boid.alignment;
+        //     }
+        // }
 
             //- Go towards player
         if (is_enemy && attacking_the_player) {
@@ -263,7 +263,8 @@ public class Boid {
         Vector3 alignment_v = get_alignment_velocity(boids);
 
         this.final_velocity = separation_v + alignment_v + cohesion_v; // store for internal use
-        this.final_velocity = Vector3.Lerp(this.final_velocity, previous_velocity, 0.99f);
+        this.final_velocity = Vector3.Lerp(this.final_velocity, previous_velocity, 0.95f);
+        // this.final_velocity = Vector3.Lerp(this.final_velocity, previous_velocity, 0.90f);
         previous_velocity = this.final_velocity; // update previous vel
         return this.final_velocity;
     }
