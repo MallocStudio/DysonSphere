@@ -62,7 +62,7 @@ public class ssWeaponBay : MonoBehaviour
     {
         gunModeAct = ss.gunMode;
 
-        if (gunModeAct && activeBay) 
+        if (gunModeAct && activeBay)
         {
             Aim();
             if (triggerDown)
@@ -77,26 +77,24 @@ public class ssWeaponBay : MonoBehaviour
                     shootTimer -= Time.deltaTime;
                 }
             }
-        } else
-        {
-            Debug.Log("gunModeAct was null");
-        }
-            
-        // handles the reloading
-        if (reloading)
-        {
-            reloadTime -= Time.deltaTime;
-            if(reloadTime <= 0)
+
+            // handles the reloading
+            if (reloading)
             {
-                reloading = false;
-                fireReady = 0;
-                reloadTime = reloadTimeMax;
+                reloadTime -= Time.deltaTime;
+                if (reloadTime <= 0)
+                {
+                    reloading = false;
+                    fireReady = 0;
+                    reloadTime = reloadTimeMax;
+                }
             }
-        } else
-        {
-            if(fireReady >= fireReadyMax)
+            else
             {
-                reloading = true;
+                if (fireReady >= fireReadyMax)
+                {
+                    reloading = true;
+                }
             }
         }
     }
