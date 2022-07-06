@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detonate: 0
-  projDamage: 30
+  projDamage: 1
   spd: 10
   lifeTime: 10
   timer: 0
@@ -139,7 +139,7 @@ MonoBehaviour:
   pool: {fileID: 0}
   damageTarget: {fileID: 0}
   world: {fileID: 0}
-  radius: 6
+  radius: 15
 --- !u!136 &4247837211552596085
 CapsuleCollider:
   m_ObjectHideFlags: 0

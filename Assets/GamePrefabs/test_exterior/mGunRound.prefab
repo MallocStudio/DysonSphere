@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detonate: 0
-  projDamage: 10
+  projDamage: 0.05
   spd: 40
   lifeTime: 10
   timer: 0

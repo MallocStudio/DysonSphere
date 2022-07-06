@@ -11,6 +11,7 @@ public class ssWeaponBay : MonoBehaviour
     [SerializeField] private bool triggerDown;
     [SerializeField] private weaponBay weapon;
     [SerializeField] private ssManager ss;
+    [SerializeField] private Transform ssReticle;
     [SerializeField] private TMP_Text TMPweaponTimer;
     [SerializeField] private List<Transform> weaponList = new List<Transform>();
     [SerializeField] private List<ParticleSystem> particleList;
@@ -62,7 +63,6 @@ public class ssWeaponBay : MonoBehaviour
     public void Update()
     {
         gunModeAct = ss.gunMode;
-
         if (gunModeAct && activeBay)
         {
             Aim();
@@ -124,9 +124,9 @@ public class ssWeaponBay : MonoBehaviour
         foreach (Transform battery in weaponList)
         {
 
-            wd.event_log("AIMING" + weapon);
+            wd.event_log("AIMING" + ssReticle.position);
 
-            battery.LookAt(ss.cannonAimRet);
+            battery.LookAt(ssReticle);
         }
         /*
         if (weapon == weaponBay.Cannon)
