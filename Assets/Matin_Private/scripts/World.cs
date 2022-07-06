@@ -354,8 +354,9 @@ public class World : MonoBehaviour {
             GameObject gameobject = Instantiate(friendly_spaceship_prefab, pos, Quaternion.identity);
 
                 //- Link the created entity to the hologram tabel
+            Hologram_Type type = Hologram_Type.FRIENDLY;
             if (hologram_panel != null) {
-                holographic_objects.Add(hologram_panel.LinkNewEntity(gameobject.transform));
+                holographic_objects.Add(hologram_panel.LinkNewEntity(gameobject.transform, type));
             } else {
                 Debug.LogWarning("hologram_panel on world component is null");
             }
@@ -384,8 +385,10 @@ public class World : MonoBehaviour {
             }
 
                 //- Link the created entity to the hologram tabel
+            Hologram_Type type = Hologram_Type.ENEMY;
+            if (i == 0) type = Hologram_Type.LEADERSHIP;
             if (hologram_panel != null) {
-                holographic_objects.Add(hologram_panel.LinkNewEntity(gameobject.transform));
+                holographic_objects.Add(hologram_panel.LinkNewEntity(gameobject.transform, type));
             } else {
                 Debug.LogWarning("hologram_panel on world component is null");
             }
