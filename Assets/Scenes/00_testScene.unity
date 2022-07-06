@@ -4574,6 +4574,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 774906506}
     - target: {fileID: 5541843905287826970, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
+      propertyPath: wd
+      value: 
+      objectReference: {fileID: 626208110}
+    - target: {fileID: 5541843905287826970, guid: e496ce1bb0f89cb4f8f6167c36af1bf5, type: 3}
       propertyPath: TMPweaponTimer
       value: 
       objectReference: {fileID: 1851970837}
