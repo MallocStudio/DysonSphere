@@ -220,9 +220,6 @@ public class World : MonoBehaviour {
         } else
         if (wave_count % 5 == 0) {
             event_add_enemy_group();
-        }
-
-        if (wave_count % 6 == 0) {
             event_add_friendly_group();
         }
 
