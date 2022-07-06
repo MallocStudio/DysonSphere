@@ -129,7 +129,7 @@ MonoBehaviour:
   detonate: 0
   projDamage: 10
   spd: 20
-  lifeTime: 5
+  lifeTime: 10
   timer: 0
   explPS: {fileID: 0}
   pool: {fileID: 0}

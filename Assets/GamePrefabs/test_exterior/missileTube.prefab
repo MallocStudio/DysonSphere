@@ -287,7 +287,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 30
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -668,7 +668,7 @@ ParticleSystem:
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 0
     donutRadius: 0.2
-    m_Position: {x: 0, y: 0, z: 0}
+    m_Position: {x: 0, y: 0, z: 12.14}
     m_Rotation: {x: 0, y: 0, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
@@ -4976,6 +4976,8 @@ MonoBehaviour:
   prefab: {fileID: 7534929845368310905, guid: c6b48710d93c84f499cccf08daeee3fd, type: 3}
   poolSize: 3
   expandable: 1
+  muzzleFlash: {fileID: 0}
+  fireAS: {fileID: 0}
   projkList: []
   freeList: []
   usedList: []

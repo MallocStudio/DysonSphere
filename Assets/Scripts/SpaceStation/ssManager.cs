@@ -132,35 +132,35 @@ public class ssManager : MonoBehaviour
     {
         actWeaponBay.activeBay = false;
         curBay = (weaponBay)((int)curBay + 1);
+
+        // wrap around if needed
         if (curBay == weaponBay.COUNT)
         {
             curBay = (weaponBay)(0);
             actWeaponBay = weaponBays[(int)curBay].GetComponent<ssWeaponBay>();
-            actWeaponBay.activeBay = true;
         }
-        else return;
+
+        // activate the new bay
+        actWeaponBay.activeBay = true;
+
         GunneryCall();
         TMPcurWeapon.SetText("Current Weapon: " + curBay.ToString());
-        /* TEST IF ABOVE WORKS
-         if (curBay == weaponBay.cannon)
-            curBay = weaponBay.mgun;
-        else if (curBay == weaponBay.mgun)
-            curBay = weaponBay.missile;
-        else if (curBay == weaponBay.missile)
-            curBay = weaponBay.cannon;
-         */
     }
     public void RotateBayDown()
     {
         actWeaponBay.activeBay = false;
         curBay = (weaponBay)((int)curBay - 1);
+     
+        // wrap around if needed
         if (curBay < (weaponBay)(0))
         {
             curBay = weaponBay.COUNT - 1;
             actWeaponBay = weaponBays[(int)curBay].GetComponent<ssWeaponBay>();
-            actWeaponBay.activeBay = true;
         }
-        else return;
+        
+        // activate the new bay
+        actWeaponBay.activeBay = true;
+        
         GunneryCall();
         TMPcurWeapon.SetText("Current Weapon: " + curBay.ToString());
     }

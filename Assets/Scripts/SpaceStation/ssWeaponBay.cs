@@ -77,10 +77,14 @@ public class ssWeaponBay : MonoBehaviour
                     shootTimer -= Time.deltaTime;
                 }
             }
-        }
-        if(fireReady >= fireReadyMax)
+        } else
         {
-            reloading = true;
+            Debug.Log("gunModeAct was null");
+        }
+            
+        // handles the reloading
+        if (reloading)
+        {
             reloadTime -= Time.deltaTime;
             if(reloadTime <= 0)
             {
@@ -88,8 +92,13 @@ public class ssWeaponBay : MonoBehaviour
                 fireReady = 0;
                 reloadTime = reloadTimeMax;
             }
+        } else
+        {
+            if(fireReady >= fireReadyMax)
+            {
+                reloading = true;
+            }
         }
-        
     }
 
     private void LateUpdate()
