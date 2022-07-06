@@ -50,7 +50,6 @@ public class ssWeaponBay : MonoBehaviour
         activeBay = false;
         triggerDown = false;
         weaponIndex = 0;
-        ss = GetComponentInParent<ssManager>();
         foreach (Transform weapon in weaponList)
         {
             particleList.Add(weapon.GetComponent<ParticleSystem>());
@@ -114,6 +113,11 @@ public class ssWeaponBay : MonoBehaviour
 
     private void Aim()
     {
+        foreach (Transform battery in weaponList)
+        {
+            battery.LookAt(ss.cannonAimRet);
+        }
+        /*
         if (weapon == weaponBay.Cannon)
         {
            foreach (Transform battery in weaponList)
@@ -136,6 +140,7 @@ public class ssWeaponBay : MonoBehaviour
            }
         }
             else return;
+        */
     }
 
     public void Fire()
