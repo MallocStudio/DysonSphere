@@ -2692,7 +2692,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1303729341}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 16.324001}
+  m_LocalPosition: {x: 0, y: 0, z: 56.323997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 712541114}
@@ -2707,10 +2707,10 @@ ParentConstraint:
   m_GameObject: {fileID: 1303729341}
   m_Enabled: 1
   m_Weight: 1
-  m_TranslationAtRest: {x: 0, y: 0, z: 16.324001}
+  m_TranslationAtRest: {x: 0, y: 0, z: 56.323997}
   m_RotationAtRest: {x: 0, y: 0, z: 0}
   m_TranslationOffsets:
-  - {x: 0, y: 0, z: 60}
+  - {x: 0, y: 0, z: 100}
   m_RotationOffsets:
   - {x: 0, y: 0, z: 0}
   m_AffectTranslationX: 1
@@ -3586,7 +3586,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1788723767}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 16.324001}
+  m_LocalPosition: {x: 0, y: 0, z: 56.323997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2046624161}
@@ -3652,10 +3652,10 @@ ParentConstraint:
   m_GameObject: {fileID: 1788723767}
   m_Enabled: 1
   m_Weight: 1
-  m_TranslationAtRest: {x: 0, y: 0, z: 16.324001}
+  m_TranslationAtRest: {x: 0, y: 0, z: 56.323997}
   m_RotationAtRest: {x: 0, y: 0, z: 0}
   m_TranslationOffsets:
-  - {x: 0, y: 0, z: 60}
+  - {x: 0, y: 0, z: 100}
   m_RotationOffsets:
   - {x: 0, y: 0, z: 0}
   m_AffectTranslationX: 1
@@ -3725,7 +3725,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1847522779}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 16.324001}
+  m_LocalPosition: {x: 0, y: 0, z: 56.323997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 878086053}
@@ -3740,10 +3740,10 @@ ParentConstraint:
   m_GameObject: {fileID: 1847522779}
   m_Enabled: 1
   m_Weight: 1
-  m_TranslationAtRest: {x: 0, y: 0, z: 16.324001}
+  m_TranslationAtRest: {x: 0, y: 0, z: 56.323997}
   m_RotationAtRest: {x: 0, y: 0, z: 0}
   m_TranslationOffsets:
-  - {x: 0, y: 0, z: 60}
+  - {x: 0, y: 0, z: 100}
   m_RotationOffsets:
   - {x: 0, y: 0, z: 0}
   m_AffectTranslationX: 1
@@ -4684,6 +4684,14 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 6063554145719222863}
+    - target: {fileID: 2116216465, guid: 9b3c0907187387147a78a498ca7ad22a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.204
+      objectReference: {fileID: 0}
+    - target: {fileID: 2116216467, guid: 9b3c0907187387147a78a498ca7ad22a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 65c7cf7bb61539b47a876c367e5d616f, type: 2}
     - target: {fileID: 1990989976662020903, guid: 9b3c0907187387147a78a498ca7ad22a, type: 3}
       propertyPath: onPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
