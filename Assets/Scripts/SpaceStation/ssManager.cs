@@ -31,11 +31,17 @@ public class ssManager : MonoBehaviour
     [SerializeField] private weaponBay curBay;
     [SerializeField] public bool gunMode;
     [SerializeField] public bool fireSafety;
+    [SerializeField] private bool isRotating;
+    [SerializeField] public float rotateDegrees = 120.0f;
+    [SerializeField] public float rotateSpeed = 1.0f;
 
     [Header("Station Status GUI")]
     [SerializeField] private GameObject cannonRet;
+    [SerializeField] private GameObject cannonRet2;
     [SerializeField] private GameObject mgunRet;
+    [SerializeField] private GameObject mgunRet2;
     [SerializeField] private GameObject missileRet;
+    [SerializeField] private GameObject missileRet2;
     [SerializeField] private TMP_Text TMPcurWeapon;
     [SerializeField] private TMP_Text TMPweaponsHot;
 
@@ -45,6 +51,7 @@ public class ssManager : MonoBehaviour
     [Header("Input Events")]
     [SerializeField] public UnityEvent trigStartEv;
     [SerializeField] public UnityEvent trigEndEv;
+
 
     private void Awake()
     {
@@ -60,6 +67,7 @@ public class ssManager : MonoBehaviour
         /* Set Default */
         combatRing.Rotate(0, 0, 0);
 
+        isRotating = false;
         curBay = weaponBay.Cannon;
         actWeaponBay = weaponBays[0].GetComponent<ssWeaponBay>();
         actWeaponBay.activeBay = true;
@@ -99,34 +107,46 @@ public class ssManager : MonoBehaviour
     }
     private void GunneryCall()
     {
+        if (gunMode == false)
+        {
+            cannonRet.SetActive(false);
+            cannonRet2.SetActive(false);
+            mgunRet.SetActive(false);
+            mgunRet2.SetActive(false);
+            missileRet.SetActive(false);
+            missileRet2.SetActive(false);
+            gModeLight.SetActive(false);
+        }
         if (gunMode)
         {
             if (curBay == weaponBay.Cannon)
             {
                 cannonRet.SetActive(true);
+                cannonRet2.SetActive(true);
                 mgunRet.SetActive(false);
+                mgunRet2.SetActive(false);
                 missileRet.SetActive(false);
+                missileRet2.SetActive(false);
             }
             else if (curBay == weaponBay.MachineGun)
             {
                 cannonRet.SetActive(false);
+                cannonRet2.SetActive(false);
                 mgunRet.SetActive(true);
+                mgunRet2.SetActive(true);
                 missileRet.SetActive(false);
+                missileRet2.SetActive(false);
             }
             else if (curBay == weaponBay.Missile)
             {
                 cannonRet.SetActive(false);
+                cannonRet2.SetActive(false);
                 mgunRet.SetActive(false);
+                mgunRet2.SetActive(false);
                 missileRet.SetActive(true);
+                missileRet2.SetActive(true);
             }
-        }
-        else if (!gunMode)
-        {
-            cannonRet.SetActive(false);
-            mgunRet.SetActive(false);
-            missileRet.SetActive(false);
-            gModeLight.SetActive(false);
-        }
+        }   
     }
     public void RotateBayUp()
     {
@@ -145,6 +165,12 @@ public class ssManager : MonoBehaviour
 
         GunneryCall();
         TMPcurWeapon.SetText("Current Weapon: " + curBay.ToString());
+
+        if (isRotating == false)
+        {
+            StartCoroutine(Rotate(Vector3.down, rotateDegrees, rotateSpeed));
+        }
+        else return;
     }
     public void RotateBayDown()
     {
@@ -163,6 +189,32 @@ public class ssManager : MonoBehaviour
         
         GunneryCall();
         TMPcurWeapon.SetText("Current Weapon: " + curBay.ToString());
+        if (isRotating == false)
+        {
+            StartCoroutine(Rotate(Vector3.up, rotateDegrees, rotateSpeed));
+        }
+        else return;
+    }
+
+    IEnumerator Rotate(Vector3 axis, float angle, float duration)
+    {
+        Quaternion start = transform.rotation;
+        Quaternion end = transform.rotation;
+        end *= Quaternion.Euler(axis * angle);
+
+        float clock = 0.0f;
+        while (clock < duration)
+        {
+            transform.rotation = Quaternion.Slerp(start, end, clock / duration);
+            isRotating = true;
+            clock += Time.deltaTime;
+            if (clock >= duration)
+            {
+                isRotating = false; ;
+            }
+            yield return null;
+        }
+        transform.rotation = end;
     }
 }
 

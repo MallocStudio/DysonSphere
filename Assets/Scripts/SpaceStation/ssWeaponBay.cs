@@ -58,11 +58,11 @@ public class ssWeaponBay : MonoBehaviour
         TMPweaponTimer.SetText("CURRENT WEAPON: " + weapon.ToString());
     }
 
-    private void Update()
+    public void Update()
     {
         gunModeAct = ss.gunMode;
 
-        if (gunModeAct) 
+        if (gunModeAct && activeBay) 
         {
             Aim();
             if (triggerDown)
@@ -120,7 +120,7 @@ public class ssWeaponBay : MonoBehaviour
         triggerDown = false;
     }
 
-    private void Aim()
+    public void Aim()
     {
         foreach (Transform battery in weaponList)
         {
