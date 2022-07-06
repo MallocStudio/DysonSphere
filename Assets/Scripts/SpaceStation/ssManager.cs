@@ -75,6 +75,7 @@ public class ssManager : MonoBehaviour
 
         gunMode = false;
         GunneryCall();
+
         TMPweaponsHot.SetText("Weapons Off");
         gModeLight.SetActive(false);
     }
@@ -157,10 +158,10 @@ public class ssManager : MonoBehaviour
         if (curBay == weaponBay.COUNT)
         {
             curBay = (weaponBay)(0);
-            actWeaponBay = weaponBays[(int)curBay].GetComponent<ssWeaponBay>();
         }
 
         // activate the new bay
+        actWeaponBay = weaponBays[(int)curBay].GetComponent<ssWeaponBay>();
         actWeaponBay.activeBay = true;
 
         GunneryCall();
@@ -181,14 +182,15 @@ public class ssManager : MonoBehaviour
         if (curBay < (weaponBay)(0))
         {
             curBay = weaponBay.COUNT - 1;
-            actWeaponBay = weaponBays[(int)curBay].GetComponent<ssWeaponBay>();
         }
-        
+
         // activate the new bay
+        actWeaponBay = weaponBays[(int)curBay].GetComponent<ssWeaponBay>();
         actWeaponBay.activeBay = true;
         
         GunneryCall();
         TMPcurWeapon.SetText("Current Weapon: " + curBay.ToString());
+        
         if (isRotating == false)
         {
             StartCoroutine(Rotate(Vector3.up, rotateDegrees, rotateSpeed));
