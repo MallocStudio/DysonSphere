@@ -80,7 +80,7 @@ public class World : MonoBehaviour {
         input_action_select.action.performed += on_input_select;
         input_action_select.action.canceled  += on_input_unselect;
         input_action_clear_console.action.performed += on_input_clear_console;
-        input_action_new_wave.action.performed += on_input_new_wave;
+        //input_action_new_wave.action.performed += on_input_new_wave;
 
         //- Generate the Entities
         enemy_entities = new List<AI_Actor>(GROUP_MAX_CAPACITY);
