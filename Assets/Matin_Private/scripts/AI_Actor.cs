@@ -117,6 +117,7 @@ public class AI_Actor : MonoBehaviour {
             //- Go towards player
         if (is_enemy && attacking_the_player) {
             this.move(world.player_ship_point.position);
+            Debug.Log("attacking the player");
         }
 
         Vector3 final_velocity = Vector3.zero;

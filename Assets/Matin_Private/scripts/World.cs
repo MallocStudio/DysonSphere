@@ -29,7 +29,7 @@ public class World : MonoBehaviour {
     [SerializeField] GameObject friendly_spaceship_prefab;
     [SerializeField] Light alarm;
     [SerializeField] Camera main_camera;
-    float spawn_radius = 10.0f;
+    float spawn_radius = 30.0f;
     [SerializeField] Transform enemy_spawn_point;
     [SerializeField] public Transform friendly_spawn_point;
     [SerializeField] public Transform player_ship_point;
@@ -274,7 +274,7 @@ public class World : MonoBehaviour {
 
         for (int group = 0; group < number_of_enemy_groups; group++) {
             AI_Actor lead = null;
-            for (int i = group; i < (GROUP_MAX_CAPACITY * group); i++) {
+            for (int i = group; i < (GROUP_MAX_CAPACITY * (group+1)); i++) {
                 AI_Actor entity = enemy_entities[i];
                 entity.attacking_the_player = true;
                 if (i == 0) {
@@ -412,7 +412,7 @@ public class World : MonoBehaviour {
 
         for (int group = 0; group < number_of_enemy_groups; group++) {
             AI_Actor lead = null;
-            for (int i = group; i < (GROUP_MAX_CAPACITY * group); i++) {
+            for (int i = group; i < (GROUP_MAX_CAPACITY * (group+1)); i++) {
                 AI_Actor entity = enemy_entities[i];
                 if (i == 0) {
                     lead = entity;
@@ -435,7 +435,7 @@ public class World : MonoBehaviour {
 
         for (int group = 0; group < number_of_friendly_groups; group++) {
             AI_Actor lead = null;
-            for (int i = group; i < (GROUP_MAX_CAPACITY * group); i++) {
+            for (int i = group; i < (GROUP_MAX_CAPACITY * (group+1)); i++) {
                 AI_Actor entity = friendly_entities[i];
                 if (i == 0) lead = entity;
 
