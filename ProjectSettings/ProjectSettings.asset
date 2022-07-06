@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DysonSpheres
+  companyName: Team3
   productName: DysonSphere
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -127,7 +127,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.5
+  bundleVersion: 0.6
   preloadedAssets:
   - {fileID: 0}
   - {fileID: 0}
@@ -221,9 +221,11 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 418079031621377306, guid: e72a94997c13fd24ba36bcd788cf61f0, type: 2}
-  - {fileID: 4992041913463030756, guid: 4943011c60db1c64b899693bdf990e71, type: 2}
-  - {fileID: 11400000, guid: 617924e97f466b848b4558329154af30, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -242,7 +244,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.DysonSpheres.DysonSphere
+    Android: com.Team3.DysonSphere
     Standalone: com.DysonSpheres.DysonSphere
   buildNumber:
     Standalone: 0
